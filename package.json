@@ -1,0 +1,24 @@
+{
+  "name": "format-trail-tasks",
+  "version": "0.1.0",
+  "description": "Grunt tasks for Moodle Trail Format.",
+  "main": "Gruntfile.js",
+  "author": {
+    "name": "Gareth J Barnard",
+    "url": "http://about.me/gjbarnard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gjb2048/moodle-format_trail.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gjb2048/moodle-format_trail/issues"
+  },
+  "devDependencies": {
+    "grunt": ">=1.3.0",
+    "grunt-exec": ">=1.3.0",
+    "grunt-contrib-jshint": "~1.0.0",
+    "grunt-contrib-uglify": "~1.0.1"
+  },
+  "license": "GPL-3.0"
+}

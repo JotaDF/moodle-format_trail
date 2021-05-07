@@ -1,0 +1,16 @@
+{
+  "name": "moodle-format_trail-trailkeys",
+  "builds": {
+    "moodle-format_trail-trailkeys": {
+        "prependfiles": [
+            "event-nav-keys.js" 
+        ],
+        "jsfiles": [
+            "trailkeys.js"
+        ],
+        "postexec": [
+            "./scripts/backport.js moodle-format_trail-trailkeys"
+        ]
+    }
+  }
+}

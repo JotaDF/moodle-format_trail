@@ -1,0 +1,507 @@
+/* This file is part of Moodle - http://moodle.org/
+
+   Moodle is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   Moodle is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with Moodle.  If not, see <http://www.gnu.org/licenses/>. */
+
+/**
+ * Trail Format - A topics based format that uses a trail of user selectable images to popup a light box of the section.
+ *
+ * @package    course/format
+ * @subpackage trail
+ * @version    See the value of '$plugin->version' in version.php.
+ * @copyright  &copy; 2012 onwards G J Barnard in respect to modifications of standard topics format.
+ * @author     G J Barnard - {@link http://about.me/gjbarnard} and
+ *                           {@link http://moodle.org/user/profile.php?id=442195}
+ * @author     Based on code originally written by Paul Krix and Julian Ridden.
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+.course-content .trail_title {
+    font-size: 160%;
+    font-weight: bold;
+}
+.course-content ul.gtopics h3.sectionname {
+    background: transparent;
+    border: 0 none;
+    border-bottom: dashed 1px #000;
+    font-weight: normal;
+    padding: 0;
+    padding-bottom: 5px;
+}
+.course-content ul.gtopics-0 #section-0 {
+    background: transparent;
+    border: 0 none;
+}
+
+.course-content ul.gtopics-0 #section-0 .side {
+    width: 28px;
+}
+
+/* Change of logic such that topics are hidden by default and then shown to prevent 'flash' whilst JavaScript kicks in. */
+body.jsenabled li.trail_section.hide_section {
+    display: none !important; /* Important to override bootstrap/moodle/undo.less. */
+}
+
+div#trailmiddle-column > ul {
+    list-style-type: none;
+    overflow: visible;
+}
+
+.course-content ul.gtopics {
+    margin: 0;
+}
+
+.course-content ul.gtopics li.section {
+    list-style: none;
+    margin: 5px 0 0 0;
+    padding:0;
+}
+
+.course-content ul.gtopics li.section .content {
+    margin:0 40px;
+}
+
+.course-content ul.gtopics li.section .side {
+    text-align: center;
+    width: 40px;
+}
+
+.course-content ul.gtopics li.section .left {
+    float: left;
+    padding: 0;
+}
+
+.course-content ul.gtopics li.section .right {
+    float: right;
+}
+
+/* @group Icons */
+#trailiconcontainer {
+    height: auto;
+    margin: 0 auto;
+    padding: 0;
+    width: 100%;
+}
+/*#trailiconcontainer ul.trailicons {
+    position: relative;
+    width: 900px;
+    height: 200px;
+    background-image:  url("/moodle/course/format/trail/pix/trilha_topo.png");
+    background-repeat: no-repeat;
+}*/
+#trailiconcontainer ul.trailicons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin: 0 auto;
+    padding: 0;
+    width: 100%;
+}
+#trailiconcontainer ul.trailicons li {
+    display: inline-block;
+    height: auto;
+    padding: 15px;
+    text-align: left;
+}
+.dir-rtl #trailiconcontainer ul.trailicons li {
+    text-align: right;
+}
+#trailiconcontainer ul.trailicons.content_inside li {
+    position: relative;
+}
+
+.course-content ul.trailicons img.new_activity {
+    position: absolute;
+    z-index: 1;
+}
+
+.course-content .trailcursor .trailicon_link {
+    /*rtl:ignore*/
+    cursor: url('[[pix:format_trail|fa-hand-o-up-f]]'), auto;
+}
+.course-content ul.trailicons li .icon_content {
+    font-weight: bold;
+    height: 20px;
+    margin: 0;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.course-content ul.trailicons li .icon_content.content_inside {
+    background-color: white;
+    color: black;
+    height: 40px;
+    opacity: 0.8;
+    overflow-wrap: break-word;
+    padding: 10px;
+    position: absolute;
+    text-overflow: inherit;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+.course-content ul.trailicons li .icon_content.content_inside.middle {
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    right: 0;
+    top: 0;
+}
+.course-content ul.trailicons li .icon_content.content_inside.bottom {
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    right: 0;
+}
+
+.course-content ul.trailicons li .trailicon_link .tooltip {
+    font-size: 14px;
+}
+
+/* Set the width of the tooltip when the section summary is 'Inside', thus within the 'image_holder'. */
+.course-content ul.trailicons li .trailicon_link .image_holder .tooltip {
+    width: 100%;
+}
+
+.course-content ul.trailicons li .trailicon_link .tooltip-inner {
+    background-color: #ffc540;
+    color: #3b53ad;
+    max-width: none;
+}
+
+.course-content ul.trailicons li .trailicon_link .tooltip.top .tooltip-arrow {
+    border-top-color: #ffc540;
+}
+
+.course-content ul.trailicons li .trailicon_link .tooltip.bottom .tooltip-arrow {
+    border-bottom-color: #ffc540;
+}
+
+.course-content ul.trailicons li .trailicon_link .tooltip.left .tooltip-arrow {
+    border-left-color: #ffc540;
+}
+
+.course-content ul.trailicons li .trailicon_link .tooltip.right .tooltip-arrow {
+    border-right-color: #ffc540;
+}
+
+.course-content ul.trailicons li .image_holder {
+    border-style: solid;
+    /* Override Bootstrap V3 box sizing of .box-sizing(border-box); in scaffolding.less. */
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    overflow: visible;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.course-content ul.trailicons li img {
+    margin-top: 0;
+}
+
+.course-content ul.trailicons li img.info {
+    height: 100%;
+    width: 100%;
+}
+
+.course-content li.trail_section {
+    clear: both;
+}
+/* @end */
+
+/* @group Shadebox */
+
+.trailcursor div#trailshadebox_overlay {
+    /*rtl:ignore*/
+    cursor: url('[[pix:format_trail|fa-times-circle-o-f]]'), auto;
+}
+
+div#trailshadebox_overlay {
+    background: black;
+    /* for IE */
+    filter: alpha(opacity=70);
+    height: 500px;
+    left: 0;
+    /* CSS3 standard */
+    opacity: 0.7;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 3;
+}
+#trailshadebox_content {
+    background: #fff;
+    border: solid 2px #a71e38;
+    min-height: 200px;
+}
+body.jsenabled #trailshadebox_content.hide_content {
+    display: none;
+}
+
+#trailshadebox_content.absolute {
+    left: 60px;
+    position: absolute;
+    right: 60px;
+    z-index: 3;
+}
+
+#trailshadebox_content.fit_to_window {
+    bottom: 10%;
+    left: 10%;
+    position: fixed;
+    right: 10%;
+    top: 10%;
+    z-index: 3;
+}
+
+#trailshadebox_content.fit_to_window ul.gtopics {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    height: 100%;
+    margin: 0;
+    overflow: auto;
+    padding: 10px;
+}
+
+#trailshadebox_content.fit_to_window ul.gtopics h3.sectionname {
+    margin-top: 0;
+}
+
+#trailshadebox_content .activity {
+    border-bottom: 1px dashed #ccc;
+    list-style: none;
+    padding-bottom: 4px;
+    padding-top: 2px;
+}
+
+#trailshadebox_content ul li.trail_section {
+    list-style: none;
+}
+
+#trailshadebox_content ul li ul li, #trailshadebox_content ul li ol li {
+    border-bottom: none;
+    padding-bottom: 4px;
+    padding-top: 2px;
+}
+
+#trailshadebox_content ul li ul li {
+    list-style: disc outside none;
+}
+
+#trailshadebox_content ul li ol li {
+    list-style: decimal outside none;
+} 
+
+.trailcursor #trailshadebox_close {
+    /*rtl:ignore*/
+    cursor: url('[[pix:format_trail|fa-hand-o-up-f]]'), auto;
+}
+
+#trailshadebox_close {
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    z-index: 2;
+}
+
+.trailcursor .trailshadebox_arrow {
+    cursor: inherit;
+}
+.trailshadebox_arrow {
+    height: 55px;
+    opacity: 0.35;
+    position: absolute;
+    top: 75px;
+    transition: opacity .25s ease-in-out;
+    -moz-transition: opacity .25s ease-in-out;
+    -webkit-transition: opacity .25s ease-in-out;
+    width: 55px;
+}
+.trailshadebox_area:hover .trailshadebox_arrow {
+    opacity: 0.9;
+}
+
+.trailshadebox_area  {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 55px;
+}
+
+.trailshadebox_previous_area {
+    left: -55px;
+}
+
+.trailshadebox_next_area {
+    right: -55px;
+}
+
+.trailcursor .trailshadebox_previous_area.ltr,
+.trailcursor .trailshadebox_next_area.rtl {
+    /*rtl:ignore*/
+    cursor: url('[[pix:format_trail|fa-hand-o-left-f]]'), auto;
+}
+
+.trailcursor .trailshadebox_next_area.ltr,
+.trailcursor .trailshadebox_previous_area.rtl {
+    /*rtl:ignore*/
+    cursor: url('[[pix:format_trail|fa-hand-o-right-f]]'), auto;
+}
+
+@media (max-width: 1199px) {
+    .trailshadebox_arrow {
+        height: 40px;
+        width: 40px;
+    }
+    .trailshadebox_area {
+        width: 40px;
+    }
+    .trailshadebox_previous_area {
+        left: -40px;
+    }
+    .trailshadebox_next_area {
+        right: -40px;
+    }
+}
+
+@media (max-width: 767px) {
+    .trailcursor div#trailshadebox_overlay {
+        /*rtl:ignore*/
+        cursor: url('[[pix:format_trail|fa-times-circle-o-fsm]]'), auto;
+    }
+    .trailcursor #trailshadebox_close {
+        /*rtl:ignore*/
+        cursor: url('[[pix:format_trail|fa-hand-o-up-fsm]]'), auto;
+    }
+    #trailshadebox_close {
+        height: 28px;
+        width: 28px;
+    }
+    .trailshadebox_arrow {
+        height: 30px;
+        width: 30px;
+    }
+    .trailshadebox_area {
+        width: 30px;
+    }
+    .trailshadebox_previous_area {
+        left: -30px;
+    }
+    .trailshadebox_next_area {
+        right: -30px;
+    }
+    .trailcursor .trailshadebox_previous_area.ltr,
+    .trailcursor .trailshadebox_next_area.rtl {
+        /*rtl:ignore*/
+        cursor: url('[[pix:format_trail|fa-hand-o-left-fsm]]'), auto;
+    }
+    .trailcursor .trailshadebox_next_area.ltr,
+    .trailcursor .trailshadebox_previous_area.rtl {
+        /*rtl:ignore*/
+        cursor: url('[[pix:format_trail|fa-hand-o-right-fsm]]'), auto;
+    }
+}
+
+@media (max-width: 480px) {
+    #trailshadebox_close {
+        height: 20px;
+        right: -7px;
+        top: -7px;
+        width: 20px;
+    }
+    .trailshadebox_arrow {
+        height: 20px;
+        width: 20px;
+    }
+    .trailshadebox_area {
+        width: 20px;
+    }
+    .trailshadebox_previous_area {
+        left: -20px;
+    }
+    .trailshadebox_next_area {
+        right: -20px;
+    }
+}
+
+.trailshadebox_arrow.trailshadebox_mobile {
+    height: 18px;
+    width: 18px;
+}
+
+.trailshadebox_arrow.trailshadebox_mobile.trailshadebox_area {
+    width: 18px;
+}
+
+.trailshadebox_arrow.trailshadebox_mobile.trailshadebox_previous_area {
+    left: -18px;
+}
+
+.trailshadebox_arrow.trailshadebox_mobile.trailshadebox_next_area {
+    right: -18px;
+}
+
+.trailshadebox_arrow.trailshadebox_mobile, .trailshadebox_arrow.trailshadebox_mobile:hover {
+    opacity: 1;
+}
+
+#trailshadebox_close.trailshadebox_mobile {
+    height: 18px;
+    right: -7px;
+    top: -7px;
+    width: 18px;
+}
+
+.trailshadebox_arrow.trailshadebox_tablet {
+    height: 31px;
+    width: 31px;
+}
+
+.trailshadebox_arrow.trailshadebox_tablet.trailshadebox_area {
+    width: 31px;
+}
+
+.trailshadebox_arrow.trailshadebox_tablet.trailshadebox_previous_area {
+    left: -31px;
+}
+
+.trailshadebox_arrow.trailshadebox_tablet.trailshadebox_next_area {
+    right: -31px;
+}
+
+.trailshadebox_arrow.trailshadebox_tablet, .trailshadebox_arrow.trailshadebox_tablet:hover {
+    opacity: 1;
+}
+
+#trailshadebox_content ul.gtopics {
+    margin: 0 15px 10px;
+}
+
+/* Added by Justin 20160514 */
+.course-content ul.trailicons li .image_holder.inaccessible {
+    background-color: #999;
+    border-color: #aaa;
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter: gray; /* IE 6-9 */
+    filter: alpha(opacity=70);
+    opacity: 0.7;
+}
+/* @end */
