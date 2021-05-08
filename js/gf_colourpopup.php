@@ -34,24 +34,24 @@ require_once("HTML/QuickForm/text.php");
  * @copyright  &copy; 2019 Jose Wilson  in respect to modifications of grid format.
  * @author     &copy; 2012 G J Barnard in respect to modifications of standard topics format.
  */
-class MoodleQuickForm_gfcolourpopup extends HTML_QuickForm_text implements templatable {
+class moodlequickform_gfcolourpopup extends HTML_QuickForm_text implements templatable {
 
     use templatable_form_element {
         export_for_template as export_for_template_base;
     }
 
     /**
-     * @var string $_helpbutton html for help button.
+     * @var string $helpbutton html for help button.
      */
-    public $_helpbutton = '';
+    public $helpbutton = '';
 
     /**
-     * @var boolean $_hiddenlabel html for help button.
+     * @var boolean $hiddenlabel html for help button.
      */
-    public $_hiddenlabel = false;
+    public $hiddenlabel = false;
 
     /**
-     * MoodleQuickForm_gfcolourpopup constructor.
+     * moodlequickform_gfcolourpopup constructor.
      *
      * @param string $elementname
      * @param string $elementlabel
@@ -72,7 +72,7 @@ class MoodleQuickForm_gfcolourpopup extends HTML_QuickForm_text implements templ
      * @param string $hiddenlabel
      */
     public function sethiddenlabel($hiddenlabel) {
-        $this->_hiddenlabel = $hiddenlabel;
+        $this->hiddenlabel = $hiddenlabel;
     }
 
     /**
@@ -126,7 +126,7 @@ class MoodleQuickForm_gfcolourpopup extends HTML_QuickForm_text implements templ
      * @param string $function function name to call to get html
      */
     public function sethelpbutton($helpbuttonargs, $function = 'helpbutton') {
-        debugging('component setHelpButton() is not used any more, please use $mform->setHelpButton() instead');
+        debugging('component sethelpbutton() is not used any more, please use $mform->sethelpbutton() instead');
     }
 
     /**
@@ -135,7 +135,7 @@ class MoodleQuickForm_gfcolourpopup extends HTML_QuickForm_text implements templ
      * @return  string html for help button
      */
     public function gethelpbutton() {
-        return $this->_helpbutton;
+        return $this->helpbutton;
     }
 
     /**
@@ -161,7 +161,7 @@ class MoodleQuickForm_gfcolourpopup extends HTML_QuickForm_text implements templ
      */
     public function export_for_template(renderer_base $output) {
         $context = $this->export_for_template_base($output);
-        $context['html'] = $this->toHtml();
+        $context['html'] = $this->tohtml();
         $context['staticlabel'] = false; // Not a static label!
         return $context;
     }

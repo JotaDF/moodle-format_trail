@@ -1324,7 +1324,7 @@ class format_trail extends format_base {
     public function create_edit_form_elements(&$mform, $forsection = false) {
         global $CFG, $OUTPUT, $PAGE, $USER;
         MoodleQuickForm::registerElementType('gfcolourpopup', "$CFG->dirroot/course/format/trail/js/gf_colourpopup.php",
-                'MoodleQuickForm_gfcolourpopup');
+                'moodlequickform_gfcolourpopup');
 
         $elements = parent::create_edit_form_elements($mform, $forsection);
 
