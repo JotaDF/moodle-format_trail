@@ -64,11 +64,11 @@ div#trailmiddle-column > ul {
 .course-content ul.gtopics li.section {
     list-style: none;
     margin: 5px 0 0 0;
-    padding:0;
+    padding: 0;
 }
 
 .course-content ul.gtopics li.section .content {
-    margin:0 40px;
+    margin: 0 40px;
 }
 
 .course-content ul.gtopics li.section .side {
@@ -92,13 +92,6 @@ div#trailmiddle-column > ul {
     padding: 0;
     width: 100%;
 }
-/*#trailiconcontainer ul.trailicons {
-    position: relative;
-    width: 900px;
-    height: 200px;
-    background-image:  url("/moodle/course/format/trail/pix/trilha_topo.png");
-    background-repeat: no-repeat;
-}*/
 #trailiconcontainer ul.trailicons {
     display: flex;
     flex-wrap: wrap;
