@@ -64,10 +64,9 @@ YUI.add('moodle-format_trail-trailkeys', function (Y, NAME) {
 /**
  * Trail Format - A topics based format that uses a trail of user selectable images to popup a light box of the section.
  *
- * @package    course/format
- * @subpackage trail
- * @version    See the value of '$plugin->version' in version.php.
- * @copyright  &copy; 2013 onwards G J Barnard in respect to modifications of standard topics format.
+ * @package    format_trail
+ * @copyright  &copy; 2019 Jose Wilson  in respect to modifications of grid format.
+ * @author     &copy; 2013 G J Barnard in respect to modifications of standard topics format.
  * @author     G J Barnard - {@link http://about.me/gjbarnard} and
  *                           {@link http://moodle.org/user/profile.php?id=442195}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

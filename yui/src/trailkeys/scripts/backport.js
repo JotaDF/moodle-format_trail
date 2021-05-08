@@ -5,8 +5,6 @@ var fs = require('fs'),
     util = require('util');
 
 if (process.argv.length < 3) {
-    console.error('You must specify the name of the module when running the backporter');
-    console.error('./scripts/backport.js moodle-core-tooltip');
     process.exit(1);
 }
 
@@ -25,11 +23,10 @@ if (!fs.existsSync(targetdir)) {
 
 var targetfile = path.resolve(targetdir, modname + '.js');
 
-var inputfile   = fs.createReadStream(sourcefile),
-    outputfile  = fs.createWriteStream(targetfile);
+var inputfile = fs.createReadStream(sourcefile),
+    outputfile = fs.createWriteStream(targetfile);
 
 inputfile.pipe(outputfile);
 inputfile.on("end", function() {
-  console.log("Copied " + sourcefile + " to " + targetfile);
   process.exit(0);
 });

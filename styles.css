@@ -16,10 +16,9 @@
 /**
  * Trail Format - A topics based format that uses a trail of user selectable images to popup a light box of the section.
  *
- * @package    course/format
- * @subpackage trail
- * @version    See the value of '$plugin->version' in version.php.
- * @copyright  &copy; 2012 onwards G J Barnard in respect to modifications of standard topics format.
+ * @package    format_trail
+ * @copyright  &copy; 2019 Jose Wilson  in respect to modifications of grid format.
+ * @author     &copy; 2012 G J Barnard in respect to modifications of standard topics format.
  * @author     G J Barnard - {@link http://about.me/gjbarnard} and
  *                           {@link http://moodle.org/user/profile.php?id=442195}
  * @author     Based on code originally written by Paul Krix and Julian Ridden.
@@ -285,7 +284,8 @@ body.jsenabled #trailshadebox_content.hide_content {
     list-style: none;
 }
 
-#trailshadebox_content ul li ul li, #trailshadebox_content ul li ol li {
+#trailshadebox_content ul li ul li,
+#trailshadebox_content ul li ol li {
     border-bottom: none;
     padding-bottom: 4px;
     padding-top: 2px;
@@ -297,10 +297,9 @@ body.jsenabled #trailshadebox_content.hide_content {
 
 #trailshadebox_content ul li ol li {
     list-style: decimal outside none;
-} 
+}
 
 .trailcursor #trailshadebox_close {
-    /*rtl:ignore*/
     cursor: url('[[pix:format_trail|fa-hand-o-up-f]]'), auto;
 }
 
@@ -448,7 +447,8 @@ body.jsenabled #trailshadebox_content.hide_content {
     right: -18px;
 }
 
-.trailshadebox_arrow.trailshadebox_mobile, .trailshadebox_arrow.trailshadebox_mobile:hover {
+.trailshadebox_arrow.trailshadebox_mobile,
+.trailshadebox_arrow.trailshadebox_mobile:hover {
     opacity: 1;
 }
 
@@ -476,7 +476,8 @@ body.jsenabled #trailshadebox_content.hide_content {
     right: -31px;
 }
 
-.trailshadebox_arrow.trailshadebox_tablet, .trailshadebox_arrow.trailshadebox_tablet:hover {
+.trailshadebox_arrow.trailshadebox_tablet,
+.trailshadebox_arrow.trailshadebox_tablet:hover {
     opacity: 1;
 }
 
