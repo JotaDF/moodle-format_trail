@@ -2375,7 +2375,7 @@ class format_trail extends format_base {
                 $this->setup_displayed_image($sectionimage, $storedfilerecord['contextid'],
                         $this->get_settings(), $icbc, $mime);
             } else {
-                print_error('imagecannotbeused', 'format_trail', $CFG->wwwroot . "/course/view.php?id="
+                throw new moodle_exception('imagecannotbeused', 'format_trail', $CFG->wwwroot . "/course/view.php?id="
                         . $this->courseid);
             }
         } catch (Exception $e) {
@@ -2472,7 +2472,7 @@ class format_trail extends format_base {
                 $DB->set_field('format_trail_icon', 'displayedimageindex',
                         $sectionimage->displayedimageindex, array('sectionid' => $sectionimage->sectionid));
             } else {
-                print_error('cannotconvertuploadedimagetodisplayedimage',
+                throw new moodle_exception('cannotconvertuploadedimagetodisplayedimage',
                         'format_trail', $CFG->wwwroot . "/course/view.php?id=" . $this->courseid);
             }
         } else {
@@ -2646,7 +2646,7 @@ class format_trail extends format_base {
             }
             $t->allow_commit();
         } else if (!$ignorenorecords) { // Only report error if it's ok not to have records.
-            print_error('cannotgetimagesforcourse', 'format_trail', '', null,
+            throw new moodle_exception('cannotgetimagesforcourse', 'format_trail', '', null,
                     "update_displayed_images - Course id: " . $courseid);
         }
     }

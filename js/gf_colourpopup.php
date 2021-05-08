@@ -111,7 +111,7 @@ class MoodleQuickForm_gfcolourpopup extends HTML_QuickForm_text implements templ
      *
      * @return void
      */
-    public function _generateid() {
+    public function generateid() {
         static $idx = 1;
 
         if (!$this->getAttribute('id')) {

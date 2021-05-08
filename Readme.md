@@ -1,6 +1,8 @@
 Trail Course Format
 ============================
-A grid-based, topic-based course format that uses a track of user-selectable images to display a section lightbox.
+Trail format was developed based on the Grid format plugin. He distributes the grids on a trail. 
+Some features were designed to meet some aspects of gamification, being able to change the background style
+ and transparency for grids. In addition to having the responsibility for mobile equipment.
 
 
 Required version of Moodle

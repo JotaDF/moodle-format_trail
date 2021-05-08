@@ -118,7 +118,7 @@ class restore_format_trail_plugin extends restore_format_plugin {
         }
 
         if (!($course = $DB->get_record('course', array('id' => $data->courseid)))) {
-            print_error('invalidcourseid', 'error');
+            echo 'invalidcourseid', 'error';
         } // From /course/view.php.
         // No need to annotate anything here.
     }
