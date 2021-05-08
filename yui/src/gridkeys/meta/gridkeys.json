@@ -1,7 +1,0 @@
-{
-  "moodle-format_trail-trailkeys": {
-    "requires": [
-        "event-nav-keys"
-    ]
-  }
-}
