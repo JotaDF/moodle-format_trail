@@ -48,7 +48,7 @@
 
 /* Change of logic such that topics are hidden by default and then shown to prevent 'flash' whilst JavaScript kicks in. */
 body.jsenabled li.trail_section.hide_section {
-    display: none !important; /* Important to override bootstrap/moodle/undo.less. */
+    display: none; /* Important to override bootstrap/moodle/undo.less. */
 }
 
 div#trailmiddle-column > ul {
@@ -224,7 +224,6 @@ div#trailmiddle-column > ul {
 div#trailshadebox_overlay {
     background: black;
     /* for IE */
-    filter: alpha(opacity=70);
     height: 500px;
     left: 0;
     /* CSS3 standard */
@@ -327,7 +326,7 @@ body.jsenabled #trailshadebox_content.hide_content {
     opacity: 0.9;
 }
 
-.trailshadebox_area  {
+.trailshadebox_area {
     height: 100%;
     position: absolute;
     top: 0;
@@ -491,11 +490,8 @@ body.jsenabled #trailshadebox_content.hide_content {
     border-color: #aaa;
     -webkit-filter: grayscale(100%);
     -moz-filter: grayscale(100%);
-    -ms-filter: grayscale(100%);
     -o-filter: grayscale(100%);
-    filter: grayscale(100%);
-    filter: gray; /* IE 6-9 */
-    filter: alpha(opacity=70);
+    filter: grayscale(100%) gray;
     opacity: 0.7;
 }
 /* @end */

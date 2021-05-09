@@ -49,6 +49,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+/**
+ * Grunt configuration.
+ *
+ * @param {Object} grunt
+ */
 module.exports = function(grunt) { // jshint ignore:line
 
     // Import modules.
@@ -59,8 +64,8 @@ module.exports = function(grunt) { // jshint ignore:line
 
     if ((build != 'p') && (build != 'd')) {
         build = 'p';
-        console.log('-build switch only accepts \'p\' for production or \'d\' for development,');
-        console.log('e.g. -build=p or -build=d.  Defaulting to development.');
+        grunt.log.debug('-build switch only accepts \'p\' for production or \'d\' for development,');
+        grunt.log.debug('e.g. -build=p or -build=d.  Defaulting to development.');
     }
 
     // PHP strings for exec task.

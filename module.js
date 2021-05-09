@@ -59,7 +59,7 @@ M.format_trail = M.format_trail || {
  * @param {Array}   the_shadebox_shown_array States what sections are not shown (value of 1) and which are (value of 2)
  *                  index is the section no.
  */
-M.format_trail.init = function (Y, the_editing_on, the_section_redirect, the_num_sections, the_initial_section,
+M.format_trail.init = function(Y, the_editing_on, the_section_redirect, the_num_sections, the_initial_section,
         the_shadebox_shown_array) {
     "use strict";
     this.ourYUI = Y;
@@ -68,7 +68,7 @@ M.format_trail.init = function (Y, the_editing_on, the_section_redirect, the_num
     this.selected_section = null;
     this.num_sections = parseInt(the_num_sections);
     this.shadebox_shown_array = the_shadebox_shown_array;
-    Y.use('json-parse', function (Y) {
+    Y.use('json-parse', function(Y) {
         M.format_trail.shadebox_shown_array = Y.JSON.parse(M.format_trail.shadebox_shown_array);
     });
 
@@ -117,7 +117,7 @@ M.format_trail.init = function (Y, the_editing_on, the_section_redirect, the_num
             if (M.format_trail.shadebox_overlay) {
                 M.format_trail.shadebox.initialize_shadebox();
                 M.format_trail.shadebox.update_shadebox();
-                window.onresize = function () {
+                window.onresize = function() {
                     M.format_trail.shadebox.update_shadebox();
                 };
             }
@@ -148,7 +148,7 @@ M.format_trail.init = function (Y, the_editing_on, the_section_redirect, the_num
 /**
  * Called when the user clicks on the trail icon, set up in the init() method.
  */
-M.format_trail.icon_click = function (e) {
+M.format_trail.icon_click = function(e) {
     "use strict";
     e.preventDefault();
     var icon_index = parseInt(e.currentTarget.get('id').replace("trailsection-", ""));
@@ -164,7 +164,7 @@ M.format_trail.icon_click = function (e) {
  * @return {boolean} Returns true if event is to be triggered normally or nothing otherwise as preventDefault will stop the
  default action of the event - https://www.w3.org/TR/DOM-Level-2-Events/events.html#Events-flow-cancelation.
  */
-M.format_trail.navdrawerclick = function (e) {
+M.format_trail.navdrawerclick = function(e) {
     "use strict";
     var href = e.currentTarget.get('href');
     var sectionref = href.indexOf("#section-");
@@ -185,7 +185,7 @@ M.format_trail.navdrawerclick = function (e) {
 /**
  * Called when the user tabs and the item is a trail icon.
  */
-M.format_trail.tab = function (index) {
+M.format_trail.tab = function(index) {
     "use strict";
     this.ourYUI.log('M.format_trail.tab: ' + index);
     var previous_no = this.selected_section_no;
@@ -201,13 +201,13 @@ M.format_trail.tab = function (index) {
  * Called when the user clicks on a trail icon or presses the Esc or Space keys - see 'trailkeys.js'.
  * @param {Object} e Event object.
  */
-M.format_trail.icon_toggle = function (e) {
+M.format_trail.icon_toggle = function(e) {
     "use strict";
     e.preventDefault();
     this.trail_toggle();
 };
 
-M.format_trail.trail_toggle = function () {
+M.format_trail.trail_toggle = function() {
     if (this.selected_section_no != -1) { // Then a valid shown section has been selected.
         if ((this.editing_on === true) && (this.update_capability === true)) {
             // Jump to the section on the page.
@@ -230,7 +230,7 @@ M.format_trail.trail_toggle = function () {
  * Moves to the previous visible section - looping to the last if the current is the first.
  * @param {Object} e Event object.
  */
-M.format_trail.previous_section = function () {
+M.format_trail.previous_section = function() {
     "use strict";
     this.change_selected_section(false);
 };
@@ -241,7 +241,7 @@ M.format_trail.previous_section = function () {
  * Moves to the next visible section - looping to the first if the current is the last.
  * @param {Object} e Event object.
  */
-M.format_trail.next_section = function () {
+M.format_trail.next_section = function() {
     this.change_selected_section(true);
 };
 
@@ -249,7 +249,7 @@ M.format_trail.next_section = function () {
  * Changes the current section in response to user input either arrows or keys.
  * @param {Boolean} increase_section If 'true' to to the next section, if 'false' go to the previous.
  */
-M.format_trail.change_selected_section = function (increase_section) {
+M.format_trail.change_selected_section = function(increase_section) {
     "use strict";
     if (this.selected_section_no != -1) { // Then a valid shown section has been selected.
         this.set_selected_section(this.selected_section_no, increase_section, false);
@@ -262,7 +262,7 @@ M.format_trail.change_selected_section = function (increase_section) {
 /**
  * Changes the shown section within the shade box to the new one defined in 'selected_section_no'.
  */
-M.format_trail.change_shown = function () {
+M.format_trail.change_shown = function() {
     "use strict";
     // Make the selected section visible, scroll to it and hide all other sections.
     if (this.selected_section !== null) {
@@ -287,7 +287,7 @@ M.format_trail.change_shown = function () {
  * @param {Boolean} increase_section If 'true' to to the next section, if 'false' go to the previous.
  * @param {Boolean} initialise If 'true' we are initialising and therefore no current section.
  */
-M.format_trail.set_selected_section = function (starting_point, increase_section, initialise) {
+M.format_trail.set_selected_section = function(starting_point, increase_section, initialise) {
     "use strict";
     if ((this.selected_section_no != -1) || (initialise === true)) {
         var previous_no = this.selected_section_no;
@@ -300,7 +300,7 @@ M.format_trail.set_selected_section = function (starting_point, increase_section
  * Updates the selected icon background.
  * @param {Integer} previous_no The number of the previous section.
  */
-M.format_trail.update_selected_background = function (previous_no) {
+M.format_trail.update_selected_background = function(previous_no) {
     "use strict";
     if (this.selected_section_no != -1) {
         var selected_section = this.ourYUI.one("#trailsection-" + this.selected_section_no);
@@ -318,7 +318,7 @@ M.format_trail.update_selected_background = function (previous_no) {
  * @param {Boolean} increase_section If 'true' to to the next section, if 'false' go to the previous.
  * @returns {Integer} The next section number or '-1' if not found.
  */
-M.format_trail.find_next_shown_section = function (starting_point, increase_section) {
+M.format_trail.find_next_shown_section = function(starting_point, increase_section) {
     "use strict";
     var found = false;
     var current = starting_point;
@@ -360,7 +360,7 @@ M.format_trail.shadebox = M.format_trail.shadebox || {
 };
 
 // Initialises the shade box.
-M.format_trail.shadebox.initialize_shadebox = function () {
+M.format_trail.shadebox.initialize_shadebox = function() {
     "use strict";
     this.shadebox_open = false;
 
@@ -406,7 +406,7 @@ M.format_trail.shadebox.initialize_shadebox = function () {
 };
 
 // Toggles the shade box open / closed.
-M.format_trail.shadebox.toggle_shadebox = function () {
+M.format_trail.shadebox.toggle_shadebox = function() {
     "use strict";
     if (this.shadebox_open) {
         this.hide_shadebox();
@@ -419,20 +419,20 @@ M.format_trail.shadebox.toggle_shadebox = function () {
 };
 
 // Shows the shade box.
-M.format_trail.shadebox.show_shadebox = function () {
+M.format_trail.shadebox.show_shadebox = function() {
     "use strict";
     this.update_shadebox();
     this.trail_shadebox.style.display = "";
 };
 
 // Hides the shade box.
-M.format_trail.shadebox.hide_shadebox = function () {
+M.format_trail.shadebox.hide_shadebox = function() {
     "use strict";
     this.trail_shadebox.style.display = "none";
 };
 
 // Adjusts the size of the shade box every time it's shown as the browser window could have changed.
-M.format_trail.shadebox.update_shadebox = function () {
+M.format_trail.shadebox.update_shadebox = function() {
     "use strict";
     // Make the overlay full screen (width happens automatically, so just update the height).
     var pagesize = this.get_page_height();
@@ -444,7 +444,7 @@ M.format_trail.shadebox.update_shadebox = function () {
  * Code from quirksmode.org.
  * Author unknown.
  */
-M.format_trail.shadebox.get_page_height = function () {
+M.format_trail.shadebox.get_page_height = function() {
     "use strict";
     var yScroll;
     if (window.innerHeight && window.scrollMaxY) {
