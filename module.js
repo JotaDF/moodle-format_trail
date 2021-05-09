@@ -29,7 +29,7 @@
 /**
  * @namespace
  */
-M.format_trail = M.format_trail || { 
+M.format_trail = M.format_trail || {
     // The YUI Object thang.
     ourYUI: null,
     // Boolean - states if editing is on.
@@ -77,7 +77,7 @@ M.format_trail.init = function(Y, the_editing_on, the_section_redirect, the_num_
         if (the_initial_section > -1) {
             M.format_trail.tab(the_initial_section);
         } else {
-            this.set_selected_section(this.num_sections, true, true);  // Section 0 can be in the trail.
+            this.set_selected_section(this.num_sections, true, true); // Section 0 can be in the trail.
         }
     } else {
         this.selected_section_no = -1;
@@ -148,6 +148,7 @@ M.format_trail.init = function(Y, the_editing_on, the_section_redirect, the_num_
 
 /**
  * Called when the user clicks on the trail icon, set up in the init() method.
+ * @param {object} e color
  */
 M.format_trail.icon_click = function(e) {
     "use strict";
@@ -181,10 +182,12 @@ M.format_trail.navdrawerclick = function(e) {
         this.tab(idx);
         this.icon_toggle(e);
     }
+    return;
 };
 
 /**
  * Called when the user tabs and the item is a trail icon.
+ * @param {object} index Click event.
  */
 M.format_trail.tab = function(index) {
     "use strict";
@@ -444,6 +447,7 @@ M.format_trail.shadebox.update_shadebox = function() {
  * Gets the page height.
  * Code from quirksmode.org.
  * Author unknown.
+ * @return {object} pageHeight
  */
 M.format_trail.shadebox.get_page_height = function() {
     "use strict";

@@ -107,7 +107,7 @@ M.util.init_gfcolour_popup = function(Y, id, previewconf) {
             },
             /**
              * Picks the colour the was clicked on
-             * @param e event
+             * @param {object} e event
              */
             pickColour: function(e) {
                 var colour = this.determineColour(e);
@@ -119,8 +119,8 @@ M.util.init_gfcolour_popup = function(Y, id, previewconf) {
             },
             /**
              * Calculates the colour from the given co-ordinates
-             * @param e event
-             * @return string
+             * @param {object} e event
+             * @return {object} string
              */
             determineColour: function(e) {
                 var eventx = Math.floor(e.pageX - e.target.getX());
@@ -172,8 +172,8 @@ M.util.init_gfcolour_popup = function(Y, id, previewconf) {
             },
             /**
              * Converts an RGB value to Hex
-             * @param rgb color
-             * @return string
+             * @param {object} rgb color
+             * @return {object} string
              */
             convert_rgb_to_hex: function(rgb) {
                 var hex = '';

@@ -48,7 +48,8 @@
  * @author     Based on code originally written by Joby Harding, Bas Brands, David Scotson and many other contributors.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
+/* eslint-env node */
+/* eslint-disable camelcase */
 /**
  * Grunt configuration.
  *
