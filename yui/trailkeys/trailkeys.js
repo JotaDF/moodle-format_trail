@@ -23,7 +23,7 @@
  *                           {@link http://moodle.org/user/profile.php?id=442195}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
+/* eslint-disable camelcase */
 M.format_trail = M.format_trail || {};
 M.format_trail.trailkeys = M.format_trail.trailkeys || {};
 M.format_trail.trailkeys = {

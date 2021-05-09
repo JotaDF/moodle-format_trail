@@ -25,10 +25,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+/* eslint-disable camelcase */
 /**
  * @namespace
  */
-M.format_trail = M.format_trail || {
+M.format_trail = M.format_trail || { 
     // The YUI Object thang.
     ourYUI: null,
     // Boolean - states if editing is on.

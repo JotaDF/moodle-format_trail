@@ -43,4 +43,4 @@ Y.Object.each(keys, function(keyCode, name) {
 });
 
 
-}, '2011.02.02-21-07' , {requires: ['event-synthetic']});
+}, '2011.02.02-21-07', {requires: ['event-synthetic']});

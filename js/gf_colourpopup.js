@@ -23,7 +23,7 @@
  *                           {@link http://moodle.org/user/profile.php?id=442195}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
+/* eslint-disable camelcase */
 M.util.init_gfcolour_popup = function(Y, id, previewconf) {
     Y.use('node', 'event-mouseenter', function() {
         /**
@@ -61,8 +61,8 @@ M.util.init_gfcolour_popup = function(Y, id, previewconf) {
                 this.height / 2 - 1).setStyle('backgroundColor', this.input.get('value'));
                 this.box.setContent('').append(this.image).append(this.preview).append(this.current);
 
-                if (typeof(previewconf) === 'object' && previewconf !== null) {
-                    Y.one('#' + id + '_preview').on('click', function(e) {
+                if (typeof (previewconf) === 'object' && previewconf !== null) {
+                    Y.one('#' + id + '_preview').on('click', function() {
                         if (Y.Lang.isString(previewconf.selector)) {
                             Y.all(previewconf.selector).setStyle(previewconf.style, this.input.get('value'));
                         } else {
@@ -72,26 +72,26 @@ M.util.init_gfcolour_popup = function(Y, id, previewconf) {
                         }
                     }, this);
                 }
-                this.swatch.on('click', this.popup,this);
+                this.swatch.on('click', this.popup, this);
                 this.input.on('blur', this.setColour, this);
                 this.eventClick = this.image.on('click', this.pickColour, this);
                 this.eventMouseEnter = Y.on('mouseenter', this.startFollow, this.image, this);
             },
-            popup: function(e) {
-                this.box.ancestor().setStyle('display','block');
+            popup: function() {
+                this.box.ancestor().setStyle('display', 'block');
             },
-            showColours: function(e) {
+            showColours: function() {
                 this.eventFocus.detach();
                 this.box.setContent('').append(this.image).append(this.preview).append(this.current);
             },
-            setColour: function(e) {
+            setColour: function() {
                 var colour = this.input.get('value');
                 this.swatch.setStyle('backgroundColor', '#' + colour);
             },
-            startFollow: function(e) {
+            startFollow: function() {
                 this.eventMouseEnter.detach();
                 this.eventMouseLeave = Y.on('mouseleave', this.endFollow, this.image, this);
-                this.eventMouseMove = this.image.on('mousemove', function(e){
+                this.eventMouseMove = this.image.on('mousemove', function(e) {
                     var colour = this.determineColour(e);
                     this.preview.setStyle('backgroundColor', '#' + colour);
                 }, this);
@@ -99,14 +99,15 @@ M.util.init_gfcolour_popup = function(Y, id, previewconf) {
             /**
              * Stops following the mouse
              */
-            endFollow: function(e) {
+            endFollow: function() {
                 this.eventMouseMove.detach();
                 this.eventMouseLeave.detach();
-                this.box.ancestor().setStyle('display','none');
+                this.box.ancestor().setStyle('display', 'none');
                 this.eventMouseEnter = Y.on('mouseenter', this.startFollow, this.image, this);
             },
             /**
              * Picks the colour the was clicked on
+             * @param e event
              */
             pickColour: function(e) {
                 var colour = this.determineColour(e);
@@ -118,6 +119,8 @@ M.util.init_gfcolour_popup = function(Y, id, previewconf) {
             },
             /**
              * Calculates the colour from the given co-ordinates
+             * @param e event
+             * @return string
              */
             determineColour: function(e) {
                 var eventx = Math.floor(e.pageX - e.target.getX());
@@ -169,6 +172,8 @@ M.util.init_gfcolour_popup = function(Y, id, previewconf) {
             },
             /**
              * Converts an RGB value to Hex
+             * @param rgb color
+             * @return string
              */
             convert_rgb_to_hex: function(rgb) {
                 var hex = '';

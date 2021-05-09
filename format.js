@@ -25,6 +25,7 @@
  * @author     Based on code originally written by Paul Krix and Julian Ridden.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+/* eslint-disable camelcase */
 M.course = M.course || {};
 
 M.course.format = M.course.format || {};
@@ -72,6 +73,7 @@ M.course.format.swap_sections = function(Y, node1, node2) {
  * Process sections after ajax response
  *
  * @param {YUI} Y YUI3 instance
+ * @param {string} sectionlist
  * @param {array} response ajax response
  * @param {string} sectionfrom first affected section
  * @param {string} sectionto last affected section
