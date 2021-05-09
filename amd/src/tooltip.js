@@ -12,7 +12,7 @@
 
 
 /* jshint ignore:start */
-define(['jquery', 'core/log'], function ($, log) {
+define(['jquery', 'core/log'], function($, log) {
 
     "use strict"; // jshint ;_;
 
@@ -26,7 +26,6 @@ define(['jquery', 'core/log'], function ($, log) {
 
     // CSS TRANSITION SUPPORT (Shoutout: http://www.modernizr.com/)
     // ============================================================
-
     function transitionEnd() {
         var el = document.createElement('bootstrap');
 
@@ -47,13 +46,13 @@ define(['jquery', 'core/log'], function ($, log) {
     }
 
     // http://blog.alexmaccaw.com/css-transitions
-    $.fn.emulateTransitionEnd = function (duration) {
+    $.fn.emulateTransitionEnd = function(duration) {
         var called = false;
         var $el = this;
-        $(this).one('bsTransitionEnd', function () {
+        $(this).one('bsTransitionEnd', function() {
             called = true;
         });
-        var callback = function () {
+        var callback = function() {
             if (!called) {
                 $($el).trigger($.support.transition.end);
             }
@@ -62,7 +61,7 @@ define(['jquery', 'core/log'], function ($, log) {
         return this;
     };
 
-    $(function () {
+    $(function() {
         $.support.transition = transitionEnd();
 
         if (!$.support.transition) {
@@ -72,7 +71,7 @@ define(['jquery', 'core/log'], function ($, log) {
         $.event.special.bsTransitionEnd = {
             bindType: $.support.transition.end,
             delegateType: $.support.transition.end,
-            handle: function (e) {
+            handle: function(e) {
                 if ($(e.target).is(this)) {
                     return e.handleObj.handler.apply(this, arguments);
                 }
@@ -92,7 +91,7 @@ define(['jquery', 'core/log'], function ($, log) {
     // TOOLTIP PUBLIC CLASS DEFINITION
     // ===============================
 
-    var TrailTooltip = function (element, options) {
+    var TrailTooltip = function(element, options) {
         this.type = null;
         this.options = null;
         this.enabled = null;
@@ -124,7 +123,7 @@ define(['jquery', 'core/log'], function ($, log) {
         }
     };
 
-    TrailTooltip.prototype.init = function (type, element, options) {
+    TrailTooltip.prototype.init = function(type, element, options) {
         this.enabled = true;
         this.type = type;
         this.$element = $(element);
@@ -143,7 +142,7 @@ define(['jquery', 'core/log'], function ($, log) {
 
         var triggers = this.options.trigger.split(' ');
 
-        for (var i = triggers.length; i--; ) {
+        for (var i = triggers.length; i--;) {
             var trigger = triggers[i];
 
             if (trigger == 'click') {
@@ -157,18 +156,18 @@ define(['jquery', 'core/log'], function ($, log) {
             }
         }
 
-        if(this.options.selector) {
+        if (this.options.selector) {
             (this._options = $.extend({}, this.options, {trigger: 'manual', selector: ''}));
         } else {
             this.fixTitle();
         }
     };
 
-    TrailTooltip.prototype.getDefaults = function () {
+    TrailTooltip.prototype.getDefaults = function() {
         return TrailTooltip.DEFAULTS;
     };
 
-    TrailTooltip.prototype.getOptions = function (options) {
+    TrailTooltip.prototype.getOptions = function(options) {
         options = $.extend({}, this.getDefaults(), this.$element.data(), options);
 
         if (options.delay && typeof options.delay == 'number') {
@@ -181,12 +180,12 @@ define(['jquery', 'core/log'], function ($, log) {
         return options;
     };
 
-    TrailTooltip.prototype.getDelegateOptions = function () {
+    TrailTooltip.prototype.getDelegateOptions = function() {
         var options = {};
         var defaults = this.getDefaults();
 
         if (this._options) {
-            $.each(this._options, function (key, value) {
+            $.each(this._options, function(key, value) {
                 if (defaults[key] != value) {
                     options[key] = value;
                 }
@@ -195,7 +194,7 @@ define(['jquery', 'core/log'], function ($, log) {
         return options;
     };
 
-    TrailTooltip.prototype.enter = function (obj) {
+    TrailTooltip.prototype.enter = function(obj) {
         var self = obj instanceof this.constructor ?
                 obj : $(obj.currentTarget).data('bs.' + this.type);
 
@@ -221,14 +220,14 @@ define(['jquery', 'core/log'], function ($, log) {
             return self.show();
         }
 
-        self.timeout = setTimeout(function () {
+        self.timeout = setTimeout(function() {
             if (self.hoverState == 'in') {
                 self.show();
             }
         }, self.options.delay.show);
     };
 
-    TrailTooltip.prototype.isInStateTrue = function () {
+    TrailTooltip.prototype.isInStateTrue = function() {
         for (var key in this.inState) {
             if (this.inState[key]) {
                 return true;
@@ -237,7 +236,7 @@ define(['jquery', 'core/log'], function ($, log) {
         return false;
     };
 
-    TrailTooltip.prototype.leave = function (obj) {
+    TrailTooltip.prototype.leave = function(obj) {
         var self = obj instanceof this.constructor ?
                 obj : $(obj.currentTarget).data('bs.' + this.type);
 
@@ -260,14 +259,14 @@ define(['jquery', 'core/log'], function ($, log) {
         if (!self.options.delay || !self.options.delay.hide) {
             return self.hide();
         }
-        self.timeout = setTimeout(function () {
+        self.timeout = setTimeout(function() {
             if (self.hoverState == 'out') {
                 self.hide();
             }
         }, self.options.delay.hide);
     };
 
-    TrailTooltip.prototype.show = function () {
+    TrailTooltip.prototype.show = function() {
         var e = $.Event('show.bs.' + this.type);
 
         if (this.hasContent() && this.enabled) {
@@ -339,7 +338,7 @@ define(['jquery', 'core/log'], function ($, log) {
 
             this.applyPlacement(calculatedOffset, placement);
 
-            var complete = function () {
+            var complete = function() {
                 var prevHoverState = that.hoverState;
                 that.$element.trigger('shown.bs.' + that.type);
                 that.hoverState = null;
@@ -359,16 +358,16 @@ define(['jquery', 'core/log'], function ($, log) {
         }
     };
 
-    TrailTooltip.prototype.applyPlacement = function (offset, placement) {
+    TrailTooltip.prototype.applyPlacement = function(offset, placement) {
         var $tip = this.tip();
         var width = $tip[0].offsetWidth;
         var height = $tip[0].offsetHeight;
 
-        // manually read margins because getBoundingClientRect includes difference
+        // Manually read margins because getBoundingClientRect includes difference.
         var marginTop = parseInt($tip.css('margin-top'), 10);
         var marginLeft = parseInt($tip.css('margin-left'), 10);
 
-        // we must check for NaN for ie 8/9
+        // We must check for NaN for ie 8/9.
         if (isNaN(marginTop)) {
             marginTop = 0;
         }
@@ -380,9 +379,9 @@ define(['jquery', 'core/log'], function ($, log) {
         offset.left += marginLeft;
 
         // $.fn.offset doesn't round pixel values
-        // so we use setOffset directly with our own function B-0
+        // So we use setOffset directly with our own function B-0.
         $.offset.setOffset($tip[0], $.extend({
-            using: function (props) {
+            using: function(props) {
                 $tip.css({
                     top: Math.round(props.top),
                     left: Math.round(props.left)
@@ -392,7 +391,7 @@ define(['jquery', 'core/log'], function ($, log) {
 
         $tip.addClass('in');
 
-        // check to see if placing tip in new offset caused the tip to resize itself
+        // Check to see if placing tip in new offset caused the tip to resize itself.
         var actualWidth = $tip[0].offsetWidth;
         var actualHeight = $tip[0].offsetHeight;
 
@@ -415,13 +414,13 @@ define(['jquery', 'core/log'], function ($, log) {
         this.replaceArrow(arrowDelta, $tip[0][arrowOffsetPosition], isVertical);
     };
 
-    TrailTooltip.prototype.replaceArrow = function (delta, dimension, isVertical) {
+    TrailTooltip.prototype.replaceArrow = function(delta, dimension, isVertical) {
         this.arrow()
                 .css(isVertical ? 'left' : 'top', 50 * (1 - delta / dimension) + '%')
                 .css(isVertical ? 'top' : 'left', '');
     };
 
-    TrailTooltip.prototype.setContent = function () {
+    TrailTooltip.prototype.setContent = function() {
         var $tip = this.tip();
         var title = this.getTitle();
 
@@ -429,11 +428,11 @@ define(['jquery', 'core/log'], function ($, log) {
         $tip.removeClass('fade in top bottom left right');
     };
 
-    TrailTooltip.prototype.hide = function (callback) {
+    TrailTooltip.prototype.hide = function(callback) {
         var that = this;
         var $tip = $(this.$tip);
         var e = $.Event('hide.bs.' + this.type);
-
+        // Complete.
         function complete() {
             if (that.hoverState != 'in') {
                 $tip.detach();
@@ -468,18 +467,18 @@ define(['jquery', 'core/log'], function ($, log) {
         return this;
     };
 
-    TrailTooltip.prototype.fixTitle = function () {
+    TrailTooltip.prototype.fixTitle = function() {
         var $e = this.$element;
         if ($e.attr('title') || typeof $e.attr('data-original-title') != 'string') {
             $e.attr('data-original-title', $e.attr('title') || '').attr('title', '');
         }
     };
 
-    TrailTooltip.prototype.hasContent = function () {
+    TrailTooltip.prototype.hasContent = function() {
         return this.getTitle();
     };
 
-    TrailTooltip.prototype.getPosition = function ($element) {
+    TrailTooltip.prototype.getPosition = function($element) {
         $element = $element || this.$element;
 
         var el = $element[0];
@@ -487,7 +486,7 @@ define(['jquery', 'core/log'], function ($, log) {
 
         var elRect = el.getBoundingClientRect();
         if (elRect.width === null) {
-            // width and height are missing in IE8, so compute them manually; see https://github.com/twbs/bootstrap/issues/14093
+            // Width and height are missing in IE8, so compute them manually; see https://github.com/twbs/bootstrap/issues/14093.
             elRect = $.extend({}, elRect, {width: elRect.right - elRect.left, height: elRect.bottom - elRect.top});
         }
         var isSvg = window.SVGElement && el instanceof window.SVGElement;
@@ -500,7 +499,7 @@ define(['jquery', 'core/log'], function ($, log) {
         return $.extend({}, elRect, scroll, outerDims, elOffset);
     };
 
-    TrailTooltip.prototype.getCalculatedOffset = function (placement, pos, actualWidth, actualHeight) {
+    TrailTooltip.prototype.getCalculatedOffset = function(placement, pos, actualWidth, actualHeight) {
         return placement == 'bottom' ? {top: pos.top + pos.height, left: pos.left + pos.width / 2 - actualWidth / 2} :
                 placement == 'top' ? {top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2} :
                 placement == 'left' ? {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth} :
@@ -508,7 +507,7 @@ define(['jquery', 'core/log'], function ($, log) {
 
     };
 
-    TrailTooltip.prototype.getViewportAdjustedDelta = function (placement, pos, actualWidth, actualHeight) {
+    TrailTooltip.prototype.getViewportAdjustedDelta = function(placement, pos, actualWidth, actualHeight) {
         var delta = {top: 0, left: 0};
         if (!this.$viewport) {
             return delta;
@@ -519,17 +518,17 @@ define(['jquery', 'core/log'], function ($, log) {
         if (/right|left/.test(placement)) {
             var topEdgeOffset = pos.top - viewportPadding - viewportDimensions.scroll;
             var bottomEdgeOffset = pos.top + viewportPadding - viewportDimensions.scroll + actualHeight;
-            if (topEdgeOffset < viewportDimensions.top) { // top overflow
+            if (topEdgeOffset < viewportDimensions.top) { // Top overflow.
                 delta.top = viewportDimensions.top - topEdgeOffset;
-            } else if (bottomEdgeOffset > viewportDimensions.top + viewportDimensions.height) { // bottom overflow
+            } else if (bottomEdgeOffset > viewportDimensions.top + viewportDimensions.height) { // Bottom overflow.
                 delta.top = viewportDimensions.top + viewportDimensions.height - bottomEdgeOffset;
             }
         } else {
             var leftEdgeOffset = pos.left - viewportPadding;
             var rightEdgeOffset = pos.left + viewportPadding + actualWidth;
-            if (leftEdgeOffset < viewportDimensions.left) { // left overflow
+            if (leftEdgeOffset < viewportDimensions.left) { // Left overflow.
                 delta.left = viewportDimensions.left - leftEdgeOffset;
-            } else if (rightEdgeOffset > viewportDimensions.right) { // right overflow
+            } else if (rightEdgeOffset > viewportDimensions.right) { // Right overflow.
                 delta.left = viewportDimensions.left + viewportDimensions.width - rightEdgeOffset;
             }
         }
@@ -537,7 +536,7 @@ define(['jquery', 'core/log'], function ($, log) {
         return delta;
     };
 
-    TrailTooltip.prototype.getTitle = function () {
+    TrailTooltip.prototype.getTitle = function() {
         var title;
         var $e = this.$element;
         var o = this.options;
@@ -548,14 +547,14 @@ define(['jquery', 'core/log'], function ($, log) {
         return title;
     };
 
-    TrailTooltip.prototype.getUID = function (prefix) {
+    TrailTooltip.prototype.getUID = function(prefix) {
         do {
             prefix += Math.floor(Math.random() * 1000000);
         } while (document.getElementById(prefix));
         return prefix;
     };
 
-    TrailTooltip.prototype.tip = function () {
+    TrailTooltip.prototype.tip = function() {
         if (!this.$tip) {
             this.$tip = $(this.options.template);
             if (this.$tip.length != 1) {
@@ -565,23 +564,23 @@ define(['jquery', 'core/log'], function ($, log) {
         return this.$tip;
     };
 
-    TrailTooltip.prototype.arrow = function () {
+    TrailTooltip.prototype.arrow = function() {
         return (this.$arrow = this.$arrow || this.tip().find('.tooltip-arrow'));
     };
 
-    TrailTooltip.prototype.enable = function () {
+    TrailTooltip.prototype.enable = function() {
         this.enabled = true;
     };
 
-    TrailTooltip.prototype.disable = function () {
+    TrailTooltip.prototype.disable = function() {
         this.enabled = false;
     };
 
-    TrailTooltip.prototype.toggleEnabled = function () {
+    TrailTooltip.prototype.toggleEnabled = function() {
         this.enabled = !this.enabled;
     };
 
-    TrailTooltip.prototype.toggle = function (e) {
+    TrailTooltip.prototype.toggle = function(e) {
         var self = this;
         if (e) {
             self = $(e.currentTarget).data('bs.' + this.type);
@@ -607,10 +606,10 @@ define(['jquery', 'core/log'], function ($, log) {
         }
     };
 
-    TrailTooltip.prototype.destroy = function () {
+    TrailTooltip.prototype.destroy = function() {
         var that = this;
         clearTimeout(this.timeout);
-        this.hide(function () {
+        this.hide(function() {
             that.$element.off('.' + that.type).removeData('bs.' + that.type);
             if (that.$tip) {
                 that.$tip.detach();
@@ -625,9 +624,8 @@ define(['jquery', 'core/log'], function ($, log) {
 
     // TOOLTIP PLUGIN DEFINITION
     // =========================
-
     function TrailTOOLTIPPlugin(option) {
-        return this.each(function () {
+        return this.each(function() {
             var $this = $(this);
             var data = $this.data('bs.trailtooltip');
             var options = typeof option == 'object' && option;
@@ -653,15 +651,15 @@ define(['jquery', 'core/log'], function ($, log) {
     // TOOLTIP NO CONFLICT
     // ===================
 
-    $.fn.trailtooltip.noConflict = function () {
+    $.fn.trailtooltip.noConflict = function() {
         $.fn.trailtooltip = old;
         return this;
     };
 
     log.debug('Trail Format AMD');
     return {
-        init: function () {
-            $(document).ready(function ($) {
+        init: function() {
+            $(document).ready(function($) {
                 $("[data-toggle=trailtooltip]").trailtooltip();
             });
             log.debug('Trail Format AMD init');
