@@ -77,7 +77,7 @@ M.format_trail.trailkeys = M.format_trail.trailkeys || {};
 M.format_trail.trailkeys = {
     currentTrailBox: false,
     currentTrailBoxIndex: 0,
-    findfocused: function() {
+    findfocused: function () {
         var focused = document.activeElement;
         if (!focused || focused == document.body) {
             focused = null;
@@ -93,7 +93,7 @@ M.format_trail.trailkeys = {
         }
         return M.format_trail.trailkeys.currentTrailBox;
     },
-    init: function(params) {
+    init: function (params) {
         Y.on('esc', function (e) {
             e.preventDefault();
             M.format_trail.icon_toggle(e);
@@ -110,7 +110,7 @@ M.format_trail.trailkeys = {
             }
         });
         Y.on('tab', function (/*e*/) {
-            setTimeout(function() {
+            setTimeout(function () {
                 // Cope with the fact that the default event happens after us.
                 // Therefore we need to react after focus has moved.
                 if (M.format_trail.trailkeys.findfocused()) {
