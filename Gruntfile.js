@@ -91,7 +91,7 @@ module.exports = function(grunt) { // jshint ignore:line
             decache: {
                 cmd: 'php -r "' + decachephp + '"',
                 callback: function(error) {
-                    // exec will output error messages
+                    // Exec will output error messages
                     // just add one to confirm success.
                     if (!error) {
                         grunt.log.writeln("Moodle cache reset.");

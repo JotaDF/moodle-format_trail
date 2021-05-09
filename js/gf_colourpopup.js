@@ -25,43 +25,44 @@
  */
 
 M.util.init_gfcolour_popup = function(Y, id, previewconf) {
-    Y.use('node', 'event-mouseenter', function(){
+    Y.use('node', 'event-mouseenter', function() {
         /**
          * The colour popup object
          */
         var colourpopup = {
-            box : null,
-            input : null,
-            swatch : null,
-            image : null,
-            preview : null,
-            current : null,
-            eventClick : null,
-            eventFocus : null,
-            eventMouseEnter : null,
-            eventMouseLeave : null,
-            eventMouseMove : null,
-            width : 300,
-            height :  100,
-            factor : 5,
+            box: null,
+            input: null,
+            swatch: null,
+            image: null,
+            preview: null,
+            current: null,
+            eventClick: null,
+            eventFocus: null,
+            eventMouseEnter: null,
+            eventMouseLeave: null,
+            eventMouseMove: null,
+            width: 300,
+            height:  100,
+            factor: 5,
             /**
              * Initalises the colour popup by putting everything together and wiring the events
              */
-            init : function() {
+            init: function() {
                 this.input = Y.one('#' + id);
                 this.swatch = Y.one('#colpicked_' + id);
                 this.box = this.input.ancestor().one('.admin_colourpicker');
                 this.image = Y.Node.create('<img alt="" class="colourdialogue" />');
                 this.image.setAttribute('src', M.util.image_url('i/colourpicker', 'moodle'));
                 this.preview = Y.Node.create('<div class="previewcolour"></div>');
-                this.preview.setStyle('width', this.height / 2).setStyle('height', this.height / 2).setStyle('backgroundColor', this.input.get('value'));
+                this.preview.setStyle('width', this.height / 2).setStyle('height',
+                this.height / 2).setStyle('backgroundColor', this.input.get('value'));
                 this.current = Y.Node.create('<div class="currentcolour"></div>');
-                this.current.setStyle('width', this.height / 2).setStyle('height', this.height / 2 -1).setStyle('backgroundColor', this.input.get('value'));
+                this.current.setStyle('width', this.height / 2).setStyle('height',
+                this.height / 2 - 1).setStyle('backgroundColor', this.input.get('value'));
                 this.box.setContent('').append(this.image).append(this.preview).append(this.current);
-                //this.box.setContent('');
 
                 if (typeof(previewconf) === 'object' && previewconf !== null) {
-                    Y.one('#' + id + '_preview').on('click', function(e){
+                    Y.one('#' + id + '_preview').on('click', function(e) {
                         if (Y.Lang.isString(previewconf.selector)) {
                             Y.all(previewconf.selector).setStyle(previewconf.style, this.input.get('value'));
                         } else {
@@ -71,23 +72,23 @@ M.util.init_gfcolour_popup = function(Y, id, previewconf) {
                         }
                     }, this);
                 }
-                this.swatch.on('click',this.popup,this);
+                this.swatch.on('click', this.popup,this);
                 this.input.on('blur', this.setColour, this);
                 this.eventClick = this.image.on('click', this.pickColour, this);
                 this.eventMouseEnter = Y.on('mouseenter', this.startFollow, this.image, this);
             },
-            popup: function(e){
+            popup: function(e) {
                 this.box.ancestor().setStyle('display','block');
             },
-            showColours : function(e){
+            showColours: function(e) {
                 this.eventFocus.detach();
                 this.box.setContent('').append(this.image).append(this.preview).append(this.current);
             },
-            setColour : function(e){
+            setColour: function(e) {
                 var colour = this.input.get('value');
                 this.swatch.setStyle('backgroundColor', '#' + colour);
             },
-            startFollow : function(e) {
+            startFollow: function(e) {
                 this.eventMouseEnter.detach();
                 this.eventMouseLeave = Y.on('mouseleave', this.endFollow, this.image, this);
                 this.eventMouseMove = this.image.on('mousemove', function(e){
@@ -98,7 +99,7 @@ M.util.init_gfcolour_popup = function(Y, id, previewconf) {
             /**
              * Stops following the mouse
              */
-            endFollow : function(e) {
+            endFollow: function(e) {
                 this.eventMouseMove.detach();
                 this.eventMouseLeave.detach();
                 this.box.ancestor().setStyle('display','none');
@@ -107,33 +108,33 @@ M.util.init_gfcolour_popup = function(Y, id, previewconf) {
             /**
              * Picks the colour the was clicked on
              */
-            pickColour : function(e) {
+            pickColour: function(e) {
                 var colour = this.determineColour(e);
                 this.input.set('value', colour);
                 this.input.focus();
                 this.swatch.setStyle('backgroundColor', '#' + colour);
                 this.current.setStyle('backgroundColor', '#' + colour);
-                this.box.ancestor().setStyle('display','none');
+                this.box.ancestor().setStyle('display', 'none');
             },
             /**
              * Calculates the colour from the given co-ordinates
              */
-            determineColour : function(e) {
+            determineColour: function(e) {
                 var eventx = Math.floor(e.pageX - e.target.getX());
                 var eventy = Math.floor(e.pageY - e.target.getY());
 
                 var imagewidth = this.width;
                 var imageheight = this.height;
                 var factor = this.factor;
-                var colour = [255,0,0];
+                var colour = [255, 0, 0];
 
                 var matrices = [
-                [  0,  1,  0],
-                [ -1,  0,  0],
-                [  0,  0,  1],
-                [  0, -1,  0],
-                [  1,  0,  0],
-                [  0,  0, -1]
+                [0, 1, 0],
+                [-1, 0, 0],
+                [0, 0, 1],
+                [0, -1, 0],
+                [1, 0, 0],
+                [0, 0, -1]
                 ];
 
                 var matrixcount = matrices.length;
@@ -144,9 +145,9 @@ M.util.init_gfcolour_popup = function(Y, id, previewconf) {
                     var divisor = Math.floor(x / limit);
                     var matrix = matrices[divisor];
 
-                    colour[0] += matrix[0]*factor;
-                    colour[1] += matrix[1]*factor;
-                    colour[2] += matrix[2]*factor;
+                    colour[0] += matrix[0] * factor;
+                    colour[1] += matrix[1] * factor;
+                    colour[2] += matrix[2] * factor;
 
                     if (eventx == x) {
                         break;
@@ -169,7 +170,7 @@ M.util.init_gfcolour_popup = function(Y, id, previewconf) {
             /**
              * Converts an RGB value to Hex
              */
-            convert_rgb_to_hex : function(rgb) {
+            convert_rgb_to_hex: function(rgb) {
                 var hex = '';
                 var hexchars = "0123456789ABCDEF";
                 for (var i = 0; i < 3; i++) {
@@ -177,7 +178,7 @@ M.util.init_gfcolour_popup = function(Y, id, previewconf) {
                     if (number == 0 || isNaN(number)) {
                         hex += '00';
                     } else {
-                        hex += hexchars.charAt((number-number % 16) / 16) + hexchars.charAt(number % 16);
+                        hex += hexchars.charAt((number - number % 16) / 16) + hexchars.charAt(number % 16);
                     }
                 }
                 return hex;

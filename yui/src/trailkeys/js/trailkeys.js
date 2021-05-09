@@ -29,7 +29,7 @@ M.format_trail.trailkeys = M.format_trail.trailkeys || {};
 M.format_trail.trailkeys = {
     currentTrailBox: false,
     currentTrailBoxIndex: 0,
-    findfocused: function () {
+    findfocused: function() {
         var focused = document.activeElement;
         if (!focused || focused == document.body) {
             focused = null;
@@ -47,15 +47,15 @@ M.format_trail.trailkeys = {
         }
         return M.format_trail.trailkeys.currentTrailBox;
     },
-    init: function (params) {
-        Y.on('esc', function (e) {
+    init: function(params) {
+        Y.on('esc', function(e) {
             e.preventDefault();
             Y.log("Esc pressed");
             Y.log("Selected section no: " + M.format_trail.selected_section_no);
             M.format_trail.icon_toggle(e);
         });
         // Initiated in CONTRIB-3240...
-        Y.on('enter', function (e) {
+        Y.on('enter', function(e) {
             if (M.format_trail.trailkeys.currentTrailBox) {
                 e.preventDefault();
                 if (e.shiftKey) {
@@ -69,8 +69,8 @@ M.format_trail.trailkeys = {
                 }
             }
         });
-        Y.on('tab', function (/*e*/) {
-            setTimeout(function () {
+        Y.on('tab', function() {
+            setTimeout(function() {
                 // Cope with the fact that the default event happens after us.
                 // Therefore we need to react after focus has moved.
                 if (M.format_trail.trailkeys.findfocused()) {
@@ -78,7 +78,7 @@ M.format_trail.trailkeys = {
                 }
             }, 250);
         });
-        Y.on('space', function (e) {
+        Y.on('space', function(e) {
             if (M.format_trail.trailkeys.currentTrailBox) {
                 e.preventDefault();
                 Y.log("Space pressed");
@@ -86,7 +86,7 @@ M.format_trail.trailkeys = {
                 M.format_trail.icon_toggle(e);
             }
         });
-        Y.on('left', function (e) {
+        Y.on('left', function(e) {
             e.preventDefault();
             Y.log("Left pressed");
             if (params.rtl) {
@@ -95,7 +95,7 @@ M.format_trail.trailkeys = {
                 M.format_trail.previous_section(e);
             }
         });
-        Y.on('right', function (e) {
+        Y.on('right', function(e) {
             e.preventDefault();
             Y.log("Right pressed");
             if (params.rtl) {
