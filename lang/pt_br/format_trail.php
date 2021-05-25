@@ -242,6 +242,7 @@ $string['right'] = 'Direita';
 
 // Background options.
 $string['tipo_pista'] = 'Pista';
+$string['tipo_pista2'] = 'Pista cinza';
 $string['tipo_rio'] = 'Rio';
 $string['tipo_quebra1'] = 'Quebra-cabeças 1';
 $string['tipo_quebra2'] = 'Quebra-cabeças 2';
@@ -256,6 +257,10 @@ $string['star'] = 'Estrela';
 $string['like'] = 'Joínha';
 $string['setshowcheckstar'] = 'Estilo do check';
 $string['setshowcheckstar_help'] = 'Escolha o estilo de check que aparecerá quando o aluno concluir todas as atividades com critérios de conclusão da seção.';
+
+// Lock options.
+$string['lock'] = 'Tranca';
+$string['mini_lock'] = 'Mini tranca';
 
 // Reset.
 $string['resetgrp'] = 'Resetar:';

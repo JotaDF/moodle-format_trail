@@ -95,11 +95,21 @@ if ($imagecontaineralignment == 'left') {
 }
 echo 'justify-content: ' . $imagecontaineralignment . ';';
 echo '} ';
+echo '#lock {
+        z-index: 5;
+        position:absolute;
+        top: 0px;
+        right: 1px;
+        width: 32px;
+        height: 32px;
+        background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/lock_mini.png");
+        background-repeat: no-repeat;
+    }';
 echo '#check {
         z-index: 5;
         position:absolute;
         top: 0px;
-        right: 0px;
+        right: 1px;
         width: 32px;
         height: 32px;
         background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/check.png");
@@ -109,7 +119,7 @@ echo '#star {
         z-index: 5;
         position:absolute;
         top: 0px;
-        right: 0px;
+        right: 1px;
         width: 32px;
         height: 32px;
         background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/star.png");
@@ -119,7 +129,7 @@ echo '#like {
         z-index: 5;
         position:absolute;
         top: 0px;
-        right: 0px;
+        right: 1px;
         width: 32px;
         height: 32px;
         background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/like.png");

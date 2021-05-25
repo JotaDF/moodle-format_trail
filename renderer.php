@@ -903,6 +903,17 @@ class format_trail_renderer extends format_section_renderer_base {
                         }
                         echo html_writer::start_tag('div', array('id' => $classcheck));
                         echo html_writer::end_tag('div');
+                    } else {
+                        // Alteração por Jota.
+                        $bloqueado = 0;
+                        if ($this->settings['hidesectionlock'] == 3) {
+                            $bloqueado = $this->get_section_availability_bloqueado($thissection,
+                                    has_capability('moodle/course:viewhiddensections', $coursecontext));
+                        }
+                        if ($bloqueado > 0) {
+                            echo html_writer::start_tag('div', array('id' => 'lock'));
+                            echo html_writer::end_tag('div');
+                        }
                     }
 
                     if ($this->settings['sectiontitleboxposition'] == 1) {
@@ -919,7 +930,6 @@ class format_trail_renderer extends format_section_renderer_base {
                         $bloqueado = $this->get_section_availability_bloqueado($thissection,
                                 has_capability('moodle/course:viewhiddensections', $coursecontext));
                     }
-
                     echo $this->courseformat->output_section_image($section, $sectionname, $sectionimage, $contextid,
                             $thissection, $trailimagepath, $this->output, $bloqueado);
 

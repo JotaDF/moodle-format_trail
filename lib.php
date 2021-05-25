@@ -1194,8 +1194,9 @@ class format_trail extends format_base {
                 'element_type' => 'select',
                 'element_attributes' => array(
                     array(
-                        1 => new lang_string('no'), // No.
-                        2 => new lang_string('yes') // Yes.
+                        1 => new lang_string('none', 'format_trail'),
+                        2 => new lang_string('lock', 'format_trail'),
+                        3 => new lang_string('mini_lock', 'format_trail')
                     )
                 ),
                 'help' => 'sethidesectionlock',
@@ -1207,6 +1208,7 @@ class format_trail extends format_base {
                 'element_attributes' => array(
                     array(
                         1 => new lang_string('tipo_pista', 'format_trail'),
+                        5 => new lang_string('tipo_pista2', 'format_trail'),
                         2 => new lang_string('tipo_rio', 'format_trail'),
                         3 => new lang_string('tipo_quebra1', 'format_trail'),
                         4 => new lang_string('tipo_quebra2', 'format_trail')

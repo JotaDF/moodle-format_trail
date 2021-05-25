@@ -242,6 +242,7 @@ $string['right'] = 'Right';
 
 // Background options.
 $string['tipo_pista'] = 'Track';
+$string['tipo_pista2'] = 'Gray track';
 $string['tipo_rio'] = 'River';
 $string['tipo_quebra1'] = 'Puzzle 1';
 $string['tipo_quebra2'] = 'Puzzle 2';
@@ -256,6 +257,10 @@ $string['star'] = 'Star';
 $string['like'] = 'Like';
 $string['setshowcheckstar'] = 'Check style';
 $string['setshowcheckstar_help'] = 'Choose the check style that will appear when the student completes all activities with section completion criteria.';
+
+// Lock options.
+$string['lock'] = 'Lock';
+$string['mini_lock'] = 'Mini lock';
 
 // Reset.
 $string['resetgrp'] = 'Reset:';
