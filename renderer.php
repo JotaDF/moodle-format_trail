@@ -892,6 +892,7 @@ class format_trail_renderer extends format_section_renderer_base {
                     // Alterado por Jota.
                     if ($this->is_check_section($USER->id, $course->id, $thissection->id)) {
                         $classcheck = '';
+                        $titlecheck = get_string('checked', 'format_trail');
                         if ($this->settings['showcheckstar'] == 2) {
                             $classcheck = 'check';
                         }
@@ -901,7 +902,7 @@ class format_trail_renderer extends format_section_renderer_base {
                         if ($this->settings['showcheckstar'] == 4) {
                             $classcheck = 'like';
                         }
-                        echo html_writer::start_tag('div', array('id' => $classcheck));
+                        echo html_writer::start_tag('div', array('id' => $classcheck, 'title' => $titlecheck));
                         echo html_writer::end_tag('div');
                     } else {
                         // Alteração por Jota.
@@ -911,7 +912,8 @@ class format_trail_renderer extends format_section_renderer_base {
                                     has_capability('moodle/course:viewhiddensections', $coursecontext));
                         }
                         if ($bloqueado > 0) {
-                            echo html_writer::start_tag('div', array('id' => 'lock'));
+                            echo html_writer::start_tag('div', array('id' => 'lock',
+                                'title' => get_string('locked', 'format_trail')));
                             echo html_writer::end_tag('div');
                         }
                     }

@@ -257,10 +257,12 @@ $string['star'] = 'Star';
 $string['like'] = 'Like';
 $string['setshowcheckstar'] = 'Check style';
 $string['setshowcheckstar_help'] = 'Choose the check style that will appear when the student completes all activities with section completion criteria.';
+$string['checked'] = 'Completed';
 
 // Lock options.
 $string['lock'] = 'Lock';
 $string['mini_lock'] = 'Mini lock';
+$string['locked'] = 'Locked';
 
 // Reset.
 $string['resetgrp'] = 'Reset:';

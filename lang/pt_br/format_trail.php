@@ -257,11 +257,12 @@ $string['star'] = 'Estrela';
 $string['like'] = 'Joínha';
 $string['setshowcheckstar'] = 'Estilo do check';
 $string['setshowcheckstar_help'] = 'Escolha o estilo de check que aparecerá quando o aluno concluir todas as atividades com critérios de conclusão da seção.';
+$string['checked'] = 'Completada';
 
 // Lock options.
 $string['lock'] = 'Tranca';
 $string['mini_lock'] = 'Mini tranca';
-
+$string['locked'] = 'Trancado';
 // Reset.
 $string['resetgrp'] = 'Resetar:';
 $string['resetallgrp'] = 'Resetar tudo:';
