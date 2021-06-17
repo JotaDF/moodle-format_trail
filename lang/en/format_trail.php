@@ -163,6 +163,9 @@ $string['hidesectiontitle_help'] = 'Hide the section title.';
 $string['defaulthidesectiontitle'] = 'Hide section title option';
 $string['defaulthidesectiontitle_desc'] = 'Hide the section title.';
 
+$string['hidenavside'] = 'Hide side navigation';
+$string['hidenavside_help'] = 'Hide side navigation arrows.';
+
 $string['sethidesectionlock'] = 'Show lock when restricted';
 $string['sethidesectionlock_help'] = 'Show padlock image when the section is restricted.';
 $string['defaultsethidesectionlock'] = 'Show lock when restricted';

@@ -163,6 +163,9 @@ $string['hidesectiontitle_help'] = 'Ocultar o título da seção.';
 $string['defaulthidesectiontitle'] = 'Ocultar opção do título da seção';
 $string['defaulthidesectiontitle_desc'] = 'Ocultar o título da seção.';
 
+$string['hidenavside'] = 'Ocultar navegação lateral';
+$string['hidenavside_help'] = 'Ocultar setas de navegação lateral.';
+
 $string['sethidesectionlock'] = 'Mostrar cadeado quando tiver restrição';
 $string['sethidesectionlock_help'] = 'Mostrar imagem do cadeado quando a seção tiver restrição.';
 $string['defaultsethidesectionlock'] = 'Mostrar cadeado quando tiver restrição';

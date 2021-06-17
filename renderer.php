@@ -460,6 +460,55 @@ class format_trail_renderer extends format_section_renderer_base {
                 'alt' => $closeshadebox,
                 'aria-label' => $closeshadebox));
 
+            if ($this->settings['hidenavside'] == 1) {
+                // Only show the arrows if there is more than one box shown.
+                if (($coursenumsections > 1) || (($coursenumsections == 1) && (!$this->section0attop))) {
+                    if ($rtl) {
+                        $previcon = 'right';
+                        $nexticon = 'left';
+                        $areadir = 'rtl';
+                    } else {
+                        $previcon = 'left';
+                        $nexticon = 'right';
+                        $areadir = 'ltr';
+                    }
+                    $previoussection = get_string('previoussection', 'format_trail');
+                    $prev = html_writer::start_tag('div', array('id' => 'trailshadebox_previous',
+                        'class' => 'trailshadebox_area trailshadebox_previous_area '.$areadir,
+                        'style' => 'display: none;',
+                        'role' => 'link',
+                        'aria-label' => $previoussection)
+                    );
+                    $prev .= html_writer::tag('img', '', array('class' => 'trailshadebox_arrow trailshadebox_previous'.$deviceextra,
+                        'src' => $this->output->image_url('fa-arrow-circle-'.$previcon.'-w', 'format_trail'),
+                        'alt' => $previoussection,
+                        'aria-label' => $previoussection
+                        )
+                    );
+                    $prev .= html_writer::end_tag('div');
+                    $nextsection = get_string('nextsection', 'format_trail');
+                    $next = html_writer::start_tag('div', array('id' => 'trailshadebox_next',
+                        'class' => 'trailshadebox_area trailshadebox_next_area '.$areadir,
+                        'style' => 'display: none;',
+                        'role' => 'link',
+                        'aria-label' => $nextsection)
+                    );
+                    $next .= html_writer::tag('img', '', array('class' => 'trailshadebox_arrow trailshadebox_next'.$deviceextra,
+                        'src' => $this->output->image_url('fa-arrow-circle-'.$nexticon.'-w', 'format_trail'),
+                        'alt' => $nextsection,
+                        'aria-label' => $nextsection
+                        )
+                    );
+                    $next .= html_writer::end_tag('div');
+
+                    if ($rtl) {
+                        echo $next.$prev;
+                    } else {
+                        echo $prev.$next;
+                    }
+                }
+            }
+
             echo $this->start_section_list();
             // If currently moving a file then show the current clipboard.
             $this->make_block_show_clipboard_if_file_moving($course);

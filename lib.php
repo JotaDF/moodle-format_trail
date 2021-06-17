@@ -637,6 +637,10 @@ class format_trail extends format_base {
                     'default' => $courseconfig->coursedisplay,
                     'type' => PARAM_INT
                 ),
+                'hidenavside' => array(
+                    'default' => get_config('format_trail', 'defaulthidenavside'),
+                    'type' => PARAM_INT
+                ),
                 'hidesectionlock' => array(
                     'default' => get_config('format_trail', 'defaulthidesectionlock'),
                     'type' => PARAM_INT
@@ -1189,6 +1193,18 @@ class format_trail extends format_base {
             );
 
             // Alterado por JOTA.
+            $courseformatoptionsedit['hidenavside'] = array(
+                'label' => new lang_string('hidenavside', 'format_trail'),
+                'help' => 'hidenavside',
+                'help_component' => 'format_trail',
+                'element_type' => 'select',
+                'element_attributes' => array(
+                    array(
+                        1 => new lang_string('no'), // No.
+                        2 => new lang_string('yes') // Yes.
+                    )
+                )
+            );
             $courseformatoptionsedit['hidesectionlock'] = array(
                 'label' => new lang_string('sethidesectionlock', 'format_trail'),
                 'element_type' => 'select',
@@ -1703,6 +1719,7 @@ class format_trail extends format_base {
         $resetallnewactivity = false;
         $resetallfitpopup = false;
         $resetgreyouthidden = false;
+        $resethidenavside = false;
         if (isset($data->resetimagecontaineralignment) == true) {
             $resetimagecontaineralignment = true;
             unset($data->resetimagecontaineralignment);
@@ -1770,6 +1787,10 @@ class format_trail extends format_base {
         if (isset($data->resetgreyouthidden) == true) {
             $resetgreyouthidden = true;
             unset($data->resetgreyouthidden);
+        }
+        if (isset($data->resethidenavside) == true) {
+            $resethidenavside = true;
+            unset($data->resethidenavside);
         }
 
         $settings = $this->get_settings();
