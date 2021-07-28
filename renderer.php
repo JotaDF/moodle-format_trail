@@ -1076,7 +1076,7 @@ class format_trail_renderer extends format_section_renderer_base {
         $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
         $wheregroup = "";
          // Verification group mode.
-        if ($course->groupmode == 1) {
+        if ($course->groupmode >= 1) {
             $groups = \groups_get_user_groups($courseid, $userid);
             $iswhere = false;
             foreach ($groups as $group) {
