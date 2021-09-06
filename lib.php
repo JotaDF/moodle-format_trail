@@ -981,7 +981,7 @@ class format_trail extends format_base {
                 $courseformatoptionsedit['sectiontitletraillengthmaxoption'] = array(
                     'label' => new lang_string('sectiontitletraillengthmaxoption', 'format_trail'),
                     'element_type' => 'text',
-                    'element_attributes' => array('size' => 3),
+                    'element_attributes' => array(array('size' => 3)),
                     'help' => 'sectiontitletraillengthmaxoption',
                     'help_component' => 'format_trail'
                 );
@@ -1013,7 +1013,7 @@ class format_trail extends format_base {
                 $courseformatoptionsedit['sectiontitleboxheight'] = array(
                     'label' => new lang_string('sectiontitleboxheight', 'format_trail'),
                     'element_type' => 'text',
-                    'element_attributes' => array('size' => 3),
+                    'element_attributes' => array(array('size' => 3)),
                     'help' => 'sectiontitleboxheight',
                     'help_component' => 'format_trail'
                 );
@@ -1085,7 +1085,7 @@ class format_trail extends format_base {
                 $courseformatoptionsedit['sectiontitlesummarymaxlength'] = array(
                     'label' => new lang_string('sectiontitlesummarymaxlength', 'format_trail'),
                     'element_type' => 'text',
-                    'element_attributes' => array('size' => 3),
+                    'element_attributes' => array(array('size' => 3)),
                     'help' => 'sectiontitlesummarymaxlength',
                     'help_component' => 'format_trail'
                 );
