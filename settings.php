@@ -345,7 +345,11 @@ if ($ADMIN->fulltree) {
     $default = format_trail::get_default_set_show_background();
     $choices = array(
         1 => new lang_string('tipo_pista', 'format_trail'),
-        2 => new lang_string('tipo_rio', 'format_trail')
+        5 => new lang_string('tipo_pista2', 'format_trail'),
+        2 => new lang_string('tipo_rio', 'format_trail'),
+        3 => new lang_string('tipo_quebra1', 'format_trail'),
+        4 => new lang_string('tipo_quebra2', 'format_trail'),
+        5 => new lang_string('tipo_tesouro', 'format_trail')
     );
     $settings->add(new admin_setting_configselect($name, $title, $description, $default, $choices));
 }

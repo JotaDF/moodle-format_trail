@@ -956,12 +956,16 @@ class format_trail_renderer extends format_section_renderer_base {
                     } else {
                         // Alteração por Jota.
                         $bloqueado = 0;
-                        if ($this->settings['hidesectionlock'] == 3) {
+                        if ($this->settings['hidesectionlock'] == 3 || $this->settings['hidesectionlock'] == 4) {
                             $bloqueado = $this->get_section_availability_bloqueado($thissection,
                                     has_capability('moodle/course:viewhiddensections', $coursecontext));
                         }
                         if ($bloqueado > 0) {
-                            echo html_writer::start_tag('div', array('id' => 'lock',
+                            $cssid = 'lock';
+                            if ($this->settings['hidesectionlock'] == 4) {
+                                $cssid = 'lock_treasure';
+                            }
+                            echo html_writer::start_tag('div', array('id' => $cssid,
                                 'title' => get_string('locked', 'format_trail')));
                             echo html_writer::end_tag('div');
                         }

@@ -981,7 +981,7 @@ class format_trail extends format_base {
                 $courseformatoptionsedit['sectiontitletraillengthmaxoption'] = array(
                     'label' => new lang_string('sectiontitletraillengthmaxoption', 'format_trail'),
                     'element_type' => 'text',
-                    'element_attributes' => array('size' => 3),
+                    'element_attributes' => array(array('size' => 3)),
                     'help' => 'sectiontitletraillengthmaxoption',
                     'help_component' => 'format_trail'
                 );
@@ -1013,7 +1013,7 @@ class format_trail extends format_base {
                 $courseformatoptionsedit['sectiontitleboxheight'] = array(
                     'label' => new lang_string('sectiontitleboxheight', 'format_trail'),
                     'element_type' => 'text',
-                    'element_attributes' => array('size' => 3),
+                    'element_attributes' => array(array('size' => 3)),
                     'help' => 'sectiontitleboxheight',
                     'help_component' => 'format_trail'
                 );
@@ -1085,7 +1085,7 @@ class format_trail extends format_base {
                 $courseformatoptionsedit['sectiontitlesummarymaxlength'] = array(
                     'label' => new lang_string('sectiontitlesummarymaxlength', 'format_trail'),
                     'element_type' => 'text',
-                    'element_attributes' => array('size' => 3),
+                    'element_attributes' => array(array('size' => 3)),
                     'help' => 'sectiontitlesummarymaxlength',
                     'help_component' => 'format_trail'
                 );
@@ -1212,7 +1212,8 @@ class format_trail extends format_base {
                     array(
                         1 => new lang_string('none', 'format_trail'),
                         2 => new lang_string('lock', 'format_trail'),
-                        3 => new lang_string('mini_lock', 'format_trail')
+                        3 => new lang_string('mini_lock', 'format_trail'),
+                        4 => new lang_string('mini_lock_tesouro', 'format_trail')
                     )
                 ),
                 'help' => 'sethidesectionlock',
@@ -1227,7 +1228,8 @@ class format_trail extends format_base {
                         5 => new lang_string('tipo_pista2', 'format_trail'),
                         2 => new lang_string('tipo_rio', 'format_trail'),
                         3 => new lang_string('tipo_quebra1', 'format_trail'),
-                        4 => new lang_string('tipo_quebra2', 'format_trail')
+                        4 => new lang_string('tipo_quebra2', 'format_trail'),
+                        5 => new lang_string('tipo_tesouro', 'format_trail')
                     )
                 ),
                 'help' => 'setshowbackground',

@@ -249,6 +249,7 @@ $string['tipo_pista2'] = 'Gray track';
 $string['tipo_rio'] = 'River';
 $string['tipo_quebra1'] = 'Puzzle 1';
 $string['tipo_quebra2'] = 'Puzzle 2';
+$string['tipo_tesouro'] = 'Treasure';
 $string['defaultsetshowbackground'] = 'Defaul style trail';
 $string['setshowbackground'] = 'Style Trail';
 $string['setshowbackground_help'] = 'Choose the track background';
@@ -265,6 +266,7 @@ $string['checked'] = 'Completed';
 // Lock options.
 $string['lock'] = 'Lock';
 $string['mini_lock'] = 'Mini lock';
+$string['mini_lock_tesouro'] = 'Mini lock treasure';
 $string['locked'] = 'Locked';
 
 // Reset.
