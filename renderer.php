@@ -384,7 +384,7 @@ class format_trail_renderer extends format_section_renderer_base {
             $streditsummary = '';
         }
 
-        echo html_writer::start_tag('div', array('id' => 'trailmiddle-column'));
+        echo html_writer::start_tag('div', array('id' => 'trailmiddle-column', 'style'=>'overflow: hidden'));
         echo $this->output->skip_link_target();
 
         $modinfo = get_fast_modinfo($course);
