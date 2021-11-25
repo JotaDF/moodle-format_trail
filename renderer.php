@@ -384,7 +384,7 @@ class format_trail_renderer extends format_section_renderer_base {
             $streditsummary = '';
         }
 
-        echo html_writer::start_tag('div', array('id' => 'trailmiddle-column'));
+        echo html_writer::start_tag('div', array('id' => 'trailmiddle-column', 'style'=>'overflow: hidden'));
         echo $this->output->skip_link_target();
 
         $modinfo = get_fast_modinfo($course);
@@ -747,6 +747,7 @@ class format_trail_renderer extends format_section_renderer_base {
 
         // Start at 1 to skip the summary block or include the summary block if it's in the trail display.
         $coursenumsections = $this->courseformat->get_last_section_number();
+        $count = 1;
         foreach ($sections as $section => $thissection) {
             if ((($this->section0attop) && ($section == 0)) || ($section > $coursenumsections)) {
                 continue;  // Section 0 at the top and not in the trail / orphaned section.
@@ -842,54 +843,19 @@ class format_trail_renderer extends format_section_renderer_base {
                 if (!empty($summary)) {
                     $liattributes['aria-describedby'] = 'trailsectionsummary-' . $thissection->section;
                 }
-                if ($thissection->section == 3) {
+
+                if($count == 3){
                     echo html_writer::end_tag('ul');
                     echo html_writer::start_tag('ul', array('class' => 'trailicons impar trailcursor'));
                 }
-                if ($thissection->section == 4) {
+                elseif ($count == 4){
                     echo html_writer::end_tag('ul');
                     echo html_writer::start_tag('ul', array('class' => 'trailicons par trailcursor'));
                 }
-                if ($thissection->section == 6) {
-                    echo html_writer::end_tag('ul');
-                    echo html_writer::start_tag('ul', array('class' => 'trailicons impar trailcursor'));
+                elseif($count >= 5){
+                    $count = 2;
                 }
-                if ($thissection->section == 7) {
-                    echo html_writer::end_tag('ul');
-                    echo html_writer::start_tag('ul', array('class' => 'trailicons par trailcursor'));
-                }
-                if ($thissection->section == 9) {
-                    echo html_writer::end_tag('ul');
-                    echo html_writer::start_tag('ul', array('class' => 'trailicons impar trailcursor'));
-                }
-                if ($thissection->section == 10) {
-                    echo html_writer::end_tag('ul');
-                    echo html_writer::start_tag('ul', array('class' => 'trailicons par trailcursor'));
-                }
-                if ($thissection->section == 12) {
-                    echo html_writer::end_tag('ul');
-                    echo html_writer::start_tag('ul', array('class' => 'trailicons impar trailcursor'));
-                }
-                if ($thissection->section == 13) {
-                    echo html_writer::end_tag('ul');
-                    echo html_writer::start_tag('ul', array('class' => 'trailicons par trailcursor'));
-                }
-                if ($thissection->section == 15) {
-                    echo html_writer::end_tag('ul');
-                    echo html_writer::start_tag('ul', array('class' => 'trailicons impar trailcursor'));
-                }
-                if ($thissection->section == 16) {
-                    echo html_writer::end_tag('ul');
-                    echo html_writer::start_tag('ul', array('class' => 'trailicons par trailcursor'));
-                }
-                if ($thissection->section == 18) {
-                    echo html_writer::end_tag('ul');
-                    echo html_writer::start_tag('ul', array('class' => 'trailicons impar trailcursor'));
-                }
-                if ($thissection->section == 19) {
-                    echo html_writer::end_tag('ul');
-                    echo html_writer::start_tag('ul', array('class' => 'trailicons par trailcursor'));
-                }
+                $count ++;
                 echo html_writer::start_tag('li', $liattributes);
 
                 // Ensure the record exists.
