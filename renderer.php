@@ -383,7 +383,7 @@ class format_trail_renderer extends format_section_renderer_base {
             $urlpicedit = false;
             $streditsummary = '';
         }
-
+        // Contribuition adriano515.
         echo html_writer::start_tag('div', array('id' => 'trailmiddle-column', 'style'=>'overflow: hidden'));
         echo $this->output->skip_link_target();
 
@@ -747,6 +747,7 @@ class format_trail_renderer extends format_section_renderer_base {
 
         // Start at 1 to skip the summary block or include the summary block if it's in the trail display.
         $coursenumsections = $this->courseformat->get_last_section_number();
+        // Contribuition adriano515
         $count = 1;
         foreach ($sections as $section => $thissection) {
             if ((($this->section0attop) && ($section == 0)) || ($section > $coursenumsections)) {
@@ -843,7 +844,7 @@ class format_trail_renderer extends format_section_renderer_base {
                 if (!empty($summary)) {
                     $liattributes['aria-describedby'] = 'trailsectionsummary-' . $thissection->section;
                 }
-
+                // Contribuition adriano515.
                 if($count == 3){
                     echo html_writer::end_tag('ul');
                     echo html_writer::start_tag('ul', array('class' => 'trailicons impar trailcursor'));
@@ -856,6 +857,7 @@ class format_trail_renderer extends format_section_renderer_base {
                     $count = 2;
                 }
                 $count ++;
+
                 echo html_writer::start_tag('li', $liattributes);
 
                 // Ensure the record exists.
