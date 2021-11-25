@@ -384,7 +384,7 @@ class format_trail_renderer extends format_section_renderer_base {
             $streditsummary = '';
         }
         // Contribuition adriano515.
-        echo html_writer::start_tag('div', array('id' => 'trailmiddle-column', 'style'=>'overflow: hidden'));
+        echo html_writer::start_tag('div', array('id' => 'trailmiddle-column', 'style' => 'overflow: hidden'));
         echo $this->output->skip_link_target();
 
         $modinfo = get_fast_modinfo($course);
@@ -845,15 +845,13 @@ class format_trail_renderer extends format_section_renderer_base {
                     $liattributes['aria-describedby'] = 'trailsectionsummary-' . $thissection->section;
                 }
                 // Contribuition adriano515.
-                if($count == 3){
+                if ($count == 3) {
                     echo html_writer::end_tag('ul');
                     echo html_writer::start_tag('ul', array('class' => 'trailicons impar trailcursor'));
-                }
-                elseif ($count == 4){
+                } else if ($count == 4) {
                     echo html_writer::end_tag('ul');
                     echo html_writer::start_tag('ul', array('class' => 'trailicons par trailcursor'));
-                }
-                elseif($count >= 5){
+                } else if($count >= 5) {
                     $count = 2;
                 }
                 $count ++;
