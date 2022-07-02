@@ -27,6 +27,8 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
+use core_courseformat\base as course_format;
+
 require_once($CFG->dirroot . '/course/format/lib.php'); // For format_base.
 
 /**
@@ -36,7 +38,7 @@ require_once($CFG->dirroot . '/course/format/lib.php'); // For format_base.
  * @copyright  &copy; 2019 Jose Wilson  in respect to modifications of grid format.
  * @author     &copy; 2012 G J Barnard in respect to modifications of standard topics format.
  */
-class format_trail extends format_base {
+class format_trail extends course_format {
 
     // CONTRIB-4099.
     /**
@@ -816,8 +818,7 @@ class format_trail extends format_base {
                     'element_type' => 'select',
                     'element_attributes' => array(
                         array(
-                            COURSE_DISPLAY_SINGLEPAGE => new lang_string('coursedisplay_single'),
-                            COURSE_DISPLAY_MULTIPAGE => new lang_string('coursedisplay_multi')
+                            COURSE_DISPLAY_SINGLEPAGE => new lang_string('coursedisplay_single')
                         )
                     ),
                     'help' => 'coursedisplay',

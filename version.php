@@ -29,16 +29,16 @@
 defined('MOODLE_INTERNAL') || die();
 
 // Plugin version.
-$plugin->version = 2021112515;
+$plugin->version = 2022070201;
 
 // Required Moodle version.
-$plugin->requires  = 2019111800;
+$plugin->requires  = 2022041900.00; // Moodle 4.0 (Build: 20220419).
 
 // Full name of the plugin.
 $plugin->component = 'format_trail';
 
 // Software maturity level.
-$plugin->maturity = MATURITY_STABLE;
+$plugin->maturity = MATURITY_BETA;
 
 // User-friendly version number.
-$plugin->release = '3.8.1';
+$plugin->release = '4.0.0.1';

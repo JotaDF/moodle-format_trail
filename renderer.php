@@ -27,6 +27,10 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
+use core_courseformat\output\section_renderer;
+use core_availability\info;
+use core_availability\info_section;
+
 require_once($CFG->dirroot . '/course/format/renderer.php');
 require_once($CFG->dirroot . '/course/format/trail/lib.php');
 
@@ -37,23 +41,28 @@ require_once($CFG->dirroot . '/course/format/trail/lib.php');
  * @copyright  &copy; 2019 Jose Wilson  in respect to modifications of grid format.
  * @author     &copy; 2012 G J Barnard in respect to modifications of standard topics format.
  */
-class format_trail_renderer extends format_section_renderer_base {
+class format_trail_renderer extends section_renderer {
+
     /**
      * @var boolean $section0attop to state if section zero is at the top (true) or in the trail (false).
      */
     protected $section0attop;
+
     /**
      * @var \stdClass $courseformat course format object as defined in lib.php.
      */
     protected $courseformat;
+
     /**
      * @var array $settings.
      */
     private $settings;
+
     /**
      * @var array $shadeboxshownarray.
      */
     private $shadeboxshownarray = array();
+
     /**
      * @var int $portable.
      */
@@ -261,7 +270,9 @@ class format_trail_renderer extends format_section_renderer_base {
         $o .= $this->output->heading($sectionname, 3, 'sectionname accesshide');
 
         $o .= html_writer::start_tag('div', array('class' => 'summary'));
+
         $o .= $this->format_summary_text($section);
+        $o .= core_courseformat\output\local\content\section\summary::format_summary_text();
         $o .= html_writer::end_tag('div');
 
         $o .= $this->section_availability($section);
@@ -337,8 +348,8 @@ class format_trail_renderer extends format_section_renderer_base {
             $completioninfo = new completion_info($course);
             echo $completioninfo->display_help_icon();
 
-            echo $this->courserenderer->course_section_cm_list($course, $thissection, $displaysection);
-            echo $this->courserenderer->course_section_add_cm_control($course, $displaysection, $displaysection);
+            echo $this->course_section_cm_list($course, $thissection, $displaysection);
+            echo $this->course_section_add_cm_control($course, $displaysection, $displaysection);
             echo $this->section_footer();
             echo $this->end_section_list();
 
@@ -347,8 +358,8 @@ class format_trail_renderer extends format_section_renderer_base {
             $sectionbottomnav .= html_writer::start_tag('div', array('class' => 'section-navigation mdl-bottom'));
             $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
             $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
-            $sectionbottomnav .= html_writer::tag('div', $this->section_nav_selection($course, $sections,
-                    $displaysection), array('class' => 'mdl-align'));
+            $sectionbottomnav .= html_writer::tag('div',
+                    $this->section_nav_selection($course, $sections, $displaysection), array('class' => 'mdl-align'));
             $sectionbottomnav .= html_writer::end_tag('div');
             echo $sectionbottomnav;
 
@@ -368,9 +379,6 @@ class format_trail_renderer extends format_section_renderer_base {
      */
     public function print_multiple_section_page($course, $sections, $mods, $modnames, $modnamesused) {
         global $USER;
-        if (!empty($USER->profile['accessible'])) {
-            return parent::print_multiple_section_page($course, $sections, $mods, $modnames, $modnamesused);
-        }
 
         $coursecontext = context_course::instance($course->id);
         $editing = $this->page->user_is_editing();
@@ -474,37 +482,38 @@ class format_trail_renderer extends format_section_renderer_base {
                     }
                     $previoussection = get_string('previoussection', 'format_trail');
                     $prev = html_writer::start_tag('div', array('id' => 'trailshadebox_previous',
-                        'class' => 'trailshadebox_area trailshadebox_previous_area '.$areadir,
-                        'style' => 'display: none;',
-                        'role' => 'link',
-                        'aria-label' => $previoussection)
+                                'class' => 'trailshadebox_area trailshadebox_previous_area ' . $areadir,
+                                'style' => 'display: none;',
+                                'role' => 'link',
+                                'aria-label' => $previoussection)
                     );
-                    $prev .= html_writer::tag('img', '', array('class' => 'trailshadebox_arrow trailshadebox_previous'.$deviceextra,
-                        'src' => $this->output->image_url('fa-arrow-circle-'.$previcon.'-w', 'format_trail'),
-                        'alt' => $previoussection,
-                        'aria-label' => $previoussection
-                        )
+                    $prev .= html_writer::tag('img', '',
+                            array('class' => 'trailshadebox_arrow trailshadebox_previous' . $deviceextra,
+                                'src' => $this->output->image_url('fa-arrow-circle-' . $previcon . '-w', 'format_trail'),
+                                'alt' => $previoussection,
+                                'aria-label' => $previoussection
+                                    )
                     );
                     $prev .= html_writer::end_tag('div');
                     $nextsection = get_string('nextsection', 'format_trail');
                     $next = html_writer::start_tag('div', array('id' => 'trailshadebox_next',
-                        'class' => 'trailshadebox_area trailshadebox_next_area '.$areadir,
-                        'style' => 'display: none;',
-                        'role' => 'link',
-                        'aria-label' => $nextsection)
+                                'class' => 'trailshadebox_area trailshadebox_next_area ' . $areadir,
+                                'style' => 'display: none;',
+                                'role' => 'link',
+                                'aria-label' => $nextsection)
                     );
-                    $next .= html_writer::tag('img', '', array('class' => 'trailshadebox_arrow trailshadebox_next'.$deviceextra,
-                        'src' => $this->output->image_url('fa-arrow-circle-'.$nexticon.'-w', 'format_trail'),
-                        'alt' => $nextsection,
-                        'aria-label' => $nextsection
-                        )
+                    $next .= html_writer::tag('img', '', array('class' => 'trailshadebox_arrow trailshadebox_next' . $deviceextra,
+                                'src' => $this->output->image_url('fa-arrow-circle-' . $nexticon . '-w', 'format_trail'),
+                                'alt' => $nextsection,
+                                'aria-label' => $nextsection
+                                    )
                     );
                     $next .= html_writer::end_tag('div');
 
                     if ($rtl) {
-                        echo $next.$prev;
+                        echo $next . $prev;
                     } else {
-                        echo $prev.$next;
+                        echo $prev . $next;
                     }
                 }
             }
@@ -520,8 +529,8 @@ class format_trail_renderer extends format_section_renderer_base {
 
             /* Now all the normal modules by topic.
               Everything below uses "section" terminology - each "section" is a topic/module. */
-            $this->make_block_topics($course, $sections, $modinfo, $editing, $hascapvishidsect,
-                    $streditsummary, $urlpicedit, false);
+            $this->make_block_topics($course, $sections, $modinfo, $editing,
+                    $hascapvishidsect, $streditsummary, $urlpicedit, false);
 
             echo html_writer::end_tag('div');
             echo html_writer::end_tag('div');
@@ -544,8 +553,8 @@ class format_trail_renderer extends format_section_renderer_base {
             json_encode($this->shadeboxshownarray)));
         if (!$this->page->user_is_editing()) {
             // Initialise the key control functionality...
-            $this->page->requires->yui_module('moodle-format_trail-trailkeys', 'M.format_trail.trailkeys.init',
-                    array(array('rtl' => $rtl)), null, true);
+            $this->page->requires->yui_module('moodle-format_trail-trailkeys',
+                    'M.format_trail.trailkeys.init', array(array('rtl' => $rtl)), null, true);
         }
     }
 
@@ -596,7 +605,7 @@ class format_trail_renderer extends format_section_renderer_base {
             }
         }
 
-        $parentcontrols = parent::section_edit_control_items($course, $section, $onsectionpage);
+        $parentcontrols = $this->section_edit_control_items_orig($course, $section, $onsectionpage);
 
         // If the edit key exists, we are going to insert our controls after it.
         if (array_key_exists("edit", $parentcontrols)) {
@@ -654,18 +663,18 @@ class format_trail_renderer extends format_section_renderer_base {
 
         if ($editing) {
             echo html_writer::link(
-                    new moodle_url('editsection.php', array('id' => $sectionzero->id)),
+                    new moodle_url('editsection.php',
+                            array('id' => $sectionzero->id)),
                     html_writer::empty_tag('img', array('src' => $urlpicedit,
                         'alt' => $streditsummary,
                         'class' => 'iconsmall edit')), array('title' => $streditsummary));
         }
         echo html_writer::end_tag('div');
 
-        echo $this->courserenderer->course_section_cm_list($course, $sectionzero, 0);
+        echo $this->course_section_cm_list($course, $sectionzero, 0);
 
         if ($editing) {
             echo $this->courserenderer->course_section_add_cm_control($course, $sectionzero->section, 0, 0);
-
         }
         echo html_writer::end_tag('div');
         echo html_writer::end_tag('li');
@@ -747,7 +756,7 @@ class format_trail_renderer extends format_section_renderer_base {
 
         // Start at 1 to skip the summary block or include the summary block if it's in the trail display.
         $coursenumsections = $this->courseformat->get_last_section_number();
-        // Contribuition adriano515
+        // Contribuition adriano515.
         $count = 1;
         foreach ($sections as $section => $thissection) {
             if ((($this->section0attop) && ($section == 0)) || ($section > $coursenumsections)) {
@@ -824,8 +833,8 @@ class format_trail_renderer extends format_section_renderer_base {
                         }
                         $sectiontitleattribues['title'] = $summary;
                         $sectiontitleattribues['data-toggle'] = 'trailtooltip';
-                        $sectiontitleattribues['data-placement']
-                                = $this->courseformat->get_set_show_section_title_summary_position();
+                        $sectiontitleattribues['data-placement'] =
+                                $this->courseformat->get_set_show_section_title_summary_position();
                     }
                 }
 
@@ -851,7 +860,7 @@ class format_trail_renderer extends format_section_renderer_base {
                 } else if ($count == 4) {
                     echo html_writer::end_tag('ul');
                     echo html_writer::start_tag('ul', array('class' => 'trailicons par trailcursor'));
-                } else if($count >= 5) {
+                } else if ($count >= 5) {
                     $count = 2;
                 }
                 $count ++;
@@ -951,8 +960,8 @@ class format_trail_renderer extends format_section_renderer_base {
                         $bloqueado = $this->get_section_availability_bloqueado($thissection,
                                 has_capability('moodle/course:viewhiddensections', $coursecontext));
                     }
-                    echo $this->courseformat->output_section_image($section, $sectionname, $sectionimage, $contextid,
-                            $thissection, $trailimagepath, $this->output, $bloqueado);
+                    echo $this->courseformat->output_section_image($section, $sectionname, $sectionimage,
+                            $contextid, $thissection, $trailimagepath, $this->output, $bloqueado);
 
                     echo html_writer::end_tag('div');
                     echo html_writer::end_tag('a');
@@ -1040,12 +1049,12 @@ class format_trail_renderer extends format_section_renderer_base {
     private function is_check_section($userid, $courseid, $sectionid) {
         global $DB;
         $countatvok = $DB->get_record_sql("SELECT COUNT(c.id) AS total FROM {course_modules_completion} c"
-        . " INNER JOIN {course_modules} m ON c.coursemoduleid = m.id WHERE c.userid="
-        . $userid . " AND m.course=" . $courseid . " AND m.section="
-        . $sectionid . " AND m.completion > 0 AND c.completionstate > 0 AND m.deletioninprogress = 0");
+                . " INNER JOIN {course_modules} m ON c.coursemoduleid = m.id WHERE c.userid="
+                . $userid . " AND m.course=" . $courseid . " AND m.section="
+                . $sectionid . " AND m.completion > 0 AND c.completionstate > 0 AND m.deletioninprogress = 0");
         $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
         $wheregroup = "";
-         // Verification group mode.
+        // Verification group mode.
         if ($course->groupmode >= 1) {
             $groups = \groups_get_user_groups($courseid, $userid);
             $iswhere = false;
@@ -1073,6 +1082,7 @@ class format_trail_renderer extends format_section_renderer_base {
         }
         return false;
     }
+
     /**
      * Make topics icons.
      *
@@ -1101,6 +1111,7 @@ class format_trail_renderer extends format_section_renderer_base {
                     'aria-label' => $streditimagealt)) . '&nbsp;' . $streditimage, array('title' => $streditimagealt)
         );
     }
+
     /**
      * Make topic0 icons.
      *
@@ -1221,7 +1232,8 @@ class format_trail_renderer extends format_section_renderer_base {
 
                 if ($editing) {
                     echo html_writer::link(
-                            new moodle_url('editsection.php', array('id' => $thissection->id)),
+                            new moodle_url('editsection.php',
+                                    array('id' => $thissection->id)),
                             html_writer::empty_tag('img', array('src' => $urlpicedit, 'alt' => $streditsummary,
                                 'class' => 'iconsmall edit')), array('title' => $streditsummary));
                 }
@@ -1230,7 +1242,7 @@ class format_trail_renderer extends format_section_renderer_base {
                 echo $this->section_availability_message($thissection,
                         has_capability('moodle/course:viewhiddensections', $coursecontext));
 
-                echo $this->courserenderer->course_section_cm_list($course, $thissection, 0);
+                echo $this->course_section_cm_list($course, $thissection, 0);
                 echo $this->courserenderer->course_section_add_cm_control($course, $thissection->section, 0);
             } else {
                 echo html_writer::tag('h2', $this->get_title($thissection));
@@ -1254,7 +1266,7 @@ class format_trail_renderer extends format_section_renderer_base {
                     continue;
                 }
                 echo $this->stealth_section_header($section);
-                echo $this->courserenderer->course_section_cm_list($course, $thissection, 0);
+                echo $this->course_section_cm_list($course, $thissection, 0);
                 echo $this->stealth_section_footer();
             }
 
@@ -1363,6 +1375,7 @@ class format_trail_renderer extends format_section_renderer_base {
 
         return $sectionsedited;
     }
+
     /**
      * Checks whether there has been new activity.
      *
@@ -1372,6 +1385,7 @@ class format_trail_renderer extends format_section_renderer_base {
     public function set_portable($portable) {
         $this->portable = $portable;
     }
+
     /**
      * Checks whether there has been new activity.
      *
@@ -1380,52 +1394,6 @@ class format_trail_renderer extends format_section_renderer_base {
      */
     public function set_initialsection($initialsection) {
         $this->initialsection = $initialsection;
-    }
-
-    /**
-     * If section is not visible, display the message about that ('Not available
-     * until...', that sort of thing). Otherwise, returns blank.
-     *
-     * For users with the ability to view hidden sections, it shows the
-     * information even though you can view the section and also may include
-     * slightly fuller information (so that teachers can tell when sections
-     * are going to be unavailable etc). This logic is the same as for
-     * activities.
-     *
-     * @param section_info $section The course_section entry from DB
-     * @param bool $canviewhidden True if user can view hidden sections
-     * @return string HTML to output
-     */
-    protected function section_availability_message($section, $canviewhidden) {
-        global $CFG;
-        $o = '';
-        if (!$section->visible) {
-            if ($canviewhidden) {
-                $o .= $this->courserenderer->availability_info(get_string('hiddenfromstudents'), 'ishidden');
-            } else {
-                // We are here because of the setting "Hidden sections are shown in collapsed form".
-                // Student can not see the section contents but can see its name.
-                $o .= $this->courserenderer->availability_info(get_string('notavailable'), 'ishidden');
-            }
-        } else if (!$section->uservisible) {
-            if ($section->availableinfo) {
-                // Note: We only get to this function if availableinfo is non-empty,
-                // so there is definitely something to print.
-                $formattedinfo = \core_availability\info::format_info(
-                                $section->availableinfo, $section->course);
-                $o .= $this->courserenderer->availability_info($formattedinfo, 'isrestricted');
-            }
-        } else if ($canviewhidden && !empty($CFG->enableavailability)) {
-            // Check if there is an availability restriction.
-            $ci = new \core_availability\info_section($section);
-            $fullinfo = $ci->get_full_information();
-            if ($fullinfo) {
-                $formattedinfo = \core_availability\info::format_info(
-                                $fullinfo, $section->course);
-                $o .= $this->courserenderer->availability_info($formattedinfo, 'isrestricted isfullinfo');
-            }
-        }
-        return $o;
     }
 
     /**
@@ -1458,6 +1426,458 @@ class format_trail_renderer extends format_section_renderer_base {
             }
         }
         return $o;
+    }
+
+    /**
+     * Returns controls in the bottom of the page to increase/decrease number of sections
+     *
+     * @deprecated since 4.0 MDL-72656 - use core_course output components instead.
+     *
+     * @param stdClass $course
+     * @param int|null $sectionreturn
+     */
+    protected function change_number_sections($course, $sectionreturn = null) {
+
+        $format = course_get_format($course);
+        if ($sectionreturn) {
+            $format->set_section_number($sectionreturn);
+        }
+        $outputclass = $format->get_output_classname('content\\addsection');
+        $widget = new $outputclass($format);
+        echo $this->render($widget);
+    }
+
+    /**
+     * Generate html for a section summary text
+     *
+     * @deprecated since 4.0 MDL-72656 - use core_course output components instead.
+     *
+     * @param stdClass $section The course_section entry from DB
+     * @return string HTML to output.
+     */
+    protected function format_summary_text($section) {
+
+        $format = course_get_format($section->course);
+        if (!($section instanceof section_info)) {
+            $modinfo = $format->get_modinfo();
+            $section = $modinfo->get_section_info($section->section);
+        }
+        $summaryclass = $format->get_output_classname('content\\section\\summary');
+        $summary = new $summaryclass($format, $section);
+        return $summary->format_summary_text();
+    }
+
+    /**
+     * Renders HTML to display a list of course modules in a course section
+     * Also displays "move here" controls in Javascript-disabled mode.
+     *
+     * @deprecated since 4.0 MDL-72656 - use core_course output components instead.
+     *
+     * This function calls core_course_renderer::course_section_cm().
+     *
+     * @param stdClass $course course object
+     * @param int|stdClass|section_info $section relative section number or section object
+     * @param int $sectionreturn section number to return to
+     * @param int $displayoptions
+     * @return void
+     */
+    public function course_section_cm_list($course, $section, $sectionreturn = null, $displayoptions = []) {
+        global $USER;
+
+        $output = '';
+
+        $format = course_get_format($course);
+        $modinfo = $format->get_modinfo();
+
+        if (is_object($section)) {
+            $section = $modinfo->get_section_info($section->section);
+        } else {
+            $section = $modinfo->get_section_info($section);
+        }
+        $completioninfo = new completion_info($course);
+
+        // Check if we are currently in the process of moving a module with JavaScript disabled.
+        $ismoving = $format->show_editor() && ismoving($course->id);
+
+        if ($ismoving) {
+            $strmovefull = strip_tags(get_string("movefull", "", "'$USER->activitycopyname'"));
+        }
+
+        // Get the list of modules visible to user (excluding the module being moved if there is one).
+        $moduleshtml = [];
+        if (!empty($modinfo->sections[$section->section])) {
+            foreach ($modinfo->sections[$section->section] as $modnumber) {
+                $mod = $modinfo->cms[$modnumber];
+
+                if ($ismoving and $mod->id == $USER->activitycopy) {
+                    // Do not display moving mod.
+                    continue;
+                }
+
+                if ($modulehtml = $this->course_section_cm_list_item($course,
+                        $completioninfo, $mod, $sectionreturn, $displayoptions)) {
+                    $moduleshtml[$modnumber] = $modulehtml;
+                }
+            }
+        }
+
+        $sectionoutput = '';
+        if (!empty($moduleshtml) || $ismoving) {
+            foreach ($moduleshtml as $modnumber => $modulehtml) {
+                if ($ismoving) {
+                    $movingurl = new moodle_url('/course/mod.php', array('moveto' => $modnumber, 'sesskey' => sesskey()));
+                    $sectionoutput .= html_writer::tag('li', html_writer::link($movingurl, '',
+                            array('title' => $strmovefull, 'class' => 'movehere')),
+                            array('class' => 'movehere'));
+                }
+
+                $sectionoutput .= $modulehtml;
+            }
+
+            if ($ismoving) {
+                $movingurl = new moodle_url('/course/mod.php', array('movetosection' => $section->id, 'sesskey' => sesskey()));
+                $sectionoutput .= html_writer::tag('li', html_writer::link($movingurl, '',
+                        array('title' => $strmovefull, 'class' => 'movehere')),
+                        array('class' => 'movehere'));
+            }
+        }
+
+        // Always output the section module list.
+        $output .= html_writer::tag('ul', $sectionoutput, array('class' => 'section img-text'));
+
+        return $output;
+    }
+
+    /**
+     * Renders HTML to display one course module for display within a section.
+     *
+     * @deprecated since 4.0 - use core_course output components or course_format::course_section_updated_cm_item instead.
+     *
+     * This function calls: core_course_renderer::course_section_cm().
+     *
+     * @param stdClass $course
+     * @param completion_info $completioninfo
+     * @param cm_info $mod
+     * @param int|null $sectionreturn
+     * @param array $displayoptions
+     * @return String
+     */
+    public function course_section_cm_list_item($course, &$completioninfo, cm_info $mod, $sectionreturn, $displayoptions = []) {
+
+        $output = '';
+        if ($modulehtml = $this->course_section_cm($course, $completioninfo, $mod, $sectionreturn, $displayoptions)) {
+            $modclasses = 'activity ' . $mod->modname . ' modtype_' . $mod->modname . ' ' . $mod->extraclasses;
+            $output .= html_writer::tag('li', $modulehtml, array('class' => $modclasses, 'id' => 'module-' . $mod->id));
+        }
+        return $output;
+    }
+
+    /**
+     * Renders HTML to display one course module in a course section
+     *
+     * This includes link, content, availability, completion info and additional information
+     * that module type wants to display (i.e. number of unread forum posts)
+     *
+     * @deprecated since 4.0 MDL-72656 - use core_course output components instead.
+     *
+     * @param stdClass $course
+     * @param completion_info $completioninfo
+     * @param cm_info $mod
+     * @param int|null $sectionreturn
+     * @param array $displayoptions
+     * @return string
+     */
+    public function course_section_cm($course, &$completioninfo, cm_info $mod, $sectionreturn, $displayoptions = []) {
+
+        if (!$mod->is_visible_on_course_page()) {
+            return '';
+        }
+
+        $format = course_get_format($course);
+        $modinfo = $format->get_modinfo();
+        // Output renderers works only with real section_info objects.
+        if ($sectionreturn) {
+            $format->set_section_number($sectionreturn);
+        }
+        $section = $modinfo->get_section_info($format->get_section_number());
+
+        $cmclass = $format->get_output_classname('content\\cm');
+        $cm = new $cmclass($format, $section, $mod, $displayoptions);
+        // The course outputs works with format renderers, not with course renderers.
+        $renderer = $format->get_renderer($this->page);
+        $data = $cm->export_for_template($renderer);
+        return $this->output->render_from_template('core_courseformat/local/content/cm', $data);
+    }
+
+    /**
+     * Generate the content to displayed on the left part of a section
+     * before course modules are included
+     *
+     * @param stdClass $section The course_section entry from DB
+     * @param stdClass $course The course entry from DB
+     * @param bool $onsectionpage true if being printed on a section page
+     * @return string HTML to output.
+     */
+    protected function section_left_content($section, $course, $onsectionpage) {
+        $o = '';
+
+        if ($section->section != 0) {
+            // Only in the non-general sections.
+            if (course_get_format($course)->is_section_current($section)) {
+                $o = get_accesshide(get_string('currentsection', 'format_' . $course->format));
+            }
+        }
+
+        return $o;
+    }
+
+    /**
+     * Generate the content to displayed on the right part of a section
+     * before course modules are included
+     *
+     * @param stdClass $section The course_section entry from DB
+     * @param stdClass $course The course entry from DB
+     * @param bool $onsectionpage true if being printed on a section page
+     * @return string HTML to output.
+     */
+    protected function section_right_content($section, $course, $onsectionpage) {
+        $o = $this->output->spacer();
+
+        $controls = $this->section_edit_control_items($course, $section, $onsectionpage);
+        $o .= $this->section_edit_control_menu($controls, $course, $section);
+
+        return $o;
+    }
+
+    /**
+     * Generate the edit control action menu
+     *
+     * @param array $controls The edit control items from section_edit_control_items
+     * @param stdClass $course The course entry from DB
+     * @param stdClass $section The course_section entry from DB
+     * @return string HTML to output.
+     */
+    protected function section_edit_control_menu($controls, $course, $section) {
+        $o = "";
+        if (!empty($controls)) {
+            $menu = new action_menu();
+            $menu->set_menu_trigger(get_string('edit'));
+            $menu->attributes['class'] .= ' section-actions';
+            foreach ($controls as $value) {
+                $url = empty($value['url']) ? '' : $value['url'];
+                $icon = empty($value['icon']) ? '' : $value['icon'];
+                $name = empty($value['name']) ? '' : $value['name'];
+                $attr = empty($value['attr']) ? array() : $value['attr'];
+                $class = empty($value['pixattr']['class']) ? '' : $value['pixattr']['class'];
+                $al = new action_menu_link_secondary(
+                        new moodle_url($url), new pix_icon($icon, '', null, array('class' => "smallicon " . $class)), $name, $attr
+                );
+                $menu->add($al);
+            }
+
+            $o .= html_writer::div($this->render($menu), 'section_action_menu', array('data-sectionid' => $section->id));
+        }
+
+        return $o;
+    }
+
+    /**
+     * Generate the edit control items of a section
+     *
+     * @param stdClass $course The course entry from DB
+     * @param stdClass $section The course_section entry from DB
+     * @param bool $onsectionpage true if being printed on a section page
+     * @return array of edit control items
+     */
+    protected function section_edit_control_items_orig($course, $section, $onsectionpage = false) {
+        if (!$this->page->user_is_editing()) {
+            return array();
+        }
+
+        $sectionreturn = $onsectionpage ? $section->section : null;
+
+        $coursecontext = context_course::instance($course->id);
+        $numsections = course_get_format($course)->get_last_section_number();
+        $isstealth = $section->section > $numsections;
+
+        $baseurl = course_get_url($course, $sectionreturn);
+        $baseurl->param('sesskey', sesskey());
+
+        $controls = array();
+
+        if (!$isstealth && has_capability('moodle/course:update', $coursecontext)) {
+            if ($section->section > 0 && get_string_manager()->string_exists('editsection', 'format_' . $course->format)) {
+                $streditsection = get_string('editsection', 'format_' . $course->format);
+            } else {
+                $streditsection = get_string('editsection');
+            }
+
+            $controls['edit'] = array(
+                'url' => new moodle_url('/course/editsection.php', array('id' => $section->id, 'sr' => $sectionreturn)),
+                'icon' => 'i/settings',
+                'name' => $streditsection,
+                'pixattr' => array('class' => ''),
+                'attr' => array('class' => 'icon edit'));
+        }
+
+        if ($section->section) {
+            $url = clone($baseurl);
+            if (!$isstealth) {
+                if (has_capability('moodle/course:sectionvisibility', $coursecontext)) {
+                    if ($section->visible) { // Show the hide/show eye.
+                        $strhidefromothers = get_string('hidefromothers', 'format_' . $course->format);
+                        $url->param('hide', $section->section);
+                        $controls['visiblity'] = array(
+                            'url' => $url,
+                            'icon' => 'i/hide',
+                            'name' => $strhidefromothers,
+                            'pixattr' => array('class' => ''),
+                            'attr' => array('class' => 'icon editing_showhide',
+                                'data-sectionreturn' => $sectionreturn, 'data-action' => 'hide'));
+                    } else {
+                        $strshowfromothers = get_string('showfromothers', 'format_' . $course->format);
+                        $url->param('show', $section->section);
+                        $controls['visiblity'] = array(
+                            'url' => $url,
+                            'icon' => 'i/show',
+                            'name' => $strshowfromothers,
+                            'pixattr' => array('class' => ''),
+                            'attr' => array('class' => 'icon editing_showhide',
+                                'data-sectionreturn' => $sectionreturn, 'data-action' => 'show'));
+                    }
+                }
+
+                if (!$onsectionpage) {
+                    if (has_capability('moodle/course:movesections', $coursecontext)) {
+                        $url = clone($baseurl);
+                        if ($section->section > 1) { // Add a arrow to move section up.
+                            $url->param('section', $section->section);
+                            $url->param('move', -1);
+                            $strmoveup = get_string('moveup');
+                            $controls['moveup'] = array(
+                                'url' => $url,
+                                'icon' => 'i/up',
+                                'name' => $strmoveup,
+                                'pixattr' => array('class' => ''),
+                                'attr' => array('class' => 'icon moveup'));
+                        }
+
+                        $url = clone($baseurl);
+                        if ($section->section < $numsections) { // Add a arrow to move section down.
+                            $url->param('section', $section->section);
+                            $url->param('move', 1);
+                            $strmovedown = get_string('movedown');
+                            $controls['movedown'] = array(
+                                'url' => $url,
+                                'icon' => 'i/down',
+                                'name' => $strmovedown,
+                                'pixattr' => array('class' => ''),
+                                'attr' => array('class' => 'icon movedown'));
+                        }
+                    }
+                }
+            }
+
+            if (course_can_delete_section($course, $section)) {
+                if (get_string_manager()->string_exists('deletesection', 'format_' . $course->format)) {
+                    $strdelete = get_string('deletesection', 'format_' . $course->format);
+                } else {
+                    $strdelete = get_string('deletesection');
+                }
+                $url = new moodle_url('/course/editsection.php', array(
+                    'id' => $section->id,
+                    'sr' => $sectionreturn,
+                    'delete' => 1,
+                    'sesskey' => sesskey()));
+                $controls['delete'] = array(
+                    'url' => $url,
+                    'icon' => 'i/delete',
+                    'name' => $strdelete,
+                    'pixattr' => array('class' => ''),
+                    'attr' => array('class' => 'icon editing_delete'));
+            }
+        }
+
+        return $controls;
+    }
+
+    /**
+     * If section is not visible, display the message about that ('Not available
+     * until...', that sort of thing). Otherwise, returns blank.
+     *
+     * For users with the ability to view hidden sections, it shows the
+     * information even though you can view the section and also may include
+     * slightly fuller information (so that teachers can tell when sections
+     * are going to be unavailable etc). This logic is the same as for
+     * activities.
+     *
+     * @param section_info $section The course_section entry from DB
+     * @param bool $canviewhidden True if user can view hidden sections
+     * @return string HTML to output
+     */
+    protected function section_availability_message($section, $canviewhidden) {
+        global $CFG;
+        $o = '';
+
+        if (!$section->visible) {
+            if ($canviewhidden) {
+                $o .= $this->availability_info(get_string('hiddenfromstudents'), 'ishidden');
+            } else {
+                // We are here because of the setting "Hidden sections are shown in collapsed form".
+                // Student can not see the section contents but can see its name.
+                $o .= $this->availability_info(get_string('notavailable'), 'ishidden');
+            }
+        } else if (!$section->uservisible) {
+            if ($section->availableinfo) {
+                // Note: We only get to this function if availableinfo is non-empty,
+                // so there is definitely something to print.
+                $formattedinfo = info::format_info(
+                                $section->availableinfo, $section->course);
+                $o .= $this->availability_info($formattedinfo, 'isrestricted');
+            }
+        } else if ($canviewhidden && !empty($CFG->enableavailability)) {
+            // Check if there is an availability restriction.
+            $ci = new info_section($section);
+            $fullinfo = $ci->get_full_information();
+            if ($fullinfo) {
+                $formattedinfo = info::format_info(
+                                $fullinfo, $section->course);
+                $o .= $this->availability_info($formattedinfo, 'isrestricted isfullinfo');
+            }
+        }
+        return $o;
+    }
+
+    /**
+     * Displays availability info for a course section or course module
+     *
+     * @param string $text
+     * @param string $additionalclasses
+     * @return string
+     */
+    public function availability_info($text, $additionalclasses = '') {
+
+        $data = ['text' => $text, 'classes' => $additionalclasses];
+        $additionalclasses = array_filter(explode(' ', $additionalclasses));
+
+        if (in_array('ishidden', $additionalclasses)) {
+            $data['ishidden'] = 1;
+        } else if (in_array('isstealth', $additionalclasses)) {
+            $data['isstealth'] = 1;
+        } else if (in_array('isrestricted', $additionalclasses)) {
+            $data['isrestricted'] = 1;
+
+            if (in_array('isfullinfo', $additionalclasses)) {
+                $data['isfullinfo'] = 1;
+            }
+        }
+
+        $datax = (object) [
+                    'info' => $data,
+                    'hasavailability' => !empty($data),
+        ];
+
+        return $this->render_from_template('format_trail/availability', $datax);
     }
 
 }

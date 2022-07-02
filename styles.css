@@ -32,7 +32,6 @@
 .course-content ul.gtopics h3.sectionname {
     background: transparent;
     border: 0 none;
-    border-bottom: dashed 1px #000;
     font-weight: normal;
     padding: 0;
     padding-bottom: 5px;
@@ -235,7 +234,6 @@ div#trailshadebox_overlay {
 }
 #trailshadebox_content {
     background: #fff;
-    border: solid 2px #a71e38;
     min-height: 200px;
 }
 body.jsenabled #trailshadebox_content.hide_content {
@@ -273,7 +271,6 @@ body.jsenabled #trailshadebox_content.hide_content {
 }
 
 #trailshadebox_content .activity {
-    border-bottom: 1px dashed #ccc;
     list-style: none;
     padding-bottom: 4px;
     padding-top: 2px;
