@@ -29,8 +29,6 @@
 
 namespace format_trail\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * The Trail format does not store any user data.
  */

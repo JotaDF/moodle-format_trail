@@ -42,8 +42,7 @@ if ($ADMIN->fulltree) {
     $description = get_string('defaultcoursedisplay_desc', 'format_trail');
     $default = COURSE_DISPLAY_SINGLEPAGE;
     $choices = array(
-        COURSE_DISPLAY_SINGLEPAGE => new lang_string('coursedisplay_single'),
-        COURSE_DISPLAY_MULTIPAGE => new lang_string('coursedisplay_multi')
+        COURSE_DISPLAY_SINGLEPAGE => new lang_string('coursedisplay_single')
     );
     $settings->add(new admin_setting_configselect($name, $title, $description, $default, $choices));
 

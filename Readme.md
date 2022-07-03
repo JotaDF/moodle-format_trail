@@ -7,11 +7,11 @@ Some features were designed to meet some aspects of gamification, being able to 
 
 Required version of Moodle
 ==========================
-This version works with Moodle 3.8 version 2019111704 (Build: 2019111704) and above within the 3.8 branch until the
+This version works with Moodle 4.0 version (Build: 2022041900) and above within the 4.0.0.1 branch until the
 next release.
 
 Please ensure that your hardware and software complies with 'Requirements' in 'Installing Moodle' on
-'docs.moodle.org/38/en/Installing_Moodle'.
+'docs.moodle.org/400/en/Installing_Moodle'.
 
 Free Software
 =============
