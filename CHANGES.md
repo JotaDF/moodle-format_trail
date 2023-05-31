@@ -15,8 +15,5 @@ Changes
 
 <<<<<<< HEAD
 ### Changes Version 4.1.0.0 for Moodle 4.1 onwards (2023053109)
-=======
-### Changes Version 4.1.0.0 for Moodle 4.1 onwards (2023310509)
->>>>>>> e36323b0d0e13dada29115ee0914d25215845bb5
 * 2023-05-31 - Adaptations to support Moodle 4.1
 * 2023-05-31 - Visual changes to display end of track
