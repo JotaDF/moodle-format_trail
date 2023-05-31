@@ -159,6 +159,21 @@ echo '#trailiconcontainer  ul.par { position: relative;
     background-repeat: no-repeat; ';
 echo 'justify-content: ' . $imagecontaineralignment . ';';
 echo '}';
+// Adicionando fundo.
+echo '#trailiconcontainer  ul.fundopar { position: relative;
+    width: 565px;
+    height: 200px;
+    background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/trilha'.$gfsettings['showbackground'].'_fundo_par.png");
+    background-repeat: no-repeat; ';
+echo 'justify-content: ' . $imagecontaineralignment . ';';
+echo '} ';
+echo '#trailiconcontainer  ul.fundoimpar { position: relative;
+    width: 565px;
+    height: 200px;
+    background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/trilha'.$gfsettings['showbackground'].'_fundo_impar.png");
+    background-repeat: no-repeat; ';
+echo 'justify-content: ' . $imagecontaineralignment . ';';
+echo '} ';
 echo '#trailiconcontainer ul.trailicons li {
 	padding: 0px;
 	margin: 20px;
