@@ -12,3 +12,7 @@ Changes
 ### Changes Version 4.0.0.1 for Moodle 4.0 onwards (2022041900)
 * 2022-07-02 - Adaptations to support Moodle 4.0
 * 2022-07-02 - Subtle visual changes
+
+### Changes Version 4.1.0.0 for Moodle 4.1 onwards (2023310509)
+* 2023-05-31 - Adaptations to support Moodle 4.1
+* 2023-05-31 - Visual changes to display end of track
