@@ -2693,7 +2693,7 @@ class format_trail extends course_format {
      * @return string|bool false if a problem occurs or the image data.
      */
     private static function generate_image($filepath, $requestedwidth, $requestedheight, $crop, $icbc, $mime) {
-        if (empty($filepath) or empty($requestedwidth) or empty($requestedheight)) {
+        if (empty($filepath) || empty($requestedwidth) || empty($requestedheight)) {
             return false;
         }
 
@@ -2706,7 +2706,7 @@ class format_trail extends course_format {
         $originalwidth = $imageinfo[0];
         $originalheight = $imageinfo[1];
 
-        if (empty($originalwidth) or empty($originalheight)) {
+        if (empty($originalwidth) || empty($originalheight)) {
             return false;
         }
 
