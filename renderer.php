@@ -148,7 +148,7 @@ class format_trail_renderer extends section_renderer {
         // FIXME: This is really evil and should by using the navigation API.
         $course = course_get_format($course)->get_course();
         $canviewhidden = has_capability('moodle/course:viewhiddensections', context_course::instance($course->id))
-                or ! $course->hiddensections;
+                || ! $course->hiddensections;
 
         $links = array('previous' => '', 'next' => '');
         $back = $sectionno - 1;
@@ -159,7 +159,7 @@ class format_trail_renderer extends section_renderer {
         } else {
             $buffer = 0;
         }
-        while ($back > $buffer and empty($links['previous'])) {
+        while ($back > $buffer && empty($links['previous'])) {
             if ($canviewhidden || $sections[$back]->uservisible) {
                 $params = array();
                 if (!$sections[$back]->visible) {
@@ -174,7 +174,7 @@ class format_trail_renderer extends section_renderer {
 
         $coursenumsections = $this->courseformat->get_last_section_number();
         $forward = $sectionno + 1;
-        while ($forward <= $coursenumsections and empty($links['next'])) {
+        while ($forward <= $coursenumsections && empty($links['next'])) {
             if ($canviewhidden || $sections[$forward]->uservisible) {
                 $params = array();
                 if (!$sections[$forward]->visible) {
@@ -215,7 +215,7 @@ class format_trail_renderer extends section_renderer {
         $coursenumsections = $this->courseformat->get_last_section_number();
         while ($section <= $coursenumsections) {
             $thissection = $modinfo->get_section_info($section);
-            $showsection = $thissection->uservisible or ! $course->hiddensections;
+            $showsection = $thissection->uservisible || ! $course->hiddensections;
             if (($showsection) && ($section != $displaysection) && ($url = course_get_url($course, $section))) {
                 $sectionmenu[$url->out(false)] = get_section_name($course, $section);
             }
@@ -758,6 +758,7 @@ class format_trail_renderer extends section_renderer {
         $coursenumsections = $this->courseformat->get_last_section_number();
         // Contribuition adriano515.
         $count = 1;
+        $total = 1;
         foreach ($sections as $section => $thissection) {
             if ((($this->section0attop) && ($section == 0)) || ($section > $coursenumsections)) {
                 continue;  // Section 0 at the top and not in the trail / orphaned section.
@@ -853,8 +854,16 @@ class format_trail_renderer extends section_renderer {
                 if (!empty($summary)) {
                     $liattributes['aria-describedby'] = 'trailsectionsummary-' . $thissection->section;
                 }
-                // Contribuition adriano515.
-                if ($count == 3) {
+                // Contribuition Jota.
+                if ($total == $coursenumsections) {
+                    if ($count % 2 == 0) {
+                        echo html_writer::end_tag('ul');
+                        echo html_writer::start_tag('ul', array('class' => 'trailicons fundopar trailcursor'));
+                    } else {
+                        echo html_writer::end_tag('ul');
+                        echo html_writer::start_tag('ul', array('class' => 'trailicons fundoimpar trailcursor'));
+                    }
+                } else if ($count == 3) {
                     echo html_writer::end_tag('ul');
                     echo html_writer::start_tag('ul', array('class' => 'trailicons impar trailcursor'));
                 } else if ($count == 4) {
@@ -864,6 +873,7 @@ class format_trail_renderer extends section_renderer {
                     $count = 2;
                 }
                 $count ++;
+                $total ++;
 
                 echo html_writer::start_tag('li', $liattributes);
 
@@ -1261,7 +1271,7 @@ class format_trail_renderer extends section_renderer {
         if ($editing) {
             // Print stealth sections if present.
             foreach ($modinfo->get_section_info_all() as $section => $thissection) {
-                if ($section <= $coursenumsections or empty($modinfo->sections[$section])) {
+                if ($section <= $coursenumsections || empty($modinfo->sections[$section])) {
                     // This is not stealth section or it is empty.
                     continue;
                 }
@@ -1509,7 +1519,7 @@ class format_trail_renderer extends section_renderer {
             foreach ($modinfo->sections[$section->section] as $modnumber) {
                 $mod = $modinfo->cms[$modnumber];
 
-                if ($ismoving and $mod->id == $USER->activitycopy) {
+                if ($ismoving && $mod->id == $USER->activitycopy) {
                     // Do not display moving mod.
                     continue;
                 }
