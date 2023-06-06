@@ -489,7 +489,7 @@ class format_trail extends course_format {
     public function get_section_name($section) {
         $section = $this->get_section($section);
         if (!empty($section->name)) {
-            return format_string($section->name, true, array('context' => $this->get_context()));
+            return format_string($section->name, true, array('context' => $this->trail_get_context()));
         } if ($section->section == 0) {
             return get_string('topic0', 'format_trail');
         } else {
@@ -786,7 +786,7 @@ class format_trail extends course_format {
               this needs to be stripped off here if it's there for the format's specific colour picker. */
             $defaults = $this->get_course_format_colour_defaults();
 
-            $context = $this->get_context();
+            $context = $this->trail_get_context();
 
             if (is_null($courseconfig)) {
                 $courseconfig = get_config('moodlecourse');
@@ -1365,7 +1365,7 @@ class format_trail extends course_format {
                 }
             }
         }
-        $context = $this->get_context();
+        $context = $this->trail_get_context();
 
         $changeimagecontaineralignment = has_capability('format/trail:changeimagecontaineralignment', $context);
         $changeimagecontainernavigation = has_capability('format/trail:changeimagecontainernavigation', $context);
@@ -1914,7 +1914,7 @@ class format_trail extends course_format {
             return false;
         }
         if (parent::delete_section($section, $forcedeleteifnotempty)) {
-            $this->delete_image($section->id, $this->get_context()->id);
+            $this->delete_image($section->id, $this->trail_get_context()->id);
             return true;
         }
         return false;
@@ -1969,7 +1969,7 @@ class format_trail extends course_format {
             $imagecontainerstylereset, $sectiontitleoptionsreset, $newactivityreset, $fitpopupreset) {
         global $DB, $USER;
 
-        $context = $this->get_context();
+        $context = $this->trail_get_context();
 
         if ($courseid == 0) {
             $records = $DB->get_records('course', array('format' => $this->format), '', 'id');
@@ -2595,7 +2595,7 @@ class format_trail extends course_format {
 
         if (is_array($sectionimages)) {
             global $DB;
-            $context = $this->get_context();
+            $context = $this->trail_get_context();
             $fs = get_file_storage();
             $trailimagepath = $this->get_image_path();
 
@@ -2629,7 +2629,7 @@ class format_trail extends course_format {
         if (is_array($sectionimages)) {
             global $DB;
 
-            $context = $this->get_context();
+            $context = $this->trail_get_context();
             $fs = get_file_storage();
             $trailimagepath = $this->get_image_path();
             $t = $DB->start_delegated_transaction();
@@ -2660,7 +2660,7 @@ class format_trail extends course_format {
 
         $sectionimages = $us->get_images($courseid);
         if (is_array($sectionimages)) {
-            $context = $this->get_context();
+            $context = $this->trail_get_context();
 
             $icbc = self::hex2rgb($this->get_settings()['imagecontainerbackgroundcolour']);
             $t = $DB->start_delegated_transaction();
@@ -2966,7 +2966,7 @@ class format_trail extends course_format {
      *
      * @return \sdtClass
      */
-    private function get_context() {
+    private function trail_get_context() {
         global $SITE;
 
         if ($SITE->id == $this->courseid) {
