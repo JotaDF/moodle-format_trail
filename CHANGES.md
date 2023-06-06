@@ -1,8 +1,6 @@
-moodle-format_trail
-========================
-
 Changes
--------
+
+
 ### Changes Version 3.8.1 for Moodle 3.2 onwards (2021050727)
 
 * 2021-07-09 - Initial version
@@ -19,3 +17,5 @@ Changes
 
 ### Changes Version 4.2.0.0 for Moodle 4.1 onwards (2023053109)
 * 2023-06-05 - Adaptations to support Moodle 4.2
+
+
