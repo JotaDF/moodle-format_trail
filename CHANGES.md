@@ -1,5 +1,3 @@
-Changes
-
 
 ### Changes Version 3.8.1 for Moodle 3.2 onwards (2021050727)
 
