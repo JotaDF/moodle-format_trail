@@ -31,7 +31,6 @@ use core_courseformat\output\section_renderer;
 use core_availability\info;
 use core_availability\info_section;
 
-require_once($CFG->dirroot . '/course/format/renderer.php');
 require_once($CFG->dirroot . '/course/format/trail/lib.php');
 
 /**
@@ -83,6 +82,7 @@ class format_trail_renderer extends section_renderer {
         $this->courseformat = course_get_format($page->course);
         $this->settings = $this->courseformat->get_settings();
         $this->section0attop = $this->courseformat->is_section0_attop();
+        $this->courserenderer = $page->get_renderer('core', 'course');
 
         /* Since format_trail_renderer::section_edit_controls() only displays the 'Set current section' control when editing
           mode is on we need to be sure that the link 'Turn editing mode on' is available for a user who does not have any
