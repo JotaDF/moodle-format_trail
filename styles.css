@@ -203,6 +203,11 @@ div#trailmiddle-column > ul {
     margin-top: 0;
 }
 
+.course-content ul.trailicons li img, img.iconsmall.edit {
+    width: 20px;
+    padding: 3px;
+}
+
 .course-content ul.trailicons li img.info {
     height: 100%;
     width: 100%;
