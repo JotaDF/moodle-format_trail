@@ -102,6 +102,7 @@ div#trailmiddle-column > ul {
     display: inline-block;
     height: auto;
     padding: 15px;
+    position: relative;
     text-align: left;
 }
 .dir-rtl #trailiconcontainer ul.trailicons li {
@@ -203,14 +204,33 @@ div#trailmiddle-column > ul {
     margin-top: 0;
 }
 
-.course-content ul.trailicons li img, img.iconsmall.edit {
+.course-content ul.trailicons li img.trailediticon,
+img.iconsmall.edit {
     width: 20px;
     padding: 3px;
 }
 
+.course-content ul.trailicons li .image_holder img,
 .course-content ul.trailicons li img.info {
     height: 100%;
     width: 100%;
+}
+
+.course-content ul.trailicons li .trail_edit_actions {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 3px;
+    bottom: 4px;
+    line-height: 1.4;
+    padding: 2px 6px;
+    position: absolute;
+    right: 4px;
+    z-index: 10;
+}
+
+.course-content ul.trailicons li .trail_edit_actions a {
+    align-items: center;
+    display: inline-flex;
+    white-space: nowrap;
 }
 
 .course-content li.trail_section {
@@ -236,6 +256,19 @@ div#trailshadebox_overlay {
     top: 0;
     width: 100%;
     z-index: 3;
+}
+
+/* Prevent accidental full-page click blocking when shadebox state gets out of sync. */
+#trailshadebox {
+    pointer-events: none;
+}
+
+#trailshadebox_content,
+#trailshadebox_close,
+#trailshadebox_next,
+#trailshadebox_overlay,
+#trailshadebox_previous {
+    pointer-events: auto;
 }
 #trailshadebox_content {
     background: #fff;

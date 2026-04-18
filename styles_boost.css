@@ -54,3 +54,15 @@ div#trailshadebox_overlay {
     z-index: 1000;
 }
 
+/* Prevent accidental full-page click blocking when shadebox state gets out of sync. */
+#trailshadebox {
+    pointer-events: none;
+}
+
+#trailshadebox_content,
+#trailshadebox_close,
+#trailshadebox_next,
+#trailshadebox_overlay,
+#trailshadebox_previous {
+    pointer-events: auto;
+}

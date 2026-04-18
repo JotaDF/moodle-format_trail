@@ -39,7 +39,6 @@ require_once($CFG->dirroot . '/course/format/lib.php'); // For format_base.
  * @author     &copy; 2012 G J Barnard in respect to modifications of standard topics format.
  */
 class format_trail extends course_format {
-
     // CONTRIB-4099.
     /**
      * @var array $imagecontainerwidths.
@@ -569,6 +568,15 @@ class format_trail extends course_format {
     }
 
     /**
+     * Indicates this format supports the component-based course editor.
+     *
+     * @return bool
+     */
+    public function supports_components() {
+        return true;
+    }
+
+    /**
      * Custom action after section has been moved in AJAX mode
      *
      * Used in course/rest.php
@@ -803,8 +811,6 @@ class format_trail extends course_format {
                 ),
                 'hiddensections' => array(
                     'label' => new lang_string('hiddensections'),
-                    'help' => 'hiddensections',
-                    'help_component' => 'moodle',
                     'element_type' => 'select',
                     'element_attributes' => array(
                         array(
@@ -2368,7 +2374,7 @@ class format_trail extends course_format {
             if ($imageinfo['width'] > $imagemaxwidth) { // Maximum width as defined in lib.php.
                 // Recalculate height:...
                 $ratio = $imagemaxwidth / $imageinfo['width'];
-                $imageinfo['height'] = $imageinfo['height'] * $ratio; // Maintain image's aspect ratio.
+                $imageinfo['height'] = (int) round($imageinfo['height'] * $ratio); // Maintain image's aspect ratio.
                 // Set width:...
                 $imageinfo['width'] = $imagemaxwidth;
             }
@@ -2751,8 +2757,8 @@ class format_trail extends course_format {
                 return false;
         }
 
-        $width = $requestedwidth;
-        $height = $requestedheight;
+        $width = (int) round($requestedwidth);
+        $height = (int) round($requestedheight);
 
         // Note: Code transformed from original 'resizeAndCrop' in 'imagelib.php' in the Moodle 1.9 version.
         if ($crop) {
@@ -2761,15 +2767,18 @@ class format_trail extends course_format {
             if ($originalratio < $ratio) {
                 // Change the supplied height - 'resizeToWidth'.
                 $ratio = $width / $originalwidth;
-                $height = $originalheight * $ratio;
+                $height = (int) round($originalheight * $ratio);
                 $cropheight = true;
             } else {
                 // Change the supplied width - 'resizeToHeight'.
                 $ratio = $height / $originalheight;
-                $width = $originalwidth * $ratio;
+                $width = (int) round($originalwidth * $ratio);
                 $cropheight = false;
             }
         }
+
+        $width = max(1, (int) round($width));
+        $height = max(1, (int) round($height));
 
         if (function_exists('imagecreatetruecolor')) {
             $tempimage = imagecreatetruecolor($width, $height);
@@ -2787,24 +2796,27 @@ class format_trail extends course_format {
 
         if ($crop) {
             // First step, resize.
-            imagecopybicubic($tempimage, $original, 0, 0, 0, 0, $width, $height, $originalwidth, $originalheight);
+            imagecopyresampled($tempimage, $original, 0, 0, 0, 0, $width, $height, $originalwidth, $originalheight);
             imagedestroy($original);
             $original = $tempimage;
 
             // Second step, crop.
             if ($cropheight) {
                 // Reset after change for resizeToWidth.
-                $height = $requestedheight;
+                $height = (int) round($requestedheight);
                 // This is 'cropCenterHeight'.
                 $width = imagesx($original);
-                $srcoffset = (imagesy($original) / 2) - ($height / 2);
+                $srcoffset = (int) floor((imagesy($original) / 2) - ($height / 2));
             } else {
                 // Reset after change for resizeToHeight.
-                $width = $requestedwidth;
+                $width = (int) round($requestedwidth);
                 // This is 'cropCenterWidth'.
                 $height = imagesy($original);
-                $srcoffset = (imagesx($original) / 2) - ($width / 2);
+                $srcoffset = (int) floor((imagesx($original) / 2) - ($width / 2));
             }
+
+            $width = max(1, (int) round($width));
+            $height = max(1, (int) round($height));
 
             if (function_exists('imagecreatetruecolor')) {
                 $finalimage = imagecreatetruecolor($width, $height);
@@ -2822,33 +2834,43 @@ class format_trail extends course_format {
 
             if ($cropheight) {
                 // This is 'cropCenterHeight'.
-                imagecopybicubic($finalimage, $original, 0, 0, 0, $srcoffset, $width, $height, $width, $height);
+                imagecopyresampled($finalimage, $original, 0, 0, 0, $srcoffset, $width, $height, $width, $height);
             } else {
                 // This is 'cropCenterWidth'.
-                imagecopybicubic($finalimage, $original, 0, 0, $srcoffset, 0, $width, $height, $width, $height);
+                imagecopyresampled($finalimage, $original, 0, 0, $srcoffset, 0, $width, $height, $width, $height);
             }
         } else {
             $finalimage = $tempimage;
             $ratio = min($width / $originalwidth, $height / $originalheight);
 
             if ($ratio < 1) {
-                $targetwidth = floor($originalwidth * $ratio);
-                $targetheight = floor($originalheight * $ratio);
+                $targetwidth = (int) floor($originalwidth * $ratio);
+                $targetheight = (int) floor($originalheight * $ratio);
             } else {
                 // Do not enlarge the original file if it is smaller than the requested thumbnail size.
                 $targetwidth = $originalwidth;
                 $targetheight = $originalheight;
             }
 
-            $dstx = floor(($width - $targetwidth) / 2);
-            $dsty = floor(($height - $targetheight) / 2);
+            $dstx = (int) floor(($width - $targetwidth) / 2);
+            $dsty = (int) floor(($height - $targetheight) / 2);
 
-            imagecopybicubic($finalimage, $original, $dstx, $dsty, 0, 0,
+                imagecopyresampled($finalimage, $original, $dstx, $dsty, 0, 0,
                     $targetwidth, $targetheight, $originalwidth, $originalheight);
         }
 
         ob_start();
-        if (!$imagefnc($finalimage, null, $quality, $filters)) {
+        if ($imagefnc === 'imagejpeg') {
+            $saved = $imagefnc($finalimage, null, $quality);
+        } else if ($imagefnc === 'imagepng') {
+            $saved = $imagefnc($finalimage, null, $quality, $filters);
+        } else if ($imagefnc === 'imagegif') {
+            $saved = $imagefnc($finalimage, null);
+        } else {
+            $saved = $imagefnc($finalimage, null);
+        }
+
+        if (!$saved) {
             ob_end_clean();
             return false;
         }

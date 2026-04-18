@@ -339,6 +339,9 @@ echo '#trailiconcontainer  ul.impar { position: relative;
     background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/trilha'.$gfsettings['showbackground'].'_meio_m.png");
     background-repeat: repeat-y; }';
 echo '}';
+
+
+
 echo '/* ]]> */';
 echo '</style>';
 
@@ -369,5 +372,4 @@ if ($sectionparam != -1) {
     $renderer->print_multiple_section_page($course, null, null, null, null);
 }
 
-// Include course format js module.
-$PAGE->requires->js('/course/format/trail/format.js');
+// Temporary compatibility fallback for Moodle 5.x: keep Trail without legacy JS.

@@ -53,6 +53,11 @@ class format_trail_renderer extends section_renderer {
     protected $courseformat;
 
     /**
+     * @var \core_course_renderer $courserenderer core course renderer.
+     */
+    protected $courserenderer;
+
+    /**
      * @var array $settings.
      */
     private $settings;
@@ -272,7 +277,6 @@ class format_trail_renderer extends section_renderer {
         $o .= html_writer::start_tag('div', array('class' => 'summary'));
 
         $o .= $this->format_summary_text($section);
-        $o .= core_courseformat\output\local\content\section\summary::format_summary_text();
         $o .= html_writer::end_tag('div');
 
         $o .= $this->section_availability($section);
@@ -349,7 +353,7 @@ class format_trail_renderer extends section_renderer {
             echo $completioninfo->display_help_icon();
 
             echo $this->course_section_cm_list($course, $thissection, $displaysection);
-            echo $this->course_section_add_cm_control($course, $displaysection, $displaysection);
+            echo $this->courserenderer->section_add_cm_controls($this->courseformat, $thissection);
             echo $this->section_footer();
             echo $this->end_section_list();
 
@@ -385,7 +389,7 @@ class format_trail_renderer extends section_renderer {
         $hascapvishidsect = has_capability('moodle/course:viewhiddensections', $coursecontext);
 
         if ($editing) {
-            $streditsummary = get_string('editsummary');
+            $streditsummary = get_string('editsection');
             $urlpicedit = $this->output->image_url('t/edit');
         } else {
             $urlpicedit = false;
@@ -427,7 +431,7 @@ class format_trail_renderer extends section_renderer {
 
         $coursenumsections = $this->courseformat->get_last_section_number();
 
-        if (!(($course->coursedisplay == COURSE_DISPLAY_MULTIPAGE) && (!$editing))) {
+        if (false && !(($course->coursedisplay == COURSE_DISPLAY_MULTIPAGE) && (!$editing))) {
             $trailshadeboxattributes = array('id' => 'trailshadebox');
             if ($defaultcustommousepointers == 2) { // Yes.
                 $trailshadeboxattributes['class'] = 'trailcursor';
@@ -534,8 +538,24 @@ class format_trail_renderer extends section_renderer {
 
             echo html_writer::end_tag('div');
             echo html_writer::end_tag('div');
-            echo html_writer::tag('div', '&nbsp;', array('class' => 'clearer'));
         }
+
+                echo $this->start_section_list();
+                // If currently moving a file then show the current clipboard.
+                $this->make_block_show_clipboard_if_file_moving($course);
+
+                // Print Section 0 with general activities.
+                if (!$this->section0attop) {
+                        $this->make_block_topic0($course, $sections[0], $editing, $urlpicedit, $streditsummary, false);
+                }
+
+                /* Now all the normal modules by topic.
+                    Everything below uses "section" terminology - each "section" is a topic/module. */
+                $this->make_block_topics($course, $sections, $modinfo, $editing,
+                                $hascapvishidsect, $streditsummary, $urlpicedit, false);
+
+                echo html_writer::tag('div', '&nbsp;', array('class' => 'clearer'));
+
         echo html_writer::end_tag('div');
 
         $sectionredirect = null;
@@ -544,18 +564,8 @@ class format_trail_renderer extends section_renderer {
             $sectionredirect = $this->courseformat->get_view_url(null)->out(true);
         }
 
-        // Initialise the shade box functionality:...
-        $this->page->requires->js_init_call('M.format_trail.init', array(
-            $this->page->user_is_editing(),
-            $sectionredirect,
-            $coursenumsections,
-            $this->initialsection,
-            json_encode($this->shadeboxshownarray)));
-        if (!$this->page->user_is_editing()) {
-            // Initialise the key control functionality...
-            $this->page->requires->yui_module('moodle-format_trail-trailkeys',
-                    'M.format_trail.trailkeys.init', array(array('rtl' => $rtl)), null, true);
-        }
+        // Temporary compatibility fallback for Moodle 5.x: disable legacy trail JS initialisation.
+        // The legacy shadebox/navigation scripts can block UI interactions in modern themes.
     }
 
     /**
@@ -646,7 +656,7 @@ class format_trail_renderer extends section_renderer {
         $sectionname = $this->courseformat->get_section_name($sectionzero);
         echo html_writer::start_tag('li', array(
             'id' => 'section-0',
-            'class' => 'section main' . ($this->section0attop ? '' : ' trail_section hide_section'),
+            'class' => 'section main' . ($this->section0attop ? '' : ' trail_section' . ($editing ? '' : ' hide_section')),
             'role' => 'region',
             'aria-label' => $sectionname)
         );
@@ -674,7 +684,7 @@ class format_trail_renderer extends section_renderer {
         echo $this->course_section_cm_list($course, $sectionzero, 0);
 
         if ($editing) {
-            echo $this->courserenderer->course_section_add_cm_control($course, $sectionzero->section, 0, 0);
+            echo $this->courserenderer->section_add_cm_controls($this->courseformat, $sectionzero);
         }
         echo html_writer::end_tag('div');
         echo html_writer::end_tag('li');
@@ -1107,6 +1117,8 @@ class format_trail_renderer extends section_renderer {
         $streditimage = get_string('editimage', 'format_trail');
         $streditimagealt = get_string('editimage_alt', 'format_trail');
 
+        echo html_writer::start_tag('div', array('class' => 'trail_edit_actions'));
+
         echo html_writer::link(
                 $this->courseformat->trail_moodle_url('editimage.php', array(
                     'sectionid' => $thissection->id,
@@ -1117,9 +1129,12 @@ class format_trail_renderer extends section_renderer {
                 ), html_writer::empty_tag('img', array(
                     'src' => $urlpicedit,
                     'alt' => $streditimagealt,
+                    'class' => 'trailediticon',
                     'role' => 'img',
                     'aria-label' => $streditimagealt)) . '&nbsp;' . $streditimage, array('title' => $streditimagealt)
         );
+
+        echo html_writer::end_tag('div');
     }
 
     /**
@@ -1207,7 +1222,10 @@ class format_trail_renderer extends section_renderer {
             if ($this->courseformat->is_section_current($section)) {
                 $sectionstyle .= ' current';
             }
-            $sectionstyle .= ' trail_section hide_section';
+            $sectionstyle .= ' trail_section';
+            if (!$editing) {
+                $sectionstyle .= ' hide_section';
+            }
 
             $sectionname = $this->courseformat->get_section_name($thissection);
             if ($editing) {
@@ -1253,7 +1271,7 @@ class format_trail_renderer extends section_renderer {
                         has_capability('moodle/course:viewhiddensections', $coursecontext));
 
                 echo $this->course_section_cm_list($course, $thissection, 0);
-                echo $this->courserenderer->course_section_add_cm_control($course, $thissection->section, 0);
+                echo $this->courserenderer->section_add_cm_controls($this->courseformat, $thissection);
             } else {
                 echo html_writer::tag('h2', $this->get_title($thissection));
                 echo html_writer::tag('p', get_string('hidden_topic', 'format_trail'));
@@ -1281,8 +1299,6 @@ class format_trail_renderer extends section_renderer {
             }
 
             echo $this->end_section_list();
-
-            echo $this->change_number_sections($course, 0);
         } else {
             echo $this->end_section_list();
         }
@@ -1609,7 +1625,7 @@ class format_trail_renderer extends section_renderer {
         if ($sectionreturn) {
             $format->set_section_number($sectionreturn);
         }
-        $section = $modinfo->get_section_info($format->get_section_number());
+        $section = $modinfo->get_section_info($format->get_sectionnum() ?? 0);
 
         $cmclass = $format->get_output_classname('content\\cm');
         $cm = new $cmclass($format, $section, $mod, $displayoptions);
