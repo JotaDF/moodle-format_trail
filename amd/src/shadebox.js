@@ -118,10 +118,8 @@ define(['jquery', 'core/log'], function($, log) {
      */
     var open = function(idx) {
         displaySection(idx);
-        $overlay.height(Math.max(document.body.scrollHeight, window.innerHeight));
         $shadebox.show();
         isOpen = true;
-        window.scrollTo(0, 0);
     };
 
     /**
@@ -130,15 +128,6 @@ define(['jquery', 'core/log'], function($, log) {
     var close = function() {
         $shadebox.hide();
         isOpen = false;
-    };
-
-    /**
-     * Recalculates and updates the overlay height to fill the viewport.
-     */
-    var updateOverlayHeight = function() {
-        if (isOpen) {
-            $overlay.height(Math.max(document.body.scrollHeight, window.innerHeight));
-        }
     };
 
     return {
@@ -232,9 +221,6 @@ define(['jquery', 'core/log'], function($, log) {
                     displaySection(findAdjacentSection(currentSection, true));
                 }
             });
-
-            // Resize: keep overlay covering the full page.
-            $(window).on('resize', updateOverlayHeight);
 
             // Hash in URL — open the referenced section on page load.
             if (window.location.hash) {
