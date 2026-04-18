@@ -18,14 +18,11 @@
  * Trail Format - A topics based format that uses a trail of user selectable images to popup a light box of the section.
  *
  * @package    format_trail
- * @copyright  &copy; 2019 Jose Wilson  in respect to modifications of grid format.
- * @author     &copy; 2012 G J Barnard in respect to modifications of standard topics format.
- * @author     G J Barnard - {@link http://about.me/gjbarnard} and
- *                           {@link http://moodle.org/user/profile.php?id=442195}
- * @author     Based on code originally written by Paul Krix and Julian Ridden.
+ * @copyright  2019 Jose Wilson
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once('../../../config.php');
+// phpcs:ignore moodle.Files.MoodleInternal
+require_once(__DIR__ . '/../../../config.php');
 require_once($CFG->dirroot . '/course/lib.php');
 require_once($CFG->dirroot . '/course/format/trail/lib.php');
 require_login();
@@ -36,7 +33,11 @@ $showsummary = optional_param('showsummary', 0, PARAM_INT);
 // Ensure format_trail_summary field status exists.
 $courseformat = course_get_format($course);
 $summarystatus = $courseformat->get_summary_visibility($course);
-$DB->set_field('format_trail_summary', 'showsummary', $showsummary,
-    array('courseid' => $course, 'id' => $summarystatus->id));
+$DB->set_field(
+    'format_trail_summary',
+    'showsummary',
+    $showsummary,
+    ['courseid' => $course, 'id' => $summarystatus->id]
+);
 
 redirect($CFG->wwwroot . "/course/view.php?id=" . $course);

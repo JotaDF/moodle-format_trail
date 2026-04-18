@@ -41,9 +41,8 @@ require_once($CFG->dirroot . '/course/format/trail/lib.php');
  * @author     &copy; 2012 G J Barnard in respect to modifications of standard topics format.
  */
 class format_trail_renderer extends section_renderer {
-
     /**
-     * @var boolean $section0attop to state if section zero is at the top (true) or in the trail (false).
+     * @var bool $section0attop to state if section zero is at the top (true) or in the trail (false).
      */
     protected $section0attop;
 
@@ -65,7 +64,7 @@ class format_trail_renderer extends section_renderer {
     /**
      * @var array $shadeboxshownarray.
      */
-    private $shadeboxshownarray = array();
+    private $shadeboxshownarray = [];
 
     /**
      * @var int $portable.
@@ -100,7 +99,7 @@ class format_trail_renderer extends section_renderer {
      * @return string HTML to output.
      */
     protected function start_section_list() {
-        return html_writer::start_tag('ul', array('class' => 'gtopics', 'id' => 'gtopics'));
+        return html_writer::start_tag('ul', ['class' => 'gtopics', 'id' => 'gtopics']);
     }
 
     /**
@@ -155,7 +154,7 @@ class format_trail_renderer extends section_renderer {
         $canviewhidden = has_capability('moodle/course:viewhiddensections', context_course::instance($course->id))
                 || ! $course->hiddensections;
 
-        $links = array('previous' => '', 'next' => '');
+        $links = ['previous' => '', 'next' => ''];
         $back = $sectionno - 1;
         if (!$this->section0attop) {
             $buffer = -1;
@@ -166,11 +165,11 @@ class format_trail_renderer extends section_renderer {
         }
         while ($back > $buffer && empty($links['previous'])) {
             if ($canviewhidden || $sections[$back]->uservisible) {
-                $params = array();
+                $params = [];
                 if (!$sections[$back]->visible) {
-                    $params = array('class' => 'dimmed_text');
+                    $params = ['class' => 'dimmed_text'];
                 }
-                $previouslink = html_writer::tag('span', $this->output->larrow(), array('class' => 'larrow'));
+                $previouslink = html_writer::tag('span', $this->output->larrow(), ['class' => 'larrow']);
                 $previouslink .= get_section_name($course, $sections[$back]);
                 $links['previous'] = html_writer::link(course_get_url($course, $back), $previouslink, $params);
             }
@@ -181,12 +180,12 @@ class format_trail_renderer extends section_renderer {
         $forward = $sectionno + 1;
         while ($forward <= $coursenumsections && empty($links['next'])) {
             if ($canviewhidden || $sections[$forward]->uservisible) {
-                $params = array();
+                $params = [];
                 if (!$sections[$forward]->visible) {
-                    $params = array('class' => 'dimmed_text');
+                    $params = ['class' => 'dimmed_text'];
                 }
                 $nextlink = get_section_name($course, $sections[$forward]);
-                $nextlink .= html_writer::tag('span', $this->output->rarrow(), array('class' => 'rarrow'));
+                $nextlink .= html_writer::tag('span', $this->output->rarrow(), ['class' => 'rarrow']);
                 $links['next'] = html_writer::link(course_get_url($course, $forward), $nextlink, $params);
             }
             $forward++;
@@ -206,7 +205,7 @@ class format_trail_renderer extends section_renderer {
      */
     protected function section_nav_selection($course, $sections, $displaysection) {
         $o = '';
-        $sectionmenu = array();
+        $sectionmenu = [];
         $sectionmenu[course_get_url($course)->out(false)] = get_string('maincoursepage');
         $modinfo = get_fast_modinfo($course);
         $section = 1;
@@ -227,7 +226,7 @@ class format_trail_renderer extends section_renderer {
             $section++;
         }
 
-        $select = new url_select($sectionmenu, '', array('' => get_string('jumpto')));
+        $select = new url_select($sectionmenu, '', ['' => get_string('jumpto')]);
         $select->class = 'jumpmenu';
         $select->formid = 'sectionmenu';
         $o .= $this->output->render($select);
@@ -257,24 +256,24 @@ class format_trail_renderer extends section_renderer {
             }
         }
 
-        $o .= html_writer::start_tag('li', array('id' => 'section-' . $section->section,
+        $o .= html_writer::start_tag('li', ['id' => 'section-' . $section->section,
                     'class' => 'section main clearfix' . $sectionstyle, 'role' => 'region',
-                    'aria-label' => get_section_name($course, $section)));
+                    'aria-label' => get_section_name($course, $section)]);
 
         // Create a span that contains the section title to be used to create the keyboard section move menu.
-        $o .= html_writer::tag('span', get_section_name($course, $section), array('class' => 'hidden sectionname'));
+        $o .= html_writer::tag('span', get_section_name($course, $section), ['class' => 'hidden sectionname']);
 
         $leftcontent = $this->section_left_content($section, $course, true);
-        $o .= html_writer::tag('div', $leftcontent, array('class' => 'left side'));
+        $o .= html_writer::tag('div', $leftcontent, ['class' => 'left side']);
 
         $rightcontent = $this->section_right_content($section, $course, true);
-        $o .= html_writer::tag('div', $rightcontent, array('class' => 'right side'));
-        $o .= html_writer::start_tag('div', array('class' => 'content'));
+        $o .= html_writer::tag('div', $rightcontent, ['class' => 'right side']);
+        $o .= html_writer::start_tag('div', ['class' => 'content']);
 
         $sectionname = html_writer::tag('span', $this->section_title($section, $course));
         $o .= $this->output->heading($sectionname, 3, 'sectionname accesshide');
 
-        $o .= html_writer::start_tag('div', array('class' => 'summary'));
+        $o .= html_writer::start_tag('div', ['class' => 'summary']);
 
         $o .= $this->format_summary_text($section);
         $o .= html_writer::end_tag('div');
@@ -322,7 +321,7 @@ class format_trail_renderer extends section_renderer {
             echo $this->course_activity_clipboard($course, $displaysection);
 
             // Start single-section div.
-            echo html_writer::start_tag('div', array('class' => 'single-section'));
+            echo html_writer::start_tag('div', ['class' => 'single-section']);
 
             // The requested section page.
             $thissection = $modinfo->get_section_info($displaysection);
@@ -330,9 +329,9 @@ class format_trail_renderer extends section_renderer {
             // Title with section navigation links.
             $sectionnavlinks = $this->get_nav_links($course, $modinfo->get_section_info_all(), $displaysection);
             $sectiontitle = '';
-            $sectiontitle .= html_writer::start_tag('div', array('class' => 'section-navigation navigationtitle'));
-            $sectiontitle .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
-            $sectiontitle .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
+            $sectiontitle .= html_writer::start_tag('div', ['class' => 'section-navigation navigationtitle']);
+            $sectiontitle .= html_writer::tag('span', $sectionnavlinks['previous'], ['class' => 'mdl-left']);
+            $sectiontitle .= html_writer::tag('span', $sectionnavlinks['next'], ['class' => 'mdl-right']);
             // Title attributes.
             $classes = 'sectionname';
             if (!$thissection->visible) {
@@ -359,11 +358,14 @@ class format_trail_renderer extends section_renderer {
 
             // Display section bottom navigation.
             $sectionbottomnav = '';
-            $sectionbottomnav .= html_writer::start_tag('div', array('class' => 'section-navigation mdl-bottom'));
-            $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
-            $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
-            $sectionbottomnav .= html_writer::tag('div',
-                    $this->section_nav_selection($course, $sections, $displaysection), array('class' => 'mdl-align'));
+            $sectionbottomnav .= html_writer::start_tag('div', ['class' => 'section-navigation mdl-bottom']);
+            $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['previous'], ['class' => 'mdl-left']);
+            $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['next'], ['class' => 'mdl-right']);
+            $sectionbottomnav .= html_writer::tag(
+                'div',
+                $this->section_nav_selection($course, $sections, $displaysection),
+                ['class' => 'mdl-align']
+            );
             $sectionbottomnav .= html_writer::end_tag('div');
             echo $sectionbottomnav;
 
@@ -396,7 +398,7 @@ class format_trail_renderer extends section_renderer {
             $streditsummary = '';
         }
         // Contribuition adriano515.
-        echo html_writer::start_tag('div', array('id' => 'trailmiddle-column', 'style' => 'overflow: hidden'));
+        echo html_writer::start_tag('div', ['id' => 'trailmiddle-column', 'style' => 'overflow: hidden']);
         echo $this->output->skip_link_target();
 
         $modinfo = get_fast_modinfo($course);
@@ -408,8 +410,8 @@ class format_trail_renderer extends section_renderer {
             // For the purpose of the trail shade box shown array topic 0 is not shown.
             $this->shadeboxshownarray[0] = 1;
         }
-        echo html_writer::start_tag('div', array('id' => 'trailiconcontainer', 'role' => 'navigation',
-            'aria-label' => get_string('trailimagecontainer', 'format_trail')));
+        echo html_writer::start_tag('div', ['id' => 'trailiconcontainer', 'role' => 'navigation',
+            'aria-label' => get_string('trailimagecontainer', 'format_trail')]);
 
         $trailiconsclass = 'trailicons';
         if ($this->settings['sectiontitleboxposition'] == 1) {
@@ -420,7 +422,7 @@ class format_trail_renderer extends section_renderer {
             $trailiconsclass .= ' trailcursor';
         }
 
-        echo html_writer::start_tag('ul', array('class' => $trailiconsclass));
+        echo html_writer::start_tag('ul', ['class' => $trailiconsclass]);
         // Print all of the image containers.
         $this->make_block_icon_topics($coursecontext->id, $sections, $course, $editing, $hascapvishidsect, $urlpicedit);
         echo html_writer::end_tag('ul');
@@ -432,14 +434,14 @@ class format_trail_renderer extends section_renderer {
         $coursenumsections = $this->courseformat->get_last_section_number();
 
         if (false && !(($course->coursedisplay == COURSE_DISPLAY_MULTIPAGE) && (!$editing))) {
-            $trailshadeboxattributes = array('id' => 'trailshadebox');
+            $trailshadeboxattributes = ['id' => 'trailshadebox'];
             if ($defaultcustommousepointers == 2) { // Yes.
                 $trailshadeboxattributes['class'] = 'trailcursor';
             }
             echo html_writer::start_tag('div', $trailshadeboxattributes);
-            echo html_writer::tag('div', '', array('id' => 'trailshadebox_overlay', 'style' => 'display: none;'));
+            echo html_writer::tag('div', '', ['id' => 'trailshadebox_overlay', 'style' => 'display: none;']);
 
-            $trailshadeboxcontentclasses = array('hide_content');
+            $trailshadeboxcontentclasses = ['hide_content'];
             if (!$editing) {
                 if ($this->settings['fitsectioncontainertowindow'] == 2) {
                     $trailshadeboxcontentclasses[] = 'fit_to_window';
@@ -448,10 +450,10 @@ class format_trail_renderer extends section_renderer {
                 }
             }
 
-            echo html_writer::start_tag('div', array('id' => 'trailshadebox_content',
+            echo html_writer::start_tag('div', ['id' => 'trailshadebox_content',
                 'class' => implode(' ', $trailshadeboxcontentclasses),
                 'role' => 'region',
-                'aria-label' => get_string('shadeboxcontent', 'format_trail')));
+                'aria-label' => get_string('shadeboxcontent', 'format_trail')]);
 
             $deviceextra = '';
             switch ($this->portable) {
@@ -465,12 +467,12 @@ class format_trail_renderer extends section_renderer {
                     break;
             }
             $closeshadebox = get_string('closeshadebox', 'format_trail');
-            echo html_writer::tag('img', '', array('id' => 'trailshadebox_close', 'style' => 'display: none;',
+            echo html_writer::tag('img', '', ['id' => 'trailshadebox_close', 'style' => 'display: none;',
                 'class' => $deviceextra,
                 'src' => $this->output->image_url('close', 'format_trail'),
                 'role' => 'link',
                 'alt' => $closeshadebox,
-                'aria-label' => $closeshadebox));
+                'aria-label' => $closeshadebox]);
 
             if ($this->settings['hidenavside'] == 1) {
                 // Only show the arrows if there is more than one box shown.
@@ -485,33 +487,32 @@ class format_trail_renderer extends section_renderer {
                         $areadir = 'ltr';
                     }
                     $previoussection = get_string('previoussection', 'format_trail');
-                    $prev = html_writer::start_tag('div', array('id' => 'trailshadebox_previous',
+                    $prev = html_writer::start_tag('div', ['id' => 'trailshadebox_previous',
                                 'class' => 'trailshadebox_area trailshadebox_previous_area ' . $areadir,
                                 'style' => 'display: none;',
                                 'role' => 'link',
-                                'aria-label' => $previoussection)
-                    );
-                    $prev .= html_writer::tag('img', '',
-                            array('class' => 'trailshadebox_arrow trailshadebox_previous' . $deviceextra,
+                                'aria-label' => $previoussection]);
+                    $prev .= html_writer::tag(
+                        'img',
+                        '',
+                        ['class' => 'trailshadebox_arrow trailshadebox_previous' . $deviceextra,
                                 'src' => $this->output->image_url('fa-arrow-circle-' . $previcon . '-w', 'format_trail'),
                                 'alt' => $previoussection,
-                                'aria-label' => $previoussection
-                                    )
+                                'aria-label' => $previoussection,
+                                    ]
                     );
                     $prev .= html_writer::end_tag('div');
                     $nextsection = get_string('nextsection', 'format_trail');
-                    $next = html_writer::start_tag('div', array('id' => 'trailshadebox_next',
+                    $next = html_writer::start_tag('div', ['id' => 'trailshadebox_next',
                                 'class' => 'trailshadebox_area trailshadebox_next_area ' . $areadir,
                                 'style' => 'display: none;',
                                 'role' => 'link',
-                                'aria-label' => $nextsection)
-                    );
-                    $next .= html_writer::tag('img', '', array('class' => 'trailshadebox_arrow trailshadebox_next' . $deviceextra,
+                                'aria-label' => $nextsection]);
+                    $next .= html_writer::tag('img', '', ['class' => 'trailshadebox_arrow trailshadebox_next' . $deviceextra,
                                 'src' => $this->output->image_url('fa-arrow-circle-' . $nexticon . '-w', 'format_trail'),
                                 'alt' => $nextsection,
-                                'aria-label' => $nextsection
-                                    )
-                    );
+                                'aria-label' => $nextsection,
+                                    ]);
                     $next .= html_writer::end_tag('div');
 
                     if ($rtl) {
@@ -533,8 +534,16 @@ class format_trail_renderer extends section_renderer {
 
             /* Now all the normal modules by topic.
               Everything below uses "section" terminology - each "section" is a topic/module. */
-            $this->make_block_topics($course, $sections, $modinfo, $editing,
-                    $hascapvishidsect, $streditsummary, $urlpicedit, false);
+            $this->make_block_topics(
+                $course,
+                $sections,
+                $modinfo,
+                $editing,
+                $hascapvishidsect,
+                $streditsummary,
+                $urlpicedit,
+                false
+            );
 
             echo html_writer::end_tag('div');
             echo html_writer::end_tag('div');
@@ -545,16 +554,24 @@ class format_trail_renderer extends section_renderer {
                 $this->make_block_show_clipboard_if_file_moving($course);
 
                 // Print Section 0 with general activities.
-                if (!$this->section0attop) {
-                        $this->make_block_topic0($course, $sections[0], $editing, $urlpicedit, $streditsummary, false);
-                }
+        if (!$this->section0attop) {
+                $this->make_block_topic0($course, $sections[0], $editing, $urlpicedit, $streditsummary, false);
+        }
 
                 /* Now all the normal modules by topic.
                     Everything below uses "section" terminology - each "section" is a topic/module. */
-                $this->make_block_topics($course, $sections, $modinfo, $editing,
-                                $hascapvishidsect, $streditsummary, $urlpicedit, false);
+                $this->make_block_topics(
+                    $course,
+                    $sections,
+                    $modinfo,
+                    $editing,
+                    $hascapvishidsect,
+                    $streditsummary,
+                    $urlpicedit,
+                    false
+                );
 
-                echo html_writer::tag('div', '&nbsp;', array('class' => 'clearer'));
+                echo html_writer::tag('div', '&nbsp;', ['class' => 'clearer']);
 
         echo html_writer::end_tag('div');
 
@@ -579,7 +596,7 @@ class format_trail_renderer extends section_renderer {
     protected function section_edit_control_items($course, $section, $onsectionpage = false) {
 
         if (!$this->page->user_is_editing()) {
-            return array();
+            return [];
         }
 
         $coursecontext = context_course::instance($course->id);
@@ -591,27 +608,27 @@ class format_trail_renderer extends section_renderer {
         }
         $url->param('sesskey', sesskey());
 
-        $controls = array();
+        $controls = [];
         if ($section->section && has_capability('moodle/course:setcurrentsection', $coursecontext)) {
             if ($course->marker == $section->section) {  // Show the "light globe" on/off.
                 $url->param('marker', 0);
                 $markedthissection = get_string('markedthissection', 'format_trail');
                 $highlightoff = get_string('highlightoff');
-                $controls['highlight'] = array('url' => $url, "icon" => 'i/marked',
+                $controls['highlight'] = ['url' => $url, "icon" => 'i/marked',
                     'name' => $highlightoff,
-                    'pixattr' => array('class' => '', 'alt' => $markedthissection),
-                    'attr' => array('class' => 'editing_highlight', 'title' => $markedthissection,
-                        'data-action' => 'removemarker'));
+                    'pixattr' => ['class' => '', 'alt' => $markedthissection],
+                    'attr' => ['class' => 'editing_highlight', 'title' => $markedthissection,
+                        'data-action' => 'removemarker']];
                 $url->param('marker', 0);
             } else {
                 $url->param('marker', $section->section);
                 $markthissection = get_string('markthissection', 'format_trail');
                 $highlight = get_string('highlight');
-                $controls['highlight'] = array('url' => $url, "icon" => 'i/marker',
+                $controls['highlight'] = ['url' => $url, "icon" => 'i/marker',
                     'name' => $highlight,
-                    'pixattr' => array('class' => '', 'alt' => $markthissection),
-                    'attr' => array('class' => 'editing_highlight', 'title' => $markthissection,
-                        'data-action' => 'setmarker'));
+                    'pixattr' => ['class' => '', 'alt' => $markthissection],
+                    'attr' => ['class' => 'editing_highlight', 'title' => $markthissection,
+                        'data-action' => 'setmarker']];
             }
         }
 
@@ -619,7 +636,7 @@ class format_trail_renderer extends section_renderer {
 
         // If the edit key exists, we are going to insert our controls after it.
         if (array_key_exists("edit", $parentcontrols)) {
-            $merged = array();
+            $merged = [];
             // We can't use splice because we are using associative arrays.
             // Step through the array and merge the arrays.
             foreach ($parentcontrols as $key => $action) {
@@ -650,34 +667,37 @@ class format_trail_renderer extends section_renderer {
     private function make_block_topic0($course, $sectionzero, $editing, $urlpicedit, $streditsummary, $onsectionpage) {
 
         if ($this->section0attop) {
-            echo html_writer::start_tag('ul', array('class' => 'gtopics-0'));
+            echo html_writer::start_tag('ul', ['class' => 'gtopics-0']);
         }
 
         $sectionname = $this->courseformat->get_section_name($sectionzero);
-        echo html_writer::start_tag('li', array(
+        echo html_writer::start_tag('li', [
             'id' => 'section-0',
             'class' => 'section main' . ($this->section0attop ? '' : ' trail_section' . ($editing ? '' : ' hide_section')),
             'role' => 'region',
-            'aria-label' => $sectionname)
-        );
+            'aria-label' => $sectionname]);
 
-        echo html_writer::start_tag('div', array('class' => 'content'));
+        echo html_writer::start_tag('div', ['class' => 'content']);
 
         if (!$onsectionpage) {
             echo $this->output->heading($sectionname, 3, 'sectionname');
         }
 
-        echo html_writer::start_tag('div', array('class' => 'summary'));
+        echo html_writer::start_tag('div', ['class' => 'summary']);
 
         echo $this->format_summary_text($sectionzero);
 
         if ($editing) {
             echo html_writer::link(
-                    new moodle_url('editsection.php',
-                            array('id' => $sectionzero->id)),
-                    html_writer::empty_tag('img', array('src' => $urlpicedit,
+                new moodle_url(
+                    'editsection.php',
+                    ['id' => $sectionzero->id]
+                ),
+                html_writer::empty_tag('img', ['src' => $urlpicedit,
                         'alt' => $streditsummary,
-                        'class' => 'iconsmall edit')), array('title' => $streditsummary));
+                'class' => 'iconsmall edit']),
+                ['title' => $streditsummary]
+            );
         }
         echo html_writer::end_tag('div');
 
@@ -790,7 +810,7 @@ class format_trail_renderer extends section_renderer {
                 $this->shadeboxshownarray[$section] = 2;
 
                 $sectionname = $this->courseformat->get_section_name($thissection);
-                $sectiontitleattribues = array();
+                $sectiontitleattribues = [];
                 if ($this->settings['hidesectiontitle'] == 1) {
                     $displaysectionname = $sectionname;
                 } else {
@@ -801,8 +821,11 @@ class format_trail_renderer extends section_renderer {
                     $sectionnamelen = core_text::strlen($displaysectionname);
                     if ($sectionnamelen !== false) {
                         if ($sectionnamelen > $this->settings['sectiontitletraillengthmaxoption']) {
-                            $displaysectionname = core_text::substr($displaysectionname, 0,
-                                    $this->settings['sectiontitletraillengthmaxoption']) . '...';
+                            $displaysectionname = core_text::substr(
+                                $displaysectionname,
+                                0,
+                                $this->settings['sectiontitletraillengthmaxoption']
+                            ) . '...';
                         }
                     }
                 }
@@ -854,10 +877,10 @@ class format_trail_renderer extends section_renderer {
                   is responsive, so as the container is a 'navigation' then need to look into converting the containing
                   'div' to a 'nav' tag (www.w3.org/TR/2010/WD-html5-20100624/sections.html#the-nav-element) when I'm
                   that all browsers support it against the browser requirements of Moodle. */
-                $liattributes = array(
+                $liattributes = [
                     'role' => 'region',
-                    'aria-labelledby' => 'trailsectionname-' . $thissection->section
-                );
+                    'aria-labelledby' => 'trailsectionname-' . $thissection->section,
+                ];
                 if ($this->courseformat->is_section_current($section)) {
                     $liattributes['class'] = 'currenticon';
                 }
@@ -868,22 +891,22 @@ class format_trail_renderer extends section_renderer {
                 if ($total == $coursenumsections) {
                     if ($count % 2 == 0) {
                         echo html_writer::end_tag('ul');
-                        echo html_writer::start_tag('ul', array('class' => 'trailicons fundopar trailcursor'));
+                        echo html_writer::start_tag('ul', ['class' => 'trailicons fundopar trailcursor']);
                     } else {
                         echo html_writer::end_tag('ul');
-                        echo html_writer::start_tag('ul', array('class' => 'trailicons fundoimpar trailcursor'));
+                        echo html_writer::start_tag('ul', ['class' => 'trailicons fundoimpar trailcursor']);
                     }
                 } else if ($count == 3) {
                     echo html_writer::end_tag('ul');
-                    echo html_writer::start_tag('ul', array('class' => 'trailicons impar trailcursor'));
+                    echo html_writer::start_tag('ul', ['class' => 'trailicons impar trailcursor']);
                 } else if ($count == 4) {
                     echo html_writer::end_tag('ul');
-                    echo html_writer::start_tag('ul', array('class' => 'trailicons par trailcursor'));
+                    echo html_writer::start_tag('ul', ['class' => 'trailicons par trailcursor']);
                 } else if ($count >= 5) {
                     $count = 2;
                 }
-                $count ++;
-                $total ++;
+                $count++;
+                $total++;
 
                 echo html_writer::start_tag('li', $liattributes);
 
@@ -909,12 +932,11 @@ class format_trail_renderer extends section_renderer {
                         $this->make_block_icon_topic0_editing($course);
                     }
 
-                    echo html_writer::start_tag('a', array(
+                    echo html_writer::start_tag('a', [
                         'href' => '#section-' . $thissection->section,
                         'id' => 'trailsection-' . $thissection->section,
                         'class' => 'trailicon_link',
-                        'role' => 'link')
-                    );
+                        'role' => 'link']);
 
                     if ($this->settings['sectiontitleboxposition'] == 2) {
                         echo html_writer::tag('div', $displaysectionname, $sectiontitleattribues);
@@ -922,17 +944,17 @@ class format_trail_renderer extends section_renderer {
 
                     if (($this->settings['newactivity'] == 2) && (isset($sectionupdated[$thissection->id]))) {
                         // The section has been updated since the user last visited this course, add NEW label.
-                        echo html_writer::empty_tag('img', array(
+                        echo html_writer::empty_tag('img', [
                             'class' => 'new_activity',
                             'src' => $urlpicnewactivity,
-                            'alt' => ''));
+                            'alt' => '']);
                     }
 
                     $imageclass = 'image_holder';
                     if ($sectiongreyedout) {
                         $imageclass .= ' inaccessible';
                     }
-                    echo html_writer::start_tag('div', array('class' => $imageclass));
+                    echo html_writer::start_tag('div', ['class' => $imageclass]);
                     // Alterado por Jota.
                     if ($this->is_check_section($USER->id, $course->id, $thissection->id)) {
                         $classcheck = '';
@@ -946,22 +968,24 @@ class format_trail_renderer extends section_renderer {
                         if ($this->settings['showcheckstar'] == 4) {
                             $classcheck = 'like';
                         }
-                        echo html_writer::start_tag('div', array('id' => $classcheck, 'title' => $titlecheck));
+                        echo html_writer::start_tag('div', ['id' => $classcheck, 'title' => $titlecheck]);
                         echo html_writer::end_tag('div');
                     } else {
                         // Alteração por Jota.
                         $bloqueado = 0;
                         if ($this->settings['hidesectionlock'] == 3 || $this->settings['hidesectionlock'] == 4) {
-                            $bloqueado = $this->get_section_availability_bloqueado($thissection,
-                                    has_capability('moodle/course:viewhiddensections', $coursecontext));
+                            $bloqueado = $this->get_section_availability_bloqueado(
+                                $thissection,
+                                has_capability('moodle/course:viewhiddensections', $coursecontext)
+                            );
                         }
                         if ($bloqueado > 0) {
                             $cssid = 'lock';
                             if ($this->settings['hidesectionlock'] == 4) {
                                 $cssid = 'lock_treasure';
                             }
-                            echo html_writer::start_tag('div', array('id' => $cssid,
-                                'title' => get_string('locked', 'format_trail')));
+                            echo html_writer::start_tag('div', ['id' => $cssid,
+                                'title' => get_string('locked', 'format_trail')]);
                             echo html_writer::end_tag('div');
                         }
                     }
@@ -971,17 +995,27 @@ class format_trail_renderer extends section_renderer {
                     }
 
                     if (!empty($summary)) {
-                        echo html_writer::tag('div', '', array('id' => 'trailsectionsummary-' . $thissection->section,
-                            'hidden' => true, 'aria-label' => $summary));
+                        echo html_writer::tag('div', '', ['id' => 'trailsectionsummary-' . $thissection->section,
+                            'hidden' => true, 'aria-label' => $summary]);
                     }
                     // Alteração por Jota.
                     $bloqueado = 0;
                     if ($this->settings['hidesectionlock'] == 2) {
-                        $bloqueado = $this->get_section_availability_bloqueado($thissection,
-                                has_capability('moodle/course:viewhiddensections', $coursecontext));
+                        $bloqueado = $this->get_section_availability_bloqueado(
+                            $thissection,
+                            has_capability('moodle/course:viewhiddensections', $coursecontext)
+                        );
                     }
-                    echo $this->courseformat->output_section_image($section, $sectionname, $sectionimage,
-                            $contextid, $thissection, $trailimagepath, $this->output, $bloqueado);
+                    echo $this->courseformat->output_section_image(
+                        $section,
+                        $sectionname,
+                        $sectionimage,
+                        $contextid,
+                        $thissection,
+                        $trailimagepath,
+                        $this->output,
+                        $bloqueado
+                    );
 
                     echo html_writer::end_tag('div');
                     echo html_writer::end_tag('a');
@@ -997,9 +1031,9 @@ class format_trail_renderer extends section_renderer {
                     }
 
                     if (($this->settings['newactivity'] == 2) && (isset($sectionupdated[$thissection->id]))) {
-                        $content .= html_writer::empty_tag('img', array(
+                        $content .= html_writer::empty_tag('img', [
                                     'class' => 'new_activity',
-                                    'src' => $urlpicnewactivity));
+                                    'src' => $urlpicnewactivity]);
                     }
 
                     // Grey out code: Justin 2016/05/14.
@@ -1007,19 +1041,26 @@ class format_trail_renderer extends section_renderer {
                     if ($sectiongreyedout) {
                         $imageclass .= ' inaccessible';
                     }
-                    $content .= html_writer::start_tag('div', array('class' => $imageclass));
+                    $content .= html_writer::start_tag('div', ['class' => $imageclass]);
 
                     if ($this->settings['sectiontitleboxposition'] == 1) {
                         $content .= html_writer::tag('div', $displaysectionname, $sectiontitleattribues);
                     }
 
                     if (!empty($summary)) {
-                        $content .= html_writer::tag('div', '', array('id' => 'trailsectionsummary-' . $thissection->section,
-                                    'hidden' => true, 'aria-label' => $summary));
+                        $content .= html_writer::tag('div', '', ['id' => 'trailsectionsummary-' . $thissection->section,
+                                    'hidden' => true, 'aria-label' => $summary]);
                     }
 
                     $content .= $this->courseformat->output_section_image(
-                            $section, $sectionname, $sectionimage, $contextid, $thissection, $trailimagepath, $this->output);
+                        $section,
+                        $sectionname,
+                        $sectionimage,
+                        $contextid,
+                        $thissection,
+                        $trailimagepath,
+                        $this->output
+                    );
 
                     $content .= html_writer::end_tag('div');
 
@@ -1029,10 +1070,10 @@ class format_trail_renderer extends section_renderer {
                         }
                         // Section greyed out by Justin 2016/05/14.
                         if (!$sectiongreyedout) {
-                            echo html_writer::link($singlepageurl . '#section-' . $thissection->section, $content, array(
+                            echo html_writer::link($singlepageurl . '#section-' . $thissection->section, $content, [
                                 'id' => 'trailsection-' . $thissection->section,
                                 'class' => 'trailicon_link',
-                                'role' => 'link'));
+                                'role' => 'link']);
                         } else {
                             // Need an enclosing 'span' for IE.
                             echo html_writer::tag('span', $content);
@@ -1040,10 +1081,10 @@ class format_trail_renderer extends section_renderer {
                         $this->make_block_icon_topics_editing($thissection, $contextid, $urlpicedit);
                     } else {
                         if (!$sectiongreyedout) {
-                            echo html_writer::link($singlepageurl . '&section=' . $thissection->section, $content, array(
+                            echo html_writer::link($singlepageurl . '&section=' . $thissection->section, $content, [
                                 'id' => 'trailsection-' . $thissection->section,
                                 'class' => 'trailicon_link',
-                                'role' => 'link'));
+                                'role' => 'link']);
                         } else {
                             // Need an enclosing 'span' for IE.
                             echo html_writer::tag('span', $content);
@@ -1072,7 +1113,7 @@ class format_trail_renderer extends section_renderer {
                 . " INNER JOIN {course_modules} m ON c.coursemoduleid = m.id WHERE c.userid="
                 . $userid . " AND m.course=" . $courseid . " AND m.section="
                 . $sectionid . " AND m.completion > 0 AND c.completionstate > 0 AND m.deletioninprogress = 0");
-        $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+        $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
         $wheregroup = "";
         // Verification group mode.
         if ($course->groupmode >= 1) {
@@ -1117,21 +1158,22 @@ class format_trail_renderer extends section_renderer {
         $streditimage = get_string('editimage', 'format_trail');
         $streditimagealt = get_string('editimage_alt', 'format_trail');
 
-        echo html_writer::start_tag('div', array('class' => 'trail_edit_actions'));
+        echo html_writer::start_tag('div', ['class' => 'trail_edit_actions']);
 
         echo html_writer::link(
-                $this->courseformat->trail_moodle_url('editimage.php', array(
+            $this->courseformat->trail_moodle_url('editimage.php', [
                     'sectionid' => $thissection->id,
                     'contextid' => $contextid,
                     'userid' => $USER->id,
                     'role' => 'link',
-                    'aria-label' => $streditimagealt)
-                ), html_writer::empty_tag('img', array(
+                    'aria-label' => $streditimagealt]),
+            html_writer::empty_tag('img', [
                     'src' => $urlpicedit,
                     'alt' => $streditimagealt,
                     'class' => 'trailediticon',
                     'role' => 'img',
-                    'aria-label' => $streditimagealt)) . '&nbsp;' . $streditimage, array('title' => $streditimagealt)
+                    'aria-label' => $streditimagealt]) . '&nbsp;' . $streditimage,
+            ['title' => $streditimagealt]
         );
 
         echo html_writer::end_tag('div');
@@ -1148,17 +1190,18 @@ class format_trail_renderer extends section_renderer {
         $strdisplaysummaryalt = get_string('display_summary_alt', 'format_trail');
 
         echo html_writer::link(
-                $this->courseformat->trail_moodle_url('mod_summary.php', array(
+            $this->courseformat->trail_moodle_url('mod_summary.php', [
                     'sesskey' => sesskey(),
                     'course' => $course->id,
                     'showsummary' => 1,
                     'role' => 'link',
-                    'aria-label' => $strdisplaysummaryalt)
-                ), html_writer::empty_tag('img', array(
+                    'aria-label' => $strdisplaysummaryalt]),
+            html_writer::empty_tag('img', [
                     'src' => $this->output->image_url('out_of_trail', 'format_trail'),
                     'alt' => $strdisplaysummaryalt,
                     'role' => 'img',
-                    'aria-label' => $strdisplaysummaryalt)) . '&nbsp;' . $strdisplaysummary, array('title' => $strdisplaysummaryalt)
+                    'aria-label' => $strdisplaysummaryalt]) . '&nbsp;' . $strdisplaysummary,
+            ['title' => $strdisplaysummaryalt]
         );
     }
 
@@ -1175,13 +1218,14 @@ class format_trail_renderer extends section_renderer {
             $strcancel = get_string('cancel');
 
             $stractivityclipboard = clean_param(format_string(
-                            get_string('activityclipboard', '', $USER->activitycopyname)), PARAM_NOTAGS);
+                get_string('activityclipboard', '', $USER->activitycopyname)
+            ), PARAM_NOTAGS);
             $stractivityclipboard .= '&nbsp;&nbsp;('
-                    . html_writer::link(new moodle_url('/mod.php', array(
+                    . html_writer::link(new moodle_url('/mod.php', [
                         'cancelcopy' => 'true',
-                        'sesskey' => sesskey())), $strcancel);
+                        'sesskey' => sesskey()]), $strcancel);
 
-            echo html_writer::tag('li', $stractivityclipboard, array('class' => 'clipboard'));
+            echo html_writer::tag('li', $stractivityclipboard, ['class' => 'clipboard']);
         }
     }
 
@@ -1198,8 +1242,16 @@ class format_trail_renderer extends section_renderer {
      * @param string $onsectionpage
      * @return none
      */
-    private function make_block_topics($course, $sections, $modinfo, $editing,
-            $hascapvishidsect, $streditsummary, $urlpicedit, $onsectionpage) {
+    private function make_block_topics(
+        $course,
+        $sections,
+        $modinfo,
+        $editing,
+        $hascapvishidsect,
+        $streditsummary,
+        $urlpicedit,
+        $onsectionpage
+    ) {
         $coursecontext = context_course::instance($course->id);
         unset($sections[0]);
 
@@ -1233,42 +1285,47 @@ class format_trail_renderer extends section_renderer {
             } else {
                 $title = $sectionname;
             }
-            echo html_writer::start_tag('li', array(
+            echo html_writer::start_tag('li', [
                 'id' => 'section-' . $section,
                 'class' => $sectionstyle,
                 'role' => 'region',
-                'aria-label' => $sectionname)
-            );
+                'aria-label' => $sectionname]);
 
             if ($editing) {
                 // Note, 'left side' is BEFORE content.
                 $leftcontent = $this->section_left_content($thissection, $course, $onsectionpage);
-                echo html_writer::tag('div', $leftcontent, array('class' => 'left side'));
+                echo html_writer::tag('div', $leftcontent, ['class' => 'left side']);
                 // Note, 'right side' is BEFORE content.
                 $rightcontent = $this->section_right_content($thissection, $course, $onsectionpage);
-                echo html_writer::tag('div', $rightcontent, array('class' => 'right side'));
+                echo html_writer::tag('div', $rightcontent, ['class' => 'right side']);
             }
 
-            echo html_writer::start_tag('div', array('class' => 'content'));
+            echo html_writer::start_tag('div', ['class' => 'content']);
             if ($hascapvishidsect || ($thissection->visible && $thissection->available)) {
                 // If visible.
                 echo $this->output->heading($title, 3, 'sectionname');
 
-                echo html_writer::start_tag('div', array('class' => 'summary'));
+                echo html_writer::start_tag('div', ['class' => 'summary']);
 
                 echo $this->format_summary_text($thissection);
 
                 if ($editing) {
                     echo html_writer::link(
-                            new moodle_url('editsection.php',
-                                    array('id' => $thissection->id)),
-                            html_writer::empty_tag('img', array('src' => $urlpicedit, 'alt' => $streditsummary,
-                                'class' => 'iconsmall edit')), array('title' => $streditsummary));
+                        new moodle_url(
+                            'editsection.php',
+                            ['id' => $thissection->id]
+                        ),
+                        html_writer::empty_tag('img', ['src' => $urlpicedit, 'alt' => $streditsummary,
+                        'class' => 'iconsmall edit']),
+                        ['title' => $streditsummary]
+                    );
                 }
                 echo html_writer::end_tag('div');
 
-                echo $this->section_availability_message($thissection,
-                        has_capability('moodle/course:viewhiddensections', $coursecontext));
+                echo $this->section_availability_message(
+                    $thissection,
+                    has_capability('moodle/course:viewhiddensections', $coursecontext)
+                );
 
                 echo $this->course_section_cm_list($course, $thissection, 0);
                 echo $this->courserenderer->section_add_cm_controls($this->courseformat, $thissection);
@@ -1276,8 +1333,10 @@ class format_trail_renderer extends section_renderer {
                 echo html_writer::tag('h2', $this->get_title($thissection));
                 echo html_writer::tag('p', get_string('hidden_topic', 'format_trail'));
 
-                echo $this->section_availability_message($thissection,
-                        has_capability('moodle/course:viewhiddensections', $coursecontext));
+                echo $this->section_availability_message(
+                    $thissection,
+                    has_capability('moodle/course:viewhiddensections', $coursecontext)
+                );
             }
 
             echo html_writer::end_tag('div');
@@ -1323,7 +1382,7 @@ class format_trail_renderer extends section_renderer {
             $title = trim(format_text($section->summary));
 
             // Finds first header content. If it is not found, then try to find the first paragraph.
-            foreach (array('h[1-6]', 'p') as $tag) {
+            foreach (['h[1-6]', 'p'] as $tag) {
                 if (preg_match('#<(' . $tag . ')\b[^>]*>(?P<text>.*?)</\1>#si', $title, $m)) {
                     if (!$this->is_empty_text($m['text'])) {
                         $title = $m['text'];
@@ -1380,7 +1439,7 @@ class format_trail_renderer extends section_renderer {
     private function new_activity($course) {
         global $CFG, $USER, $DB;
 
-        $sectionsedited = array();
+        $sectionsedited = [];
         if (isset($USER->lastcourseaccess[$course->id])) {
             $course->lastaccess = $USER->lastcourseaccess[$course->id];
         } else {
@@ -1390,9 +1449,9 @@ class format_trail_renderer extends section_renderer {
         $sql = "SELECT id, section FROM {$CFG->prefix}course_modules " .
                 "WHERE course = :courseid AND added > :lastaccess";
 
-        $params = array(
+        $params = [
             'courseid' => $course->id,
-            'lastaccess' => $course->lastaccess);
+            'lastaccess' => $course->lastaccess];
 
         $activity = $DB->get_records_sql($sql, $params);
         foreach ($activity as $record) {
@@ -1540,8 +1599,15 @@ class format_trail_renderer extends section_renderer {
                     continue;
                 }
 
-                if ($modulehtml = $this->course_section_cm_list_item($course,
-                        $completioninfo, $mod, $sectionreturn, $displayoptions)) {
+                if (
+                    $modulehtml = $this->course_section_cm_list_item(
+                        $course,
+                        $completioninfo,
+                        $mod,
+                        $sectionreturn,
+                        $displayoptions
+                    )
+                ) {
                     $moduleshtml[$modnumber] = $modulehtml;
                 }
             }
@@ -1551,25 +1617,37 @@ class format_trail_renderer extends section_renderer {
         if (!empty($moduleshtml) || $ismoving) {
             foreach ($moduleshtml as $modnumber => $modulehtml) {
                 if ($ismoving) {
-                    $movingurl = new moodle_url('/course/mod.php', array('moveto' => $modnumber, 'sesskey' => sesskey()));
-                    $sectionoutput .= html_writer::tag('li', html_writer::link($movingurl, '',
-                            array('title' => $strmovefull, 'class' => 'movehere')),
-                            array('class' => 'movehere'));
+                    $movingurl = new moodle_url('/course/mod.php', ['moveto' => $modnumber, 'sesskey' => sesskey()]);
+                    $sectionoutput .= html_writer::tag(
+                        'li',
+                        html_writer::link(
+                            $movingurl,
+                            '',
+                            ['title' => $strmovefull, 'class' => 'movehere']
+                        ),
+                        ['class' => 'movehere']
+                    );
                 }
 
                 $sectionoutput .= $modulehtml;
             }
 
             if ($ismoving) {
-                $movingurl = new moodle_url('/course/mod.php', array('movetosection' => $section->id, 'sesskey' => sesskey()));
-                $sectionoutput .= html_writer::tag('li', html_writer::link($movingurl, '',
-                        array('title' => $strmovefull, 'class' => 'movehere')),
-                        array('class' => 'movehere'));
+                $movingurl = new moodle_url('/course/mod.php', ['movetosection' => $section->id, 'sesskey' => sesskey()]);
+                $sectionoutput .= html_writer::tag(
+                    'li',
+                    html_writer::link(
+                        $movingurl,
+                        '',
+                        ['title' => $strmovefull, 'class' => 'movehere']
+                    ),
+                    ['class' => 'movehere']
+                );
             }
         }
 
         // Always output the section module list.
-        $output .= html_writer::tag('ul', $sectionoutput, array('class' => 'section img-text'));
+        $output .= html_writer::tag('ul', $sectionoutput, ['class' => 'section img-text']);
 
         return $output;
     }
@@ -1593,7 +1671,7 @@ class format_trail_renderer extends section_renderer {
         $output = '';
         if ($modulehtml = $this->course_section_cm($course, $completioninfo, $mod, $sectionreturn, $displayoptions)) {
             $modclasses = 'activity ' . $mod->modname . ' modtype_' . $mod->modname . ' ' . $mod->extraclasses;
-            $output .= html_writer::tag('li', $modulehtml, array('class' => $modclasses, 'id' => 'module-' . $mod->id));
+            $output .= html_writer::tag('li', $modulehtml, ['class' => $modclasses, 'id' => 'module-' . $mod->id]);
         }
         return $output;
     }
@@ -1693,15 +1771,18 @@ class format_trail_renderer extends section_renderer {
                 $url = empty($value['url']) ? '' : $value['url'];
                 $icon = empty($value['icon']) ? '' : $value['icon'];
                 $name = empty($value['name']) ? '' : $value['name'];
-                $attr = empty($value['attr']) ? array() : $value['attr'];
+                $attr = empty($value['attr']) ? [] : $value['attr'];
                 $class = empty($value['pixattr']['class']) ? '' : $value['pixattr']['class'];
                 $al = new action_menu_link_secondary(
-                        new moodle_url($url), new pix_icon($icon, '', null, array('class' => "smallicon " . $class)), $name, $attr
+                    new moodle_url($url),
+                    new pix_icon($icon, '', null, ['class' => "smallicon " . $class]),
+                    $name,
+                    $attr
                 );
                 $menu->add($al);
             }
 
-            $o .= html_writer::div($this->render($menu), 'section_action_menu', array('data-sectionid' => $section->id));
+            $o .= html_writer::div($this->render($menu), 'section_action_menu', ['data-sectionid' => $section->id]);
         }
 
         return $o;
@@ -1717,7 +1798,7 @@ class format_trail_renderer extends section_renderer {
      */
     protected function section_edit_control_items_orig($course, $section, $onsectionpage = false) {
         if (!$this->page->user_is_editing()) {
-            return array();
+            return [];
         }
 
         $sectionreturn = $onsectionpage ? $section->section : null;
@@ -1729,7 +1810,7 @@ class format_trail_renderer extends section_renderer {
         $baseurl = course_get_url($course, $sectionreturn);
         $baseurl->param('sesskey', sesskey());
 
-        $controls = array();
+        $controls = [];
 
         if (!$isstealth && has_capability('moodle/course:update', $coursecontext)) {
             if ($section->section > 0 && get_string_manager()->string_exists('editsection', 'format_' . $course->format)) {
@@ -1738,12 +1819,12 @@ class format_trail_renderer extends section_renderer {
                 $streditsection = get_string('editsection');
             }
 
-            $controls['edit'] = array(
-                'url' => new moodle_url('/course/editsection.php', array('id' => $section->id, 'sr' => $sectionreturn)),
+            $controls['edit'] = [
+                'url' => new moodle_url('/course/editsection.php', ['id' => $section->id, 'sr' => $sectionreturn]),
                 'icon' => 'i/settings',
                 'name' => $streditsection,
-                'pixattr' => array('class' => ''),
-                'attr' => array('class' => 'icon edit'));
+                'pixattr' => ['class' => ''],
+                'attr' => ['class' => 'icon edit']];
         }
 
         if ($section->section) {
@@ -1753,23 +1834,23 @@ class format_trail_renderer extends section_renderer {
                     if ($section->visible) { // Show the hide/show eye.
                         $strhidefromothers = get_string('hidefromothers', 'format_' . $course->format);
                         $url->param('hide', $section->section);
-                        $controls['visiblity'] = array(
+                        $controls['visiblity'] = [
                             'url' => $url,
                             'icon' => 'i/hide',
                             'name' => $strhidefromothers,
-                            'pixattr' => array('class' => ''),
-                            'attr' => array('class' => 'icon editing_showhide',
-                                'data-sectionreturn' => $sectionreturn, 'data-action' => 'hide'));
+                            'pixattr' => ['class' => ''],
+                            'attr' => ['class' => 'icon editing_showhide',
+                                'data-sectionreturn' => $sectionreturn, 'data-action' => 'hide']];
                     } else {
                         $strshowfromothers = get_string('showfromothers', 'format_' . $course->format);
                         $url->param('show', $section->section);
-                        $controls['visiblity'] = array(
+                        $controls['visiblity'] = [
                             'url' => $url,
                             'icon' => 'i/show',
                             'name' => $strshowfromothers,
-                            'pixattr' => array('class' => ''),
-                            'attr' => array('class' => 'icon editing_showhide',
-                                'data-sectionreturn' => $sectionreturn, 'data-action' => 'show'));
+                            'pixattr' => ['class' => ''],
+                            'attr' => ['class' => 'icon editing_showhide',
+                                'data-sectionreturn' => $sectionreturn, 'data-action' => 'show']];
                     }
                 }
 
@@ -1780,12 +1861,12 @@ class format_trail_renderer extends section_renderer {
                             $url->param('section', $section->section);
                             $url->param('move', -1);
                             $strmoveup = get_string('moveup');
-                            $controls['moveup'] = array(
+                            $controls['moveup'] = [
                                 'url' => $url,
                                 'icon' => 'i/up',
                                 'name' => $strmoveup,
-                                'pixattr' => array('class' => ''),
-                                'attr' => array('class' => 'icon moveup'));
+                                'pixattr' => ['class' => ''],
+                                'attr' => ['class' => 'icon moveup']];
                         }
 
                         $url = clone($baseurl);
@@ -1793,12 +1874,12 @@ class format_trail_renderer extends section_renderer {
                             $url->param('section', $section->section);
                             $url->param('move', 1);
                             $strmovedown = get_string('movedown');
-                            $controls['movedown'] = array(
+                            $controls['movedown'] = [
                                 'url' => $url,
                                 'icon' => 'i/down',
                                 'name' => $strmovedown,
-                                'pixattr' => array('class' => ''),
-                                'attr' => array('class' => 'icon movedown'));
+                                'pixattr' => ['class' => ''],
+                                'attr' => ['class' => 'icon movedown']];
                         }
                     }
                 }
@@ -1810,17 +1891,17 @@ class format_trail_renderer extends section_renderer {
                 } else {
                     $strdelete = get_string('deletesection');
                 }
-                $url = new moodle_url('/course/editsection.php', array(
+                $url = new moodle_url('/course/editsection.php', [
                     'id' => $section->id,
                     'sr' => $sectionreturn,
                     'delete' => 1,
-                    'sesskey' => sesskey()));
-                $controls['delete'] = array(
+                    'sesskey' => sesskey()]);
+                $controls['delete'] = [
                     'url' => $url,
                     'icon' => 'i/delete',
                     'name' => $strdelete,
-                    'pixattr' => array('class' => ''),
-                    'attr' => array('class' => 'icon editing_delete'));
+                    'pixattr' => ['class' => ''],
+                    'attr' => ['class' => 'icon editing_delete']];
             }
         }
 
@@ -1858,7 +1939,9 @@ class format_trail_renderer extends section_renderer {
                 // Note: We only get to this function if availableinfo is non-empty,
                 // so there is definitely something to print.
                 $formattedinfo = info::format_info(
-                                $section->availableinfo, $section->course);
+                    $section->availableinfo,
+                    $section->course
+                );
                 $o .= $this->availability_info($formattedinfo, 'isrestricted');
             }
         } else if ($canviewhidden && !empty($CFG->enableavailability)) {
@@ -1867,7 +1950,9 @@ class format_trail_renderer extends section_renderer {
             $fullinfo = $ci->get_full_information();
             if ($fullinfo) {
                 $formattedinfo = info::format_info(
-                                $fullinfo, $section->course);
+                    $fullinfo,
+                    $section->course
+                );
                 $o .= $this->availability_info($formattedinfo, 'isrestricted isfullinfo');
             }
         }
@@ -1905,5 +1990,4 @@ class format_trail_renderer extends section_renderer {
 
         return $this->render_from_template('format_trail/availability', $datax);
     }
-
 }

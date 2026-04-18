@@ -66,5 +66,4 @@ class trail_image_form extends moodleform {
         // Buttons:...
         $this->add_action_buttons(true, get_string('savechanges', 'admin'));
     }
-
 }

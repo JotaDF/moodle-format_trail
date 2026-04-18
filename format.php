@@ -78,14 +78,17 @@ $renderer->set_portable($portable);
 
 $gfsettings = $courseformat->get_settings();
 $imageproperties = $courseformat->calculate_image_container_properties(
-        $gfsettings['imagecontainerwidth'], $gfsettings['imagecontainerratio'], $gfsettings['borderwidth']);
+    $gfsettings['imagecontainerwidth'],
+    $gfsettings['imagecontainerratio'],
+    $gfsettings['borderwidth']
+);
 
 echo '<style type="text/css" media="screen">';
 echo '/* <![CDATA[ */';
 echo ' #trailiconcontainer  ul.trailicons { position: relative;
     width: 565px;
     height: 200px;
-    background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/trilha'.$gfsettings['showbackground'].'_topo.png");
+    background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/trilha' . $gfsettings['showbackground'] . '_topo.png");
     background-repeat: no-repeat; ';
 $imagecontaineralignment = $gfsettings['imagecontaineralignment'];
 if ($imagecontaineralignment == 'left') {
@@ -148,14 +151,14 @@ echo '#like {
 echo '#trailiconcontainer  ul.impar { position: relative;
     width: 565px;
     height: 200px;
-    background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/trilha'.$gfsettings['showbackground'].'_meio_impar.png");
+    background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/trilha' . $gfsettings['showbackground'] . '_meio_impar.png");
     background-repeat: no-repeat; ';
 echo 'justify-content: ' . $imagecontaineralignment . ';';
 echo '} ';
 echo '#trailiconcontainer  ul.par { position: relative;
     width: 565px;
     height: 200px;
-    background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/trilha'.$gfsettings['showbackground'].'_meio_par.png");
+    background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/trilha' . $gfsettings['showbackground'] . '_meio_par.png");
     background-repeat: no-repeat; ';
 echo 'justify-content: ' . $imagecontaineralignment . ';';
 echo '}';
@@ -163,14 +166,14 @@ echo '}';
 echo '#trailiconcontainer  ul.fundopar { position: relative;
     width: 565px;
     height: 200px;
-    background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/trilha'.$gfsettings['showbackground'].'_fundo_par.png");
+    background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/trilha' . $gfsettings['showbackground'] . '_fundo_par.png");
     background-repeat: no-repeat; ';
 echo 'justify-content: ' . $imagecontaineralignment . ';';
 echo '} ';
 echo '#trailiconcontainer  ul.fundoimpar { position: relative;
     width: 565px;
     height: 200px;
-    background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/trilha'.$gfsettings['showbackground'].'_fundo_impar.png");
+    background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/trilha' . $gfsettings['showbackground'] . '_fundo_impar.png");
     background-repeat: no-repeat; ';
 echo 'justify-content: ' . $imagecontaineralignment . ';';
 echo '} ';
@@ -201,8 +204,10 @@ if ($gfsettings['bordercolour'][0] != '#') {
 }
 echo $gfsettings['bordercolour'] . ';';
 
-if ($gfsettings['imagecontainerbackgroundcolour'] != '999999'
-        && $gfsettings['imagecontainerbackgroundcolour'] != '#999999') {
+if (
+    $gfsettings['imagecontainerbackgroundcolour'] != '999999'
+        && $gfsettings['imagecontainerbackgroundcolour'] != '#999999'
+) {
     echo 'background-color: ';
     if ($gfsettings['imagecontainerbackgroundcolour'][0] != '#') {
         echo '#';
@@ -249,8 +254,10 @@ echo $gfsettings['currentselectedsectioncolour'] . ';';
 echo '}';
 
 echo '.course-content ul.trailicons li.currentselected {';
-if ($gfsettings['currentselectedimagecontainercolour'] == '999999'
-        || $gfsettings['currentselectedimagecontainercolour'] == '#999999') {
+if (
+    $gfsettings['currentselectedimagecontainercolour'] == '999999'
+        || $gfsettings['currentselectedimagecontainercolour'] == '#999999'
+) {
     echo 'background-color: rgba(12,11,44,0.2); border-radius: 15px;}';
 } else {
     echo 'background-color: ';
@@ -326,17 +333,17 @@ echo ' @media (max-width: 480px) {';
 echo ' #trailiconcontainer  ul.trailicons { position: relative;
     width: 250px;
     height: auto;
-    background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/trilha'.$gfsettings['showbackground'].'_topo_m.png");
+    background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/trilha' . $gfsettings['showbackground'] . '_topo_m.png");
     background-repeat: repeat-y; }';
 echo '#trailiconcontainer  ul.par { position: relative;
     width: 250px;
     height: auto;
-    background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/trilha'.$gfsettings['showbackground'].'_meio_m.png");
+    background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/trilha' . $gfsettings['showbackground'] . '_meio_m.png");
     background-repeat: repeat-y; }';
 echo '#trailiconcontainer  ul.impar { position: relative;
     width: 250px;
     height: auto;
-    background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/trilha'.$gfsettings['showbackground'].'_meio_m.png");
+    background-image:  url("' . $CFG->wwwroot . '/course/format/trail/pix/trilha' . $gfsettings['showbackground'] . '_meio_m.png");
     background-repeat: repeat-y; }';
 echo '}';
 

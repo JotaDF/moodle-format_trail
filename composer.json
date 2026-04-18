@@ -6,5 +6,9 @@
     },
     "extra": {
         "installer-name": "trail"
+    },
+    "require-dev": {
+        "moodlehq/moodle-cs": "*",
+        "squizlabs/php_codesniffer": "*"
     }
 }

@@ -30,7 +30,6 @@ defined('MOODLE_INTERNAL') || die;
 require_once($CFG->dirroot . '/course/format/trail/lib.php'); // For format_trail static constants.
 
 if ($ADMIN->fulltree) {
-
     /* Default course display.
      * Course display default, can be either one of:
      * COURSE_DISPLAY_SINGLEPAGE or - All sections on one page.
@@ -41,9 +40,9 @@ if ($ADMIN->fulltree) {
     $title = get_string('defaultcoursedisplay', 'format_trail');
     $description = get_string('defaultcoursedisplay_desc', 'format_trail');
     $default = COURSE_DISPLAY_SINGLEPAGE;
-    $choices = array(
-        COURSE_DISPLAY_SINGLEPAGE => new lang_string('coursedisplay_single')
-    );
+    $choices = [
+        COURSE_DISPLAY_SINGLEPAGE => new lang_string('coursedisplay_single'),
+    ];
     $settings->add(new admin_setting_configselect($name, $title, $description, $default, $choices));
 
     /* Container alignment. */
@@ -75,10 +74,10 @@ if ($ADMIN->fulltree) {
     $title = get_string('defaultimageresizemethod', 'format_trail');
     $description = get_string('defaultimageresizemethod_desc', 'format_trail');
     $default = format_trail::get_default_image_resize_method();
-    $choices = array(
-        1 => new lang_string('scale', 'format_trail'),   // Scale.
-        2 => new lang_string('crop', 'format_trail')   // Crop.
-    );
+    $choices = [
+        1 => new lang_string('scale', 'format_trail'), // Scale.
+        2 => new lang_string('crop', 'format_trail'), // Crop.
+    ];
     $settings->add(new admin_setting_configselect($name, $title, $description, $default, $choices));
 
     // Default border colour in hexadecimal RGB with preceding '#'.
@@ -102,10 +101,10 @@ if ($ADMIN->fulltree) {
     $title = get_string('defaultborderradius', 'format_trail');
     $description = get_string('defaultborderradius_desc', 'format_trail');
     $default = format_trail::get_default_border_radius();
-    $choices = array(
-        1 => new lang_string('off', 'format_trail'),   // Off.
-        2 => new lang_string('on', 'format_trail')   // On.
-    );
+    $choices = [
+        1 => new lang_string('off', 'format_trail'), // Off.
+        2 => new lang_string('on', 'format_trail'), // On.
+    ];
     $settings->add(new admin_setting_configselect($name, $title, $description, $default, $choices));
 
     // Default imagecontainer background colour in hexadecimal RGB with preceding '#'.
@@ -145,10 +144,10 @@ if ($ADMIN->fulltree) {
     $title = get_string('defaulthidesectiontitle', 'format_trail');
     $description = get_string('defaulthidesectiontitle_desc', 'format_trail');
     $default = format_trail::get_default_hide_section_title();
-    $choices = array(
-        1 => new lang_string('no'),   // No.
-        2 => new lang_string('yes')   // Yes.
-    );
+    $choices = [
+        1 => new lang_string('no'), // No.
+        2 => new lang_string('yes'), // Yes.
+    ];
     $settings->add(new admin_setting_configselect($name, $title, $description, $default, $choices));
 
     /* Section title in trail box maximum length with 0 for no truncation. */
@@ -163,10 +162,10 @@ if ($ADMIN->fulltree) {
     $title = get_string('defaultsectiontitleboxposition', 'format_trail');
     $description = get_string('defaultsectiontitleboxposition_desc', 'format_trail');
     $default = format_trail::get_default_section_title_box_position();
-    $choices = array(
+    $choices = [
         1 => new lang_string('sectiontitleboxpositioninside', 'format_trail'),
-        2 => new lang_string('sectiontitleboxpositionoutside', 'format_trail')
-    );
+        2 => new lang_string('sectiontitleboxpositionoutside', 'format_trail'),
+    ];
     $settings->add(new admin_setting_configselect($name, $title, $description, $default, $choices));
 
     /* Section title box inside position - 1 = Top, 2 = Middle, 3 = Bottom. */
@@ -174,11 +173,11 @@ if ($ADMIN->fulltree) {
     $title = get_string('defaultsectiontitleboxinsideposition', 'format_trail');
     $description = get_string('defaultsectiontitleboxinsideposition_desc', 'format_trail');
     $default = format_trail::get_default_section_title_box_inside_position();
-    $choices = array(
+    $choices = [
         1 => new lang_string('sectiontitleboxinsidepositiontop', 'format_trail'),
         2 => new lang_string('sectiontitleboxinsidepositionmiddle', 'format_trail'),
-        3 => new lang_string('sectiontitleboxinsidepositionbottom', 'format_trail')
-    );
+        3 => new lang_string('sectiontitleboxinsidepositionbottom', 'format_trail'),
+    ];
     $settings->add(new admin_setting_configselect($name, $title, $description, $default, $choices));
 
     /* Section title box height. */
@@ -233,10 +232,10 @@ if ($ADMIN->fulltree) {
     $title = get_string('defaultshowsectiontitlesummary', 'format_trail');
     $description = get_string('defaultshowsectiontitlesummary_desc', 'format_trail');
     $default = format_trail::get_default_show_section_title_summary();
-    $choices = array(
-        1 => new lang_string('no'),   // No.
-        2 => new lang_string('yes')   // Yes.
-    );
+    $choices = [
+        1 => new lang_string('no'), // No.
+        2 => new lang_string('yes'), // Yes.
+    ];
     $settings->add(new admin_setting_configselect($name, $title, $description, $default, $choices));
 
     /* Show section title summary on hover position - 1 = top, 2 = bottom, 3 = left and 4 = right. */
@@ -244,12 +243,12 @@ if ($ADMIN->fulltree) {
     $title = get_string('defaultsetshowsectiontitlesummaryposition', 'format_trail');
     $description = get_string('defaultsetshowsectiontitlesummaryposition_desc', 'format_trail');
     $default = format_trail::get_default_set_show_section_title_summary_position();
-    $choices = array(
+    $choices = [
         1 => new lang_string('top', 'format_trail'),
         2 => new lang_string('bottom', 'format_trail'),
         3 => new lang_string('left', 'format_trail'),
-        4 => new lang_string('right', 'format_trail')
-    );
+        4 => new lang_string('right', 'format_trail'),
+    ];
     $settings->add(new admin_setting_configselect($name, $title, $description, $default, $choices));
 
     /* Section title summary maximum length with 0 for no truncation. */
@@ -288,10 +287,10 @@ if ($ADMIN->fulltree) {
     $title = get_string('defaultnewactivity', 'format_trail');
     $description = get_string('defaultnewactivity_desc', 'format_trail');
     $default = 2;
-    $choices = array(
-        1 => new lang_string('no'),   // No.
-        2 => new lang_string('yes')   // Yes.
-    );
+    $choices = [
+        1 => new lang_string('no'), // No.
+        2 => new lang_string('yes'), // Yes.
+    ];
     $settings->add(new admin_setting_configselect($name, $title, $description, $default, $choices));
 
     /* Fix the section container popup to the screen. 1 = no, 2 = yes */
@@ -299,10 +298,10 @@ if ($ADMIN->fulltree) {
     $title = get_string('defaultfitsectioncontainertowindow', 'format_trail');
     $description = get_string('defaultfitsectioncontainertowindow_desc', 'format_trail');
     $default = 1;
-    $choices = array(
-        1 => new lang_string('no'),   // No.
-        2 => new lang_string('yes')   // Yes.
-    );
+    $choices = [
+        1 => new lang_string('no'), // No.
+        2 => new lang_string('yes'), // Yes.
+    ];
     $settings->add(new admin_setting_configselect($name, $title, $description, $default, $choices));
 
     /* Grey out hidden sections. */
@@ -310,10 +309,10 @@ if ($ADMIN->fulltree) {
     $title = get_string('greyouthidden', 'format_trail');
     $description = get_string('greyouthidden_desc', 'format_trail');
     $default = 1;
-    $choices = array(
-        1 => new lang_string('no'),   // No.
-        2 => new lang_string('yes')   // Yes.
-    );
+    $choices = [
+        1 => new lang_string('no'), // No.
+        2 => new lang_string('yes'), // Yes.
+    ];
     $settings->add(new admin_setting_configselect($name, $title, $description, $default, $choices));
 
     /* Section 0 on own page when out of the trail and course layout is 'Show one section per page'. */
@@ -321,10 +320,10 @@ if ($ADMIN->fulltree) {
     $title = get_string('defaultsection0ownpagenotrailonesection', 'format_trail');
     $description = get_string('defaultsection0ownpagenotrailonesection_desc', 'format_trail');
     $default = 1;
-    $choices = array(
-        1 => new lang_string('no'),   // No.
-        2 => new lang_string('yes')   // Yes.
-    );
+    $choices = [
+        1 => new lang_string('no'), // No.
+        2 => new lang_string('yes'), // Yes.
+    ];
     $settings->add(new admin_setting_configselect($name, $title, $description, $default, $choices));
 
     /* Custom mouse pointers - 1 = no, 2 = yes. */
@@ -332,23 +331,23 @@ if ($ADMIN->fulltree) {
     $title = get_string('custommousepointers', 'format_trail');
     $description = get_string('custommousepointers_desc', 'format_trail');
     $default = 2;
-    $choices = array(
-        1 => new lang_string('no'),   // No.
-        2 => new lang_string('yes')   // Yes.
-    );
+    $choices = [
+        1 => new lang_string('no'), // No.
+        2 => new lang_string('yes'), // Yes.
+    ];
     $settings->add(new admin_setting_configselect($name, $title, $description, $default, $choices));
     /* Show style background. */
     $name = 'format_trail/defaultsetshowbackground';
     $title = get_string('defaultsetshowbackground', 'format_trail');
     $description = get_string('defaultsetshowbackground', 'format_trail');
     $default = format_trail::get_default_set_show_background();
-    $choices = array(
+    $choices = [
         1 => new lang_string('tipo_pista', 'format_trail'),
-        5 => new lang_string('tipo_pista2', 'format_trail'),
         2 => new lang_string('tipo_rio', 'format_trail'),
         3 => new lang_string('tipo_quebra1', 'format_trail'),
         4 => new lang_string('tipo_quebra2', 'format_trail'),
-        5 => new lang_string('tipo_tesouro', 'format_trail')
-    );
+        5 => new lang_string('tipo_tesouro', 'format_trail'),
+        6 => new lang_string('tipo_pista2', 'format_trail'),
+    ];
     $settings->add(new admin_setting_configselect($name, $title, $description, $default, $choices));
 }
