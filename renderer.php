@@ -542,8 +542,8 @@ class format_trail_renderer extends section_renderer {
                 false
             );
 
-            echo html_writer::end_tag('div'); // trailshadebox_content.
-            echo html_writer::end_tag('div'); // trailshadebox.
+            echo html_writer::end_tag('div'); // End trailshadebox_content.
+            echo html_writer::end_tag('div'); // End trailshadebox.
         } else {
             // Edit mode or multi-page layout: render sections directly (always visible).
             echo $this->start_section_list();
@@ -567,7 +567,7 @@ class format_trail_renderer extends section_renderer {
         }
 
         echo html_writer::tag('div', '&nbsp;', ['class' => 'clearer']);
-        echo html_writer::end_tag('div'); // trailmiddle-column.
+        echo html_writer::end_tag('div'); // End trailmiddle-column.
 
         $sectionredirect = null;
         if ($course->coursedisplay == COURSE_DISPLAY_MULTIPAGE) {
