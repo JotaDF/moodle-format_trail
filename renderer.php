@@ -433,7 +433,8 @@ class format_trail_renderer extends section_renderer {
 
         $coursenumsections = $this->courseformat->get_last_section_number();
 
-        if (false && !(($course->coursedisplay == COURSE_DISPLAY_MULTIPAGE) && (!$editing))) {
+        if (!$editing && ($course->coursedisplay != COURSE_DISPLAY_MULTIPAGE)) {
+            // View mode (single-page layout): render sections inside the shadebox overlay.
             $trailshadeboxattributes = ['id' => 'trailshadebox'];
             if ($defaultcustommousepointers == 2) { // Yes.
                 $trailshadeboxattributes['class'] = 'trailcursor';
@@ -442,12 +443,10 @@ class format_trail_renderer extends section_renderer {
             echo html_writer::tag('div', '', ['id' => 'trailshadebox_overlay', 'style' => 'display: none;']);
 
             $trailshadeboxcontentclasses = ['hide_content'];
-            if (!$editing) {
-                if ($this->settings['fitsectioncontainertowindow'] == 2) {
-                    $trailshadeboxcontentclasses[] = 'fit_to_window';
-                } else {
-                    $trailshadeboxcontentclasses[] = 'absolute';
-                }
+            if ($this->settings['fitsectioncontainertowindow'] == 2) {
+                $trailshadeboxcontentclasses[] = 'fit_to_window';
+            } else {
+                $trailshadeboxcontentclasses[] = 'absolute';
             }
 
             echo html_writer::start_tag('div', ['id' => 'trailshadebox_content',
@@ -532,8 +531,6 @@ class format_trail_renderer extends section_renderer {
                 $this->make_block_topic0($course, $sections[0], $editing, $urlpicedit, $streditsummary, false);
             }
 
-            /* Now all the normal modules by topic.
-              Everything below uses "section" terminology - each "section" is a topic/module. */
             $this->make_block_topics(
                 $course,
                 $sections,
@@ -545,44 +542,47 @@ class format_trail_renderer extends section_renderer {
                 false
             );
 
-            echo html_writer::end_tag('div');
-            echo html_writer::end_tag('div');
-        }
+            echo html_writer::end_tag('div'); // trailshadebox_content.
+            echo html_writer::end_tag('div'); // trailshadebox.
+        } else {
+            // Edit mode or multi-page layout: render sections directly (always visible).
+            echo $this->start_section_list();
+            // If currently moving a file then show the current clipboard.
+            $this->make_block_show_clipboard_if_file_moving($course);
 
-                echo $this->start_section_list();
-                // If currently moving a file then show the current clipboard.
-                $this->make_block_show_clipboard_if_file_moving($course);
-
-                // Print Section 0 with general activities.
-        if (!$this->section0attop) {
+            if (!$this->section0attop) {
                 $this->make_block_topic0($course, $sections[0], $editing, $urlpicedit, $streditsummary, false);
+            }
+
+            $this->make_block_topics(
+                $course,
+                $sections,
+                $modinfo,
+                $editing,
+                $hascapvishidsect,
+                $streditsummary,
+                $urlpicedit,
+                false
+            );
         }
 
-                /* Now all the normal modules by topic.
-                    Everything below uses "section" terminology - each "section" is a topic/module. */
-                $this->make_block_topics(
-                    $course,
-                    $sections,
-                    $modinfo,
-                    $editing,
-                    $hascapvishidsect,
-                    $streditsummary,
-                    $urlpicedit,
-                    false
-                );
-
-                echo html_writer::tag('div', '&nbsp;', ['class' => 'clearer']);
-
-        echo html_writer::end_tag('div');
+        echo html_writer::tag('div', '&nbsp;', ['class' => 'clearer']);
+        echo html_writer::end_tag('div'); // trailmiddle-column.
 
         $sectionredirect = null;
         if ($course->coursedisplay == COURSE_DISPLAY_MULTIPAGE) {
-            // Get the redirect URL prefix for keyboard control with the 'Show one section per page' layout.
             $sectionredirect = $this->courseformat->get_view_url(null)->out(true);
         }
 
-        // Temporary compatibility fallback for Moodle 5.x: disable legacy trail JS initialisation.
-        // The legacy shadebox/navigation scripts can block UI interactions in modern themes.
+        // Initialise the AMD shadebox module in view mode (single-page layout only).
+        if (!$editing && $sectionredirect === null) {
+            $shadeboxshownarrayjson = json_encode($this->shadeboxshownarray);
+            $this->page->requires->js_call_amd(
+                'format_trail/shadebox',
+                'init',
+                [$shadeboxshownarrayjson, $coursenumsections, $this->initialsection]
+            );
+        }
     }
 
     /**
