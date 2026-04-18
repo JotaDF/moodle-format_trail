@@ -47,7 +47,7 @@ class moodlequickform_gfcolourpopup extends HTML_QuickForm_text implements templ
     /**
      * @var string $_helpbutton html for help button (used by MoodleQuickForm::addHelpButton).
      */
-    public $_helpbutton = '';
+    public $_helpbutton = ''; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * @var bool $hiddenlabel html for help button.
