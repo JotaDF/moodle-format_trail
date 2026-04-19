@@ -360,6 +360,7 @@ body.jsenabled #trailshadebox_content.hide_content {
     position: absolute;
     top: 0;
     width: 55px;
+    z-index: 115;
 }
 
 .trailshadebox_previous_area {

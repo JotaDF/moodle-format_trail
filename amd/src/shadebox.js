@@ -114,12 +114,18 @@ define(['jquery', 'core/log'], function($, log) {
     /**
      * Opens the shadebox overlay showing the given section.
      *
+     * Raises the Boost drawer-toggler buttons above the shadebox overlay
+     * (they have z-index: 2 by default, below the overlay at z-index: 100)
+     * so users can still open/close the course index and blocks drawers.
+     *
      * @param {number} idx Section number to open.
      */
     var open = function(idx) {
         displaySection(idx);
         $shadebox.show();
         isOpen = true;
+        // Lift drawer toggle buttons above the overlay so they remain clickable.
+        $('.drawer-toggler').css('z-index', 115);
     };
 
     /**
@@ -128,6 +134,8 @@ define(['jquery', 'core/log'], function($, log) {
     var close = function() {
         $shadebox.hide();
         isOpen = false;
+        // Restore default z-index for drawer toggle buttons.
+        $('.drawer-toggler').css('z-index', '');
     };
 
     return {
