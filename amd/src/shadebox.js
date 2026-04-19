@@ -114,18 +114,12 @@ define(['jquery', 'core/log'], function($, log) {
     /**
      * Opens the shadebox overlay showing the given section.
      *
-     * Raises the Boost drawer-toggler buttons above the shadebox overlay
-     * (they have z-index: 2 by default, below the overlay at z-index: 100)
-     * so users can still open/close the course index and blocks drawers.
-     *
      * @param {number} idx Section number to open.
      */
     var open = function(idx) {
         displaySection(idx);
         $shadebox.show();
         isOpen = true;
-        // Lift drawer toggle buttons above the overlay so they remain clickable.
-        $('.drawer-toggler').css('z-index', 115);
     };
 
     /**
@@ -134,8 +128,6 @@ define(['jquery', 'core/log'], function($, log) {
     var close = function() {
         $shadebox.hide();
         isOpen = false;
-        // Restore default z-index for drawer toggle buttons.
-        $('.drawer-toggler').css('z-index', '');
     };
 
     return {
@@ -188,9 +180,22 @@ define(['jquery', 'core/log'], function($, log) {
                 }
             });
 
-            // Overlay click — close.
-            $overlay.on('click', function(e) {
-                e.preventDefault();
+            // Click outside shadebox content — close.
+            // The overlay is pointer-events:none (purely visual), so clicks
+            // on the dark backdrop reach the document and we close here.
+            $(document).on('click', function(e) {
+                if (!isOpen) {
+                    return;
+                }
+                var $target = $(e.target);
+                // Do not close if the click is inside the shadebox content or controls.
+                if ($target.closest('#trailshadebox_content, #trailshadebox_previous, #trailshadebox_next, #trailshadebox_close').length) {
+                    return;
+                }
+                // Do not close if the click is on a trail card (it will open another section).
+                if ($target.closest('ul.trailicons').length) {
+                    return;
+                }
                 close();
             });
 

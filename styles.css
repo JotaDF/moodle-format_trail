@@ -264,9 +264,11 @@ div#trailshadebox_overlay {
 #trailshadebox_content,
 #trailshadebox_close,
 #trailshadebox_next,
-#trailshadebox_overlay,
 #trailshadebox_previous {
     pointer-events: auto;
+}
+#trailshadebox_overlay {
+    pointer-events: none;
 }
 #trailshadebox_content {
     background: #fff;
