@@ -279,24 +279,22 @@ body.jsenabled #trailshadebox_content.hide_content {
 #trailshadebox_content.absolute,
 #trailshadebox_content.fit_to_window {
     left: 50%;
-    max-height: 85vh;
+    max-height: calc(100vh - 84px);
     max-width: 860px;
-    overflow-y: auto;
-    padding: 0.5rem 1rem 1rem;
+    padding: 2.5rem 1rem 1rem;
     position: fixed;
-    top: 5vh;
+    top: 72px;
     transform: translateX(-50%);
     width: 90%;
     z-index: 110;
 }
 
+#trailshadebox_content.absolute ul.gtopics,
 #trailshadebox_content.fit_to_window ul.gtopics {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
     box-sizing: border-box;
-    height: 100%;
     margin: 0;
-    overflow: auto;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
     padding: 10px;
 }
 
@@ -334,10 +332,9 @@ body.jsenabled #trailshadebox_content.hide_content {
 }
 
 #trailshadebox_close {
-    display: block;
-    margin-left: auto;
-    position: sticky;
-    top: 4px;
+    position: absolute;
+    right: 8px;
+    top: 8px;
     z-index: 120;
 }
 
