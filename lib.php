@@ -126,6 +126,15 @@ class format_trail extends course_format {
     }
 
     /**
+     * Whether this format uses the course index drawer.
+     *
+     * @return bool True to enable the course index sidebar.
+     */
+    public function uses_course_index(): bool {
+        return true;
+    }
+
+    /**
      * States if section 0 is at the top.
      *
      * @return string The default value for the section name.
