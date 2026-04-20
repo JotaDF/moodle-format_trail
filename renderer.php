@@ -673,7 +673,7 @@ class format_trail_renderer extends section_renderer {
         $sectionname = $this->courseformat->get_section_name($sectionzero);
         echo html_writer::start_tag('li', [
             'id' => 'section-0',
-            'class' => 'section main' . ($this->section0attop ? '' : ' trail_section' . ($editing ? '' : ' hide_section')),
+            'class' => 'section main course-section' . ($this->section0attop ? '' : ' trail_section' . ($editing ? '' : ' hide_section')),
             'role' => 'region',
             'aria-label' => $sectionname]);
 
@@ -687,18 +687,6 @@ class format_trail_renderer extends section_renderer {
 
         echo $this->format_summary_text($sectionzero);
 
-        if ($editing) {
-            echo html_writer::link(
-                new moodle_url(
-                    'editsection.php',
-                    ['id' => $sectionzero->id]
-                ),
-                html_writer::empty_tag('img', ['src' => $urlpicedit,
-                        'alt' => $streditsummary,
-                'class' => 'iconsmall edit']),
-                ['title' => $streditsummary]
-            );
-        }
         echo html_writer::end_tag('div');
 
         echo $this->course_section_cm_list($course, $sectionzero, 0);
@@ -1267,7 +1255,7 @@ class format_trail_renderer extends section_renderer {
                 continue;
             }
 
-            $sectionstyle = 'section main';
+            $sectionstyle = 'section main course-section';
             if (!$thissection->visible) {
                 $sectionstyle .= ' hidden';
             }
@@ -1309,17 +1297,6 @@ class format_trail_renderer extends section_renderer {
 
                 echo $this->format_summary_text($thissection);
 
-                if ($editing) {
-                    echo html_writer::link(
-                        new moodle_url(
-                            'editsection.php',
-                            ['id' => $thissection->id]
-                        ),
-                        html_writer::empty_tag('img', ['src' => $urlpicedit, 'alt' => $streditsummary,
-                        'class' => 'iconsmall edit']),
-                        ['title' => $streditsummary]
-                    );
-                }
                 echo html_writer::end_tag('div');
 
                 echo $this->section_availability_message(
@@ -1765,7 +1742,7 @@ class format_trail_renderer extends section_renderer {
         $o = "";
         if (!empty($controls)) {
             $menu = new action_menu();
-            $menu->set_menu_trigger(get_string('edit'));
+            $menu->set_kebab_trigger(get_string('edit'), $this->output);
             $menu->attributes['class'] .= ' section-actions';
             foreach ($controls as $value) {
                 $url = empty($value['url']) ? '' : $value['url'];
