@@ -99,12 +99,7 @@ class format_trail_renderer extends section_renderer {
      * @return string HTML to output.
      */
     protected function start_section_list() {
-        global $CFG;
-        $attrs = ['class' => 'gtopics', 'id' => 'gtopics'];
-        if ($CFG->version >= 2024120300) {
-            $attrs['data-for'] = 'course_sectionlist';
-        }
-        return html_writer::start_tag('ul', $attrs);
+        return html_writer::start_tag('ul', ['class' => 'gtopics', 'id' => 'gtopics']);
     }
 
     /**
@@ -357,9 +352,13 @@ class format_trail_renderer extends section_renderer {
             echo $completioninfo->display_help_icon();
 
             echo $this->course_section_cm_list($course, $thissection, $displaysection);
-            if (method_exists($this, 'course_section_add_cm_control')) {
-                echo $this->course_section_add_cm_control($course, $thissection->section, $displaysection);
+            if (method_exists($this->courserenderer, "section_add_cm_controls")) {
+                echo $this->courserenderer->section_add_cm_controls($this->courseformat, $thissection);
+            } else if (method_exists($this, "course_section_add_cm_control")) {
+                echo $this->course_section_add_cm_control($course, $thissection->section);
             }
+            echo $this->section_footer();
+            echo $this->end_section_list();
 
             // Display section bottom navigation.
             $sectionbottomnav = '';
@@ -688,19 +687,11 @@ class format_trail_renderer extends section_renderer {
 
         $sectionname = $this->courseformat->get_section_name($sectionzero);
         $extraclasses = $this->section0attop ? '' : ' trail_section' . ($editing ? '' : ' hide_section');
-        $li0attrs = [
+        echo html_writer::start_tag('li', [
             'id' => 'section-0',
             'class' => 'section main course-section' . $extraclasses,
             'role' => 'region',
-            'aria-label' => $sectionname];
-        global $CFG;
-        if ($CFG->version >= 2024120300) {
-            $li0attrs['data-for'] = 'section';
-            $li0attrs['data-id'] = $sectionzero->id;
-            $li0attrs['data-number'] = 0;
-            $li0attrs['data-sectionname'] = $sectionname;
-        }
-        echo html_writer::start_tag('li', $li0attrs);
+            'aria-label' => $sectionname]);
 
         echo html_writer::start_tag('div', ['class' => 'content']);
 
@@ -717,7 +708,9 @@ class format_trail_renderer extends section_renderer {
         echo $this->course_section_cm_list($course, $sectionzero, 0);
 
         if ($editing) {
-            if (method_exists($this, 'course_section_add_cm_control')) {
+            if (method_exists($this->courserenderer, "section_add_cm_controls")) {
+                echo $this->courserenderer->section_add_cm_controls($this->courseformat, $sectionzero);
+            } else if (method_exists($this, "course_section_add_cm_control")) {
                 echo $this->course_section_add_cm_control($course, $sectionzero->section);
             }
         }
@@ -1300,25 +1293,17 @@ class format_trail_renderer extends section_renderer {
             } else {
                 $title = $sectionname;
             }
-            $liattrs = [
+            echo html_writer::start_tag('li', [
                 'id' => 'section-' . $section,
                 'class' => $sectionstyle,
                 'role' => 'region',
-                'aria-label' => $sectionname];
-            global $CFG;
-            if ($CFG->version >= 2024120300) {
-                $liattrs['data-for'] = 'section';
-                $liattrs['data-id'] = $thissection->id;
-                $liattrs['data-number'] = $section;
-                $liattrs['data-sectionname'] = $sectionname;
-            }
-            echo html_writer::start_tag('li', $liattrs);
+                'aria-label' => $sectionname]);
 
             $collapsecontentid = 'trailsectioncollapse-' . $thissection->id;
 
             if ($editing) {
-                // Build modern Moodle 5 section header: collapse toggle + title + action menu.
-                // Detect Bootstrap version: Moodle 5.x uses Bootstrap 5 (data-bs-toggle, visually-hidden).
+                // Build section header: collapse toggle + title + action menu.
+                // Detect Bootstrap version: Moodle 5.x uses BS5, Moodle 4.x uses BS4.
                 global $CFG;
                 $isbs5 = ($CFG->version >= 2024120300);
                 $bstoggleattr = $isbs5 ? 'data-bs-toggle' : 'data-toggle';
@@ -1411,9 +1396,11 @@ class format_trail_renderer extends section_renderer {
                 );
 
                 echo $this->course_section_cm_list($course, $thissection, 0);
-                if (method_exists($this, 'course_section_add_cm_control')) {
-                    echo $this->course_section_add_cm_control($course, $thissection->section);
-                }
+                if (method_exists($this->courserenderer, "section_add_cm_controls")) {
+                echo $this->courserenderer->section_add_cm_controls($this->courseformat, $thissection);
+            } else if (method_exists($this, "course_section_add_cm_control")) {
+                echo $this->course_section_add_cm_control($course, $thissection->section);
+            }
             } else {
                 echo html_writer::tag('h2', $this->get_title($thissection));
                 echo html_writer::tag('p', get_string('hidden_topic', 'format_trail'));
