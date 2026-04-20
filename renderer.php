@@ -1329,8 +1329,10 @@ class format_trail_renderer extends section_renderer {
                         'id' => 'sectionid-' . $thissection->id . '-title',
                     ]
                 );
-                $editcontrols = $this->section_edit_control_items($course, $thissection, $onsectionpage);
-                $menu = $this->section_edit_control_menu($editcontrols, $course, $thissection);
+                $controlmenuclass = $this->courseformat->get_output_classname('content\\section\\controlmenu');
+                $controlmenuobj = new $controlmenuclass($this->courseformat, $thissection);
+                $actionmenu = $controlmenuobj->get_action_menu($this->output);
+                $menu = $actionmenu ? $this->render($actionmenu) : '';
                 echo html_writer::start_tag('div', [
                     'class' => 'course-section-header d-flex align-items-center',
                     'data-for' => 'section_title',
@@ -1789,8 +1791,10 @@ class format_trail_renderer extends section_renderer {
     protected function section_right_content($section, $course, $onsectionpage) {
         $o = $this->output->spacer();
 
-        $controls = $this->section_edit_control_items($course, $section, $onsectionpage);
-        $o .= $this->section_edit_control_menu($controls, $course, $section);
+        $controlmenuclass = $this->courseformat->get_output_classname('content\\section\\controlmenu');
+        $controlmenuobj = new $controlmenuclass($this->courseformat, $section);
+        $actionmenu = $controlmenuobj->get_action_menu($this->output);
+        $o .= $actionmenu ? $this->render($actionmenu) : '';
 
         return $o;
     }
