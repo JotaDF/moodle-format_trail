@@ -574,6 +574,17 @@ class format_trail_renderer extends section_renderer {
             $sectionredirect = $this->courseformat->get_view_url(null)->out(true);
         }
 
+        // Initialise the core courseformat reactive state when editing.
+        // This adds the `stateready` class to #page, which makes `waitstate` elements
+        // (e.g. the drag-to-move activity action) visible.
+        if ($editing) {
+            $this->page->requires->js_call_amd(
+                'core_courseformat/local/content',
+                'init',
+                ['#page', [], 0, null]
+            );
+        }
+
         // Initialise the AMD shadebox module in view mode (single-page layout only).
         if (!$editing && $sectionredirect === null) {
             $shadeboxshownarrayjson = json_encode($this->shadeboxshownarray);
