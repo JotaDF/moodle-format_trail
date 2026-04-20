@@ -1297,12 +1297,17 @@ class format_trail_renderer extends section_renderer {
 
             if ($editing) {
                 // Build modern Moodle 5 section header: collapse toggle + title + action menu.
+                // Detect Bootstrap version: Moodle 5.x uses Bootstrap 5 (data-bs-toggle, visually-hidden).
+                global $CFG;
+                $isbs5 = ($CFG->version >= 2024120300);
+                $bstoggleattr = $isbs5 ? 'data-bs-toggle' : 'data-toggle';
+                $srclass = $isbs5 ? 'visually-hidden' : 'sr-only';
                 $collapsetitle = get_string('collapse', 'core');
                 $expandtitle = get_string('expand', 'core');
                 $expandedicon = html_writer::tag(
                     'span',
                     $this->output->pix_icon('t/expandedchevron', $collapsetitle) .
-                        html_writer::tag('span', $collapsetitle, ['class' => 'sr-only']),
+                        html_writer::tag('span', $collapsetitle, ['class' => $srclass]),
                     ['class' => 'expanded-icon icon-no-margin p-2', 'title' => $collapsetitle]
                 );
                 $collapsedicon = html_writer::tag(
@@ -1317,7 +1322,7 @@ class format_trail_renderer extends section_renderer {
                         $this->output->pix_icon('t/collapsedchevron_rtl', $expandtitle),
                         ['class' => 'dir-ltr-hide']
                     ) .
-                    html_writer::tag('span', $expandtitle, ['class' => 'sr-only']),
+                    html_writer::tag('span', $expandtitle, ['class' => $srclass]),
                     ['class' => 'collapsed-icon icon-no-margin p-2', 'title' => $expandtitle]
                 );
                 $togglebtn = html_writer::tag(
@@ -1325,7 +1330,7 @@ class format_trail_renderer extends section_renderer {
                     $expandedicon . $collapsedicon,
                     [
                         'role' => 'button',
-                        'data-toggle' => 'collapse',
+                        $bstoggleattr => 'collapse',
                         'data-for' => 'sectiontoggler',
                         'href' => '#' . $collapsecontentid,
                         'aria-expanded' => 'true',
