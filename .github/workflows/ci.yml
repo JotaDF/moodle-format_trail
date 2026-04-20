@@ -35,8 +35,8 @@ jobs:
           - {moodle-branch: 'main', php: '8.3', database: 'mariadb'}
           - {moodle-branch: 'MOODLE_501_STABLE', php: '8.3', database: 'pgsql'}
           - {moodle-branch: 'MOODLE_501_STABLE', php: '8.3', database: 'mariadb'}
-          - {moodle-branch: 'MOODLE_500_STABLE', php: '8.2', database: 'pgsql'}
-          - {moodle-branch: 'MOODLE_500_STABLE', php: '8.2', database: 'mariadb'}
+          - {moodle-branch: 'MOODLE_500_STABLE', php: '8.2', database: 'pgsql', noinit: true}
+          - {moodle-branch: 'MOODLE_500_STABLE', php: '8.2', database: 'mariadb', noinit: true}
           - {moodle-branch: 'MOODLE_405_STABLE', php: '8.2', database: 'pgsql'}
           - {moodle-branch: 'MOODLE_405_STABLE', php: '8.2', database: 'mariadb'}
 
@@ -63,7 +63,7 @@ jobs:
           echo "NVM_DIR=$HOME/.nvm" >> $GITHUB_ENV
 
       - name: Install moodle-plugin-ci
-        run: moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1
+        run: moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1 ${{ matrix.noinit && '--no-init' || '' }}
         env:
           DB: ${{ matrix.database }}
           MOODLE_BRANCH: ${{ matrix.moodle-branch }}

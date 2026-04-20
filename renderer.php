@@ -352,9 +352,9 @@ class format_trail_renderer extends section_renderer {
             echo $completioninfo->display_help_icon();
 
             echo $this->course_section_cm_list($course, $thissection, $displaysection);
-            if (method_exists($this->courserenderer, "section_add_cm_controls")) {
+            if (method_exists($this->courserenderer, 'section_add_cm_controls')) {
                 echo $this->courserenderer->section_add_cm_controls($this->courseformat, $thissection);
-            } else if (method_exists($this, "course_section_add_cm_control")) {
+            } else if (method_exists($this, 'course_section_add_cm_control')) {
                 echo $this->course_section_add_cm_control($course, $thissection->section);
             }
             echo $this->section_footer();
@@ -708,9 +708,9 @@ class format_trail_renderer extends section_renderer {
         echo $this->course_section_cm_list($course, $sectionzero, 0);
 
         if ($editing) {
-            if (method_exists($this->courserenderer, "section_add_cm_controls")) {
+            if (method_exists($this->courserenderer, 'section_add_cm_controls')) {
                 echo $this->courserenderer->section_add_cm_controls($this->courseformat, $sectionzero);
-            } else if (method_exists($this, "course_section_add_cm_control")) {
+            } else if (method_exists($this, 'course_section_add_cm_control')) {
                 echo $this->course_section_add_cm_control($course, $sectionzero->section);
             }
         }
@@ -1396,11 +1396,11 @@ class format_trail_renderer extends section_renderer {
                 );
 
                 echo $this->course_section_cm_list($course, $thissection, 0);
-                if (method_exists($this->courserenderer, "section_add_cm_controls")) {
-                echo $this->courserenderer->section_add_cm_controls($this->courseformat, $thissection);
-            } else if (method_exists($this, "course_section_add_cm_control")) {
-                echo $this->course_section_add_cm_control($course, $thissection->section);
-            }
+                if (method_exists($this->courserenderer, 'section_add_cm_controls')) {
+                    echo $this->courserenderer->section_add_cm_controls($this->courseformat, $thissection);
+                } else if (method_exists($this, 'course_section_add_cm_control')) {
+                    echo $this->course_section_add_cm_control($course, $thissection->section);
+                }
             } else {
                 echo html_writer::tag('h2', $this->get_title($thissection));
                 echo html_writer::tag('p', get_string('hidden_topic', 'format_trail'));
