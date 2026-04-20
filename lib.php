@@ -19,6 +19,7 @@
  *
  * @package    format_trail
  * @copyright  &copy; 2019 Jose Wilson  in respect to modifications of grid format.
+ * @copyright  2026 Jean Lúcio (Moodle 4.5/5.x compatibility)
  * @author     &copy; 2012 G J Barnard in respect to modifications of standard topics format.
  * @author     G J Barnard - {@link http://about.me/gjbarnard} and
  *                           {@link http://moodle.org/user/profile.php?id=442195}
@@ -36,6 +37,7 @@ require_once($CFG->dirroot . '/course/format/lib.php'); // For format_base.
  *
  * @package    format_trail
  * @copyright  &copy; 2019 Jose Wilson  in respect to modifications of grid format.
+ * @copyright  2026 Jean Lúcio (Moodle 4.5/5.x compatibility)
  * @author     &copy; 2012 G J Barnard in respect to modifications of standard topics format.
  */
 class format_trail extends course_format {
