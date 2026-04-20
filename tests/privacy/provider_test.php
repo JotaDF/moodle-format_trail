@@ -35,7 +35,7 @@ use format_trail\privacy\provider;
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @covers     \format_trail\privacy\provider
  */
-class provider_test extends provider_testcase {
+final class provider_test extends provider_testcase {
     /**
      * Test that the plugin correctly declares it stores no personal data.
      *

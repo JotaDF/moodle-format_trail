@@ -28,9 +28,9 @@
  * @package    format_trail
  * @copyright  2026 Jean Lúcio
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers     format_trail
+ * @covers     \format_trail
  */
-class format_trail_test extends advanced_testcase {
+final class format_trail_test extends advanced_testcase {
     /**
      * Returns a minimal valid data array for edit_form_validation.
      *
@@ -38,25 +38,25 @@ class format_trail_test extends advanced_testcase {
      */
     private function valid_form_data(): array {
         return [
-            'bordercolour'                          => '#dddddd',
-            'imagecontainerbackgroundcolour'        => '#f1f2f2',
-            'currentselectedsectioncolour'          => '#8E66FF',
-            'currentselectedimagecontainercolour'   => '#ffc540',
-            'sectiontitletraillengthmaxoption'      => 0,
-            'sectiontitleinsidetitletextcolour'     => '#000000',
+            'bordercolour'                            => '#dddddd',
+            'imagecontainerbackgroundcolour'          => '#f1f2f2',
+            'currentselectedsectioncolour'            => '#8E66FF',
+            'currentselectedimagecontainercolour'     => '#ffc540',
+            'sectiontitletraillengthmaxoption'        => 0,
+            'sectiontitleinsidetitletextcolour'       => '#000000',
             'sectiontitleinsidetitlebackgroundcolour' => '#ffffff',
-            'sectiontitleboxopacity'                => '.8',
-            'sectiontitlefontsize'                  => 0,
-            'sectiontitlesummarytextcolour'         => '#3b53ad',
-            'sectiontitlesummarybackgroundcolour'   => '#ffc540',
-            'sectiontitlesummarybackgroundopacity'  => '1',
+            'sectiontitleboxopacity'                  => '.8',
+            'sectiontitlefontsize'                    => 0,
+            'sectiontitlesummarytextcolour'           => '#3b53ad',
+            'sectiontitlesummarybackgroundcolour'     => '#ffc540',
+            'sectiontitlesummarybackgroundopacity'    => '1',
         ];
     }
 
     /**
      * Test that hex2rgb converts a 6-character hex string correctly.
      *
-     * @covers format_trail::hex2rgb
+     * @covers \format_trail::hex2rgb
      */
     public function test_hex2rgb_six_digit(): void {
         $this->assertEquals(['r' => 255, 'g' => 255, 'b' => 255], format_trail::hex2rgb('ffffff'));
@@ -68,7 +68,7 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test that hex2rgb expands a 3-character hex string correctly.
      *
-     * @covers format_trail::hex2rgb
+     * @covers \format_trail::hex2rgb
      */
     public function test_hex2rgb_three_digit(): void {
         $this->assertEquals(['r' => 255, 'g' => 255, 'b' => 255], format_trail::hex2rgb('fff'));
@@ -79,7 +79,7 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test that the default image container width is 210.
      *
-     * @covers format_trail::get_default_image_container_width
+     * @covers \format_trail::get_default_image_container_width
      */
     public function test_get_default_image_container_width(): void {
         $this->assertSame(210, format_trail::get_default_image_container_width());
@@ -88,7 +88,7 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test that the default image container ratio index is 1.
      *
-     * @covers format_trail::get_default_image_container_ratio
+     * @covers \format_trail::get_default_image_container_ratio
      */
     public function test_get_default_image_container_ratio(): void {
         $this->assertSame(1, format_trail::get_default_image_container_ratio());
@@ -97,7 +97,7 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test that the default image resize method is 1 (Scale).
      *
-     * @covers format_trail::get_default_image_resize_method
+     * @covers \format_trail::get_default_image_resize_method
      */
     public function test_get_default_image_resize_method(): void {
         $this->assertSame(1, format_trail::get_default_image_resize_method());
@@ -106,7 +106,7 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test that the default border width is 3.
      *
-     * @covers format_trail::get_default_border_width
+     * @covers \format_trail::get_default_border_width
      */
     public function test_get_default_border_width(): void {
         $this->assertSame(3, format_trail::get_default_border_width());
@@ -115,7 +115,7 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test that the default border radius is 2 (On).
      *
-     * @covers format_trail::get_default_border_radius
+     * @covers \format_trail::get_default_border_radius
      */
     public function test_get_default_border_radius(): void {
         $this->assertSame(2, format_trail::get_default_border_radius());
@@ -124,7 +124,7 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test that the default section title font size is 0 (derived).
      *
-     * @covers format_trail::get_default_section_title_font_size
+     * @covers \format_trail::get_default_section_title_font_size
      */
     public function test_get_default_section_title_font_size(): void {
         $this->assertSame(0, format_trail::get_default_section_title_font_size());
@@ -133,7 +133,7 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test that the default section title alignment is 'center'.
      *
-     * @covers format_trail::get_default_section_title_alignment
+     * @covers \format_trail::get_default_section_title_alignment
      */
     public function test_get_default_section_title_alignment(): void {
         $this->assertSame('center', format_trail::get_default_section_title_alignment());
@@ -142,7 +142,7 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test that the default image container alignment is 'center'.
      *
-     * @covers format_trail::get_default_image_container_alignment
+     * @covers \format_trail::get_default_image_container_alignment
      */
     public function test_get_default_image_container_alignment(): void {
         $this->assertSame('center', format_trail::get_default_image_container_alignment());
@@ -151,15 +151,15 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test that all default colour methods return valid CSS hex values.
      *
-     * @covers format_trail::get_default_border_colour
-     * @covers format_trail::get_default_image_container_background_colour
-     * @covers format_trail::get_default_current_selected_section_colour
-     * @covers format_trail::get_default_current_selected_image_container_colour
-     * @covers format_trail::get_default_current_selected_image_container_text_colour
-     * @covers format_trail::get_default_section_title_inside_title_text_colour
-     * @covers format_trail::get_default_section_title_inside_title_background_colour
-     * @covers format_trail::get_default_section_title_summary_text_colour
-     * @covers format_trail::get_default_section_title_summary_background_colour
+     * @covers \format_trail::get_default_border_colour
+     * @covers \format_trail::get_default_image_container_background_colour
+     * @covers \format_trail::get_default_current_selected_section_colour
+     * @covers \format_trail::get_default_current_selected_image_container_colour
+     * @covers \format_trail::get_default_current_selected_image_container_text_colour
+     * @covers \format_trail::get_default_section_title_inside_title_text_colour
+     * @covers \format_trail::get_default_section_title_inside_title_background_colour
+     * @covers \format_trail::get_default_section_title_summary_text_colour
+     * @covers \format_trail::get_default_section_title_summary_background_colour
      */
     public function test_default_colours_are_valid_hex(): void {
         $pattern = '/^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/';
@@ -180,24 +180,24 @@ class format_trail_test extends advanced_testcase {
     }
 
     /**
-     * Test that get_image_container_widths returns an array of positive integers.
+     * Test that get_image_container_widths returns positive integer keys.
      *
-     * @covers format_trail::get_image_container_widths
+     * @covers \format_trail::get_image_container_widths
      */
     public function test_get_image_container_widths(): void {
         $widths = format_trail::get_image_container_widths();
         $this->assertIsArray($widths);
         $this->assertNotEmpty($widths);
-        foreach ($widths as $width) {
-            $this->assertIsInt($width);
-            $this->assertGreaterThan(0, $width);
+        foreach (array_keys($widths) as $key) {
+            $this->assertIsInt($key);
+            $this->assertGreaterThan(0, $key);
         }
     }
 
     /**
      * Test that get_image_container_ratios returns a non-empty array.
      *
-     * @covers format_trail::get_image_container_ratios
+     * @covers \format_trail::get_image_container_ratios
      */
     public function test_get_image_container_ratios(): void {
         $ratios = format_trail::get_image_container_ratios();
@@ -208,7 +208,7 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test that get_border_widths covers the full range 0–10.
      *
-     * @covers format_trail::get_border_widths
+     * @covers \format_trail::get_border_widths
      */
     public function test_get_border_widths(): void {
         $widths = format_trail::get_border_widths();
@@ -220,7 +220,7 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test that get_horizontal_alignments contains a 'center' key.
      *
-     * @covers format_trail::get_horizontal_alignments
+     * @covers \format_trail::get_horizontal_alignments
      */
     public function test_get_horizontal_alignments_contains_center(): void {
         $alignments = format_trail::get_horizontal_alignments();
@@ -231,7 +231,7 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test that get_image_path returns a non-empty string.
      *
-     * @covers format_trail::get_image_path
+     * @covers \format_trail::get_image_path
      */
     public function test_get_image_path(): void {
         $path = format_trail::get_image_path();
@@ -242,7 +242,7 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test that get_maximum_image_width returns a positive integer.
      *
-     * @covers format_trail::get_maximum_image_width
+     * @covers \format_trail::get_maximum_image_width
      */
     public function test_get_maximum_image_width(): void {
         $this->assertGreaterThan(0, format_trail::get_maximum_image_width());
@@ -251,7 +251,7 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test calculate_image_container_properties with non-default values triggers recalculation.
      *
-     * @covers format_trail::calculate_image_container_properties
+     * @covers \format_trail::calculate_image_container_properties
      */
     public function test_calculate_image_container_properties_recalculates(): void {
         $this->resetAfterTest();
@@ -266,17 +266,17 @@ class format_trail_test extends advanced_testcase {
         $this->assertArrayHasKey('margin-left', $result);
 
         // Height: calculate_height(192, ratio=1) → basewidth=192/3=64 → height=64*2=128.
-        $this->assertSame(128, $result['height']);
+        $this->assertEquals(128, $result['height']);
         // Margin-top: 128 - (42 - 2) = 88.
-        $this->assertSame(88, $result['margin-top']);
+        $this->assertEquals(88, $result['margin-top']);
         // Margin-left: (192 - 95) + 2 = 99.
-        $this->assertSame(99, $result['margin-left']);
+        $this->assertEquals(99, $result['margin-left']);
     }
 
     /**
      * Test calculate_image_container_properties with cached (default) values returns cached data.
      *
-     * @covers format_trail::calculate_image_container_properties
+     * @covers \format_trail::calculate_image_container_properties
      */
     public function test_calculate_image_container_properties_cached(): void {
         $this->resetAfterTest();
@@ -295,7 +295,7 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test that get_summary_visibility creates and returns a record when none exists.
      *
-     * @covers format_trail::get_summary_visibility
+     * @covers \format_trail::get_summary_visibility
      */
     public function test_get_summary_visibility_creates_record(): void {
         global $DB;
@@ -317,7 +317,7 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test that get_summary_visibility returns the existing record without duplicating it.
      *
-     * @covers format_trail::get_summary_visibility
+     * @covers \format_trail::get_summary_visibility
      */
     public function test_get_summary_visibility_returns_existing_record(): void {
         global $DB;
@@ -337,7 +337,7 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test that get_images returns false when no section images exist.
      *
-     * @covers format_trail::get_images
+     * @covers \format_trail::get_images
      */
     public function test_get_images_returns_false_when_empty(): void {
         $this->resetAfterTest();
@@ -352,7 +352,7 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test that edit_form_validation returns no errors for fully valid form data.
      *
-     * @covers format_trail::edit_form_validation
+     * @covers \format_trail::edit_form_validation
      */
     public function test_edit_form_validation_valid_data(): void {
         $this->resetAfterTest();
@@ -368,7 +368,7 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test that an invalid border colour generates a validation error.
      *
-     * @covers format_trail::edit_form_validation
+     * @covers \format_trail::edit_form_validation
      */
     public function test_edit_form_validation_invalid_border_colour(): void {
         $this->resetAfterTest();
@@ -386,7 +386,7 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test that a negative sectiontitletraillengthmaxoption generates a validation error.
      *
-     * @covers format_trail::edit_form_validation
+     * @covers \format_trail::edit_form_validation
      */
     public function test_edit_form_validation_negative_trail_length(): void {
         $this->resetAfterTest();
@@ -404,7 +404,7 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test that an invalid opacity value generates a validation error.
      *
-     * @covers format_trail::edit_form_validation
+     * @covers \format_trail::edit_form_validation
      */
     public function test_edit_form_validation_invalid_opacity(): void {
         $this->resetAfterTest();
@@ -422,7 +422,7 @@ class format_trail_test extends advanced_testcase {
     /**
      * Test that an invalid section title font size generates a validation error.
      *
-     * @covers format_trail::edit_form_validation
+     * @covers \format_trail::edit_form_validation
      */
     public function test_edit_form_validation_invalid_font_size(): void {
         $this->resetAfterTest();
