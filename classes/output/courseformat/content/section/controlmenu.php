@@ -12,7 +12,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Contains the section control menu output class for format_trail.
@@ -39,7 +39,6 @@ use core_courseformat\output\local\content\section\controlmenu as controlmenu_ba
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class controlmenu extends controlmenu_base {
-
     /**
      * Generate the edit control items of a section.
      *
