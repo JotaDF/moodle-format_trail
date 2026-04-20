@@ -52,7 +52,8 @@ class controlmenu extends controlmenu_base {
             return $parentcontrols;
         }
 
-        if (!has_capability('moodle/course:setcurrentsection', $this->coursecontext)) {
+        $coursecontext = \context_course::instance($this->format->get_course()->id);
+        if (!has_capability('moodle/course:setcurrentsection', $coursecontext)) {
             return $parentcontrols;
         }
 
