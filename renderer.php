@@ -352,9 +352,9 @@ class format_trail_renderer extends section_renderer {
             echo $completioninfo->display_help_icon();
 
             echo $this->course_section_cm_list($course, $thissection, $displaysection);
-            echo $this->courserenderer->section_add_cm_controls($this->courseformat, $thissection);
-            echo $this->section_footer();
-            echo $this->end_section_list();
+            if (method_exists($this, 'course_section_add_cm_control')) {
+                echo $this->course_section_add_cm_control($course, $thissection->section, $displaysection);
+            }
 
             // Display section bottom navigation.
             $sectionbottomnav = '';
@@ -704,7 +704,9 @@ class format_trail_renderer extends section_renderer {
         echo $this->course_section_cm_list($course, $sectionzero, 0);
 
         if ($editing) {
-            echo $this->courserenderer->section_add_cm_controls($this->courseformat, $sectionzero);
+            if (method_exists($this, 'course_section_add_cm_control')) {
+                echo $this->course_section_add_cm_control($course, $sectionzero->section);
+            }
         }
         echo html_writer::end_tag('div');
         echo html_writer::end_tag('li');
@@ -1383,7 +1385,9 @@ class format_trail_renderer extends section_renderer {
                 );
 
                 echo $this->course_section_cm_list($course, $thissection, 0);
-                echo $this->courserenderer->section_add_cm_controls($this->courseformat, $thissection);
+                if (method_exists($this, 'course_section_add_cm_control')) {
+                    echo $this->course_section_add_cm_control($course, $thissection->section);
+                }
             } else {
                 echo html_writer::tag('h2', $this->get_title($thissection));
                 echo html_writer::tag('p', get_string('hidden_topic', 'format_trail'));
