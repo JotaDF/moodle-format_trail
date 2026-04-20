@@ -24,15 +24,14 @@
 
 namespace format_trail\output\courseformat\content\section;
 
-use core\output\action_menu\link_secondary as action_menu_link_secondary;
-use core\output\pix_icon;
 use core_courseformat\output\local\content\section\controlmenu as controlmenu_base;
+use moodle_url;
 
 /**
  * Renders the section control menu for format_trail.
  *
  * Extends the core control menu to add the Highlight/Unhighlight action,
- * mirroring the behaviour of format_topics.
+ * mirroring the behaviour of format_topics. Compatible with Moodle 4.5 and 5.x.
  *
  * @package    format_trail
  * @copyright  2026 Jean Lúcio
@@ -45,6 +44,7 @@ class controlmenu extends controlmenu_base {
      * @return array of edit control items
      */
     public function section_control_items(): array {
+        $format = $this->format;
         $section = $this->section;
         $parentcontrols = parent::section_control_items();
 
@@ -52,20 +52,36 @@ class controlmenu extends controlmenu_base {
             return $parentcontrols;
         }
 
-        $coursecontext = \context_course::instance($this->format->get_course()->id);
+        $coursecontext = \context_course::instance($format->get_course()->id);
         if (!has_capability('moodle/course:setcurrentsection', $coursecontext)) {
             return $parentcontrols;
         }
 
-        return $this->add_control_after($parentcontrols, 'edit', 'highlight', $this->get_section_highlight_item());
+        $controls = ['highlight' => $this->get_section_highlight_item()];
+
+        if (array_key_exists('edit', $parentcontrols)) {
+            $merged = [];
+            foreach ($parentcontrols as $key => $action) {
+                $merged[$key] = $action;
+                if ($key === 'edit') {
+                    $merged = array_merge($merged, $controls);
+                }
+            }
+            return $merged;
+        }
+
+        return array_merge($controls, $parentcontrols);
     }
 
     /**
-     * Return the highlight/unhighlight action menu item for the section.
+     * Return the highlight/unhighlight control item for the section.
      *
-     * @return action_menu_link_secondary the menu item
+     * Returns an array compatible with the legacy section control items format
+     * used in Moodle 4.x and 5.x.
+     *
+     * @return array the control item
      */
-    protected function get_section_highlight_item(): action_menu_link_secondary {
+    protected function get_section_highlight_item(): array {
         $format = $this->format;
         $section = $this->section;
         $course = $format->get_course();
@@ -73,28 +89,40 @@ class controlmenu extends controlmenu_base {
 
         $highlightoff = get_string('highlightoff');
         $highlightofficon = 'i/marked';
-
         $highlighton = get_string('highlight');
         $highlightonicon = 'i/marker';
 
+        $url = new moodle_url('/course/view.php', ['id' => $course->id, 'sesskey' => sesskey()]);
+        if (!is_null($sectionreturn)) {
+            $url->param('sectionid', $format->get_sectionid());
+        }
+
         if ($course->marker == $section->sectionnum) {
-            $action = 'section_unhighlight';
-            $icon = $highlightofficon;
-            $name = $highlightoff;
-            $attributes = [
-                'class' => 'editing_highlight',
-                'data-action' => 'sectionUnhighlight',
-                'data-sectionreturn' => $sectionreturn,
-                'data-id' => $section->id,
-                'data-icon' => $highlightofficon,
-                'data-swapname' => $highlighton,
-                'data-swapicon' => $highlightonicon,
+            $url->param('marker', 0);
+            return [
+                'url' => $url,
+                'icon' => $highlightofficon,
+                'name' => $highlightoff,
+                'pixattr' => ['class' => ''],
+                'attr' => [
+                    'class' => 'editing_highlight',
+                    'data-action' => 'sectionUnhighlight',
+                    'data-sectionreturn' => $sectionreturn,
+                    'data-id' => $section->id,
+                    'data-icon' => $highlightofficon,
+                    'data-swapname' => $highlighton,
+                    'data-swapicon' => $highlightonicon,
+                ],
             ];
-        } else {
-            $action = 'section_highlight';
-            $icon = $highlightonicon;
-            $name = $highlighton;
-            $attributes = [
+        }
+
+        $url->param('marker', $section->sectionnum);
+        return [
+            'url' => $url,
+            'icon' => $highlightonicon,
+            'name' => $highlighton,
+            'pixattr' => ['class' => ''],
+            'attr' => [
                 'class' => 'editing_highlight',
                 'data-action' => 'sectionHighlight',
                 'data-sectionreturn' => $sectionreturn,
@@ -102,20 +130,7 @@ class controlmenu extends controlmenu_base {
                 'data-icon' => $highlightonicon,
                 'data-swapname' => $highlightoff,
                 'data-swapicon' => $highlightofficon,
-            ];
-        }
-
-        $url = $this->format->get_update_url(
-            action: $action,
-            ids: [$section->id],
-            returnurl: $this->baseurl,
-        );
-
-        return new action_menu_link_secondary(
-            url: $url,
-            icon: new pix_icon($icon, ''),
-            text: $name,
-            attributes: $attributes,
-        );
+            ],
+        ];
     }
 }
