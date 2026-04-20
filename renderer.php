@@ -671,9 +671,10 @@ class format_trail_renderer extends section_renderer {
         }
 
         $sectionname = $this->courseformat->get_section_name($sectionzero);
+        $extraclasses = $this->section0attop ? '' : ' trail_section' . ($editing ? '' : ' hide_section');
         echo html_writer::start_tag('li', [
             'id' => 'section-0',
-            'class' => 'section main course-section' . ($this->section0attop ? '' : ' trail_section' . ($editing ? '' : ' hide_section')),
+            'class' => 'section main course-section' . $extraclasses,
             'role' => 'region',
             'aria-label' => $sectionname]);
 
@@ -1279,19 +1280,83 @@ class format_trail_renderer extends section_renderer {
                 'role' => 'region',
                 'aria-label' => $sectionname]);
 
+            $collapsecontentid = 'trailsectioncollapse-' . $thissection->id;
+
             if ($editing) {
-                // Note, 'left side' is BEFORE content.
-                $leftcontent = $this->section_left_content($thissection, $course, $onsectionpage);
-                echo html_writer::tag('div', $leftcontent, ['class' => 'left side']);
-                // Note, 'right side' is BEFORE content.
-                $rightcontent = $this->section_right_content($thissection, $course, $onsectionpage);
-                echo html_writer::tag('div', $rightcontent, ['class' => 'right side']);
+                // Build modern Moodle 5 section header: collapse toggle + title + action menu.
+                $collapsetitle = get_string('collapse', 'core');
+                $expandtitle = get_string('expand', 'core');
+                $expandedicon = html_writer::tag(
+                    'span',
+                    $this->output->pix_icon('t/expandedchevron', $collapsetitle) .
+                        html_writer::tag('span', $collapsetitle, ['class' => 'visually-hidden']),
+                    ['class' => 'expanded-icon icon-no-margin p-2', 'title' => $collapsetitle]
+                );
+                $collapsedicon = html_writer::tag(
+                    'span',
+                    html_writer::tag(
+                        'span',
+                        $this->output->pix_icon('t/collapsedchevron', $expandtitle),
+                        ['class' => 'dir-rtl-hide']
+                    ) .
+                    html_writer::tag(
+                        'span',
+                        $this->output->pix_icon('t/collapsedchevron_rtl', $expandtitle),
+                        ['class' => 'dir-ltr-hide']
+                    ) .
+                    html_writer::tag('span', $expandtitle, ['class' => 'visually-hidden']),
+                    ['class' => 'collapsed-icon icon-no-margin p-2', 'title' => $expandtitle]
+                );
+                $togglebtn = html_writer::tag(
+                    'a',
+                    $expandedicon . $collapsedicon,
+                    [
+                        'role' => 'button',
+                        'data-bs-toggle' => 'collapse',
+                        'data-for' => 'sectiontoggler',
+                        'href' => '#' . $collapsecontentid,
+                        'aria-expanded' => 'true',
+                        'aria-controls' => $collapsecontentid,
+                        'class' => 'btn btn-icon me-3 icons-collapse-expand',
+                        'aria-label' => $sectionname,
+                    ]
+                );
+                $heading = html_writer::tag(
+                    'h3',
+                    $title,
+                    [
+                        'class' => 'h4 sectionname course-content-item d-flex align-self-stretch align-items-center mb-0',
+                        'id' => 'sectionid-' . $thissection->id . '-title',
+                    ]
+                );
+                $editcontrols = $this->section_edit_control_items($course, $thissection, $onsectionpage);
+                $menu = $this->section_edit_control_menu($editcontrols, $course, $thissection);
+                echo html_writer::start_tag('div', [
+                    'class' => 'course-section-header d-flex align-items-center',
+                    'data-for' => 'section_title',
+                    'data-id' => $thissection->id,
+                    'data-number' => $section,
+                ]);
+                echo html_writer::tag(
+                    'div',
+                    $togglebtn . $heading,
+                    ['class' => 'd-flex align-items-center position-relative flex-fill']
+                );
+                echo $menu;
+                echo html_writer::end_tag('div');
+                echo html_writer::start_tag('div', [
+                    'id' => $collapsecontentid,
+                    'class' => 'content collapse show',
+                ]);
+            } else {
+                echo html_writer::start_tag('div', ['class' => 'content']);
             }
 
-            echo html_writer::start_tag('div', ['class' => 'content']);
             if ($hascapvishidsect || ($thissection->visible && $thissection->available)) {
-                // If visible.
-                echo $this->output->heading($title, 3, 'sectionname');
+                if (!$editing) {
+                    // In view mode, heading stays inside the content div.
+                    echo $this->output->heading($title, 3, 'sectionname');
+                }
 
                 echo html_writer::start_tag('div', ['class' => 'summary']);
 
