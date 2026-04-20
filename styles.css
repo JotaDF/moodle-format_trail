@@ -236,6 +236,14 @@ img.iconsmall.edit {
 .course-content li.trail_section {
     clear: both;
 }
+
+/* Edit mode: wrap each section in a visible card matching the standard format_topics style. */
+body.editing .course-content li.trail_section {
+    border: 1px solid var(--bs-border-color, #dee2e6);
+    border-radius: 1rem;
+    margin-top: 0.5rem;
+    padding: 1rem;
+}
 /* @end */
 
 /* @group Shadebox */
