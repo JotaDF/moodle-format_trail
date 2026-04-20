@@ -41,6 +41,9 @@ class controlmenu extends controlmenu_base {
     /**
      * Generate the edit control items of a section.
      *
+     * Uses add_control_after() with action_menu_link_secondary on Moodle 5.x,
+     * and falls back to manual array merge with legacy array format on Moodle 4.x.
+     *
      * @return array of edit control items
      */
     public function section_control_items(): array {
@@ -57,8 +60,18 @@ class controlmenu extends controlmenu_base {
             return $parentcontrols;
         }
 
-        $controls = ['highlight' => $this->get_section_highlight_item()];
+        if (method_exists($this, 'add_control_after')) {
+            // Moodle 5.x: add_control_after() and action_menu_link_secondary are available.
+            return $this->add_control_after(
+                $parentcontrols,
+                'edit',
+                'highlight',
+                $this->build_highlight_item_modern()
+            );
+        }
 
+        // Moodle 4.x: manual array merge using the legacy control item format.
+        $controls = ['highlight' => $this->build_highlight_item_legacy()];
         if (array_key_exists('edit', $parentcontrols)) {
             $merged = [];
             foreach ($parentcontrols as $key => $action) {
@@ -74,14 +87,69 @@ class controlmenu extends controlmenu_base {
     }
 
     /**
-     * Return the highlight/unhighlight control item for the section.
+     * Return the highlight/unhighlight item for Moodle 5.x using action_menu_link_secondary.
      *
-     * Returns an array compatible with the legacy section control items format
-     * used in Moodle 4.x and 5.x.
+     * @return \core\output\action_menu\link_secondary the menu item
+     */
+    protected function build_highlight_item_modern(): \core\output\action_menu\link_secondary {
+        $format = $this->format;
+        $section = $this->section;
+        $course = $format->get_course();
+        $sectionreturn = $format->get_sectionnum();
+
+        $highlightoff = get_string('highlightoff');
+        $highlightofficon = 'i/marked';
+        $highlighton = get_string('highlight');
+        $highlightonicon = 'i/marker';
+
+        if ($course->marker == $section->sectionnum) {
+            $action = 'section_unhighlight';
+            $icon = $highlightofficon;
+            $name = $highlightoff;
+            $attributes = [
+                'class' => 'editing_highlight',
+                'data-action' => 'sectionUnhighlight',
+                'data-sectionreturn' => $sectionreturn,
+                'data-id' => $section->id,
+                'data-icon' => $highlightofficon,
+                'data-swapname' => $highlighton,
+                'data-swapicon' => $highlightonicon,
+            ];
+        } else {
+            $action = 'section_highlight';
+            $icon = $highlightonicon;
+            $name = $highlighton;
+            $attributes = [
+                'class' => 'editing_highlight',
+                'data-action' => 'sectionHighlight',
+                'data-sectionreturn' => $sectionreturn,
+                'data-id' => $section->id,
+                'data-icon' => $highlightonicon,
+                'data-swapname' => $highlightoff,
+                'data-swapicon' => $highlightofficon,
+            ];
+        }
+
+        $url = $this->format->get_update_url(
+            action: $action,
+            ids: [$section->id],
+            returnurl: $this->baseurl,
+        );
+
+        return new \core\output\action_menu\link_secondary(
+            url: $url,
+            icon: new \core\output\pix_icon($icon, ''),
+            text: $name,
+            attributes: $attributes,
+        );
+    }
+
+    /**
+     * Return the highlight/unhighlight item for Moodle 4.x using the legacy array format.
      *
      * @return array the control item
      */
-    protected function get_section_highlight_item(): array {
+    protected function build_highlight_item_legacy(): array {
         $format = $this->format;
         $section = $this->section;
         $course = $format->get_course();
