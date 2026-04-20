@@ -1302,7 +1302,7 @@ class format_trail_renderer extends section_renderer {
                 $expandedicon = html_writer::tag(
                     'span',
                     $this->output->pix_icon('t/expandedchevron', $collapsetitle) .
-                        html_writer::tag('span', $collapsetitle, ['class' => 'visually-hidden']),
+                        html_writer::tag('span', $collapsetitle, ['class' => 'sr-only']),
                     ['class' => 'expanded-icon icon-no-margin p-2', 'title' => $collapsetitle]
                 );
                 $collapsedicon = html_writer::tag(
@@ -1317,7 +1317,7 @@ class format_trail_renderer extends section_renderer {
                         $this->output->pix_icon('t/collapsedchevron_rtl', $expandtitle),
                         ['class' => 'dir-ltr-hide']
                     ) .
-                    html_writer::tag('span', $expandtitle, ['class' => 'visually-hidden']),
+                    html_writer::tag('span', $expandtitle, ['class' => 'sr-only']),
                     ['class' => 'collapsed-icon icon-no-margin p-2', 'title' => $expandtitle]
                 );
                 $togglebtn = html_writer::tag(
@@ -1325,7 +1325,7 @@ class format_trail_renderer extends section_renderer {
                     $expandedicon . $collapsedicon,
                     [
                         'role' => 'button',
-                        'data-bs-toggle' => 'collapse',
+                        'data-toggle' => 'collapse',
                         'data-for' => 'sectiontoggler',
                         'href' => '#' . $collapsecontentid,
                         'aria-expanded' => 'true',
