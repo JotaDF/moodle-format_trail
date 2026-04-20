@@ -99,7 +99,12 @@ class format_trail_renderer extends section_renderer {
      * @return string HTML to output.
      */
     protected function start_section_list() {
-        return html_writer::start_tag('ul', ['class' => 'gtopics', 'id' => 'gtopics']);
+        global $CFG;
+        $attrs = ['class' => 'gtopics', 'id' => 'gtopics'];
+        if ($CFG->version >= 2024120300) {
+            $attrs['data-for'] = 'course_sectionlist';
+        }
+        return html_writer::start_tag('ul', $attrs);
     }
 
     /**
@@ -683,11 +688,19 @@ class format_trail_renderer extends section_renderer {
 
         $sectionname = $this->courseformat->get_section_name($sectionzero);
         $extraclasses = $this->section0attop ? '' : ' trail_section' . ($editing ? '' : ' hide_section');
-        echo html_writer::start_tag('li', [
+        $li0attrs = [
             'id' => 'section-0',
             'class' => 'section main course-section' . $extraclasses,
             'role' => 'region',
-            'aria-label' => $sectionname]);
+            'aria-label' => $sectionname];
+        global $CFG;
+        if ($CFG->version >= 2024120300) {
+            $li0attrs['data-for'] = 'section';
+            $li0attrs['data-id'] = $sectionzero->id;
+            $li0attrs['data-number'] = 0;
+            $li0attrs['data-sectionname'] = $sectionname;
+        }
+        echo html_writer::start_tag('li', $li0attrs);
 
         echo html_writer::start_tag('div', ['class' => 'content']);
 
@@ -1287,11 +1300,19 @@ class format_trail_renderer extends section_renderer {
             } else {
                 $title = $sectionname;
             }
-            echo html_writer::start_tag('li', [
+            $liattrs = [
                 'id' => 'section-' . $section,
                 'class' => $sectionstyle,
                 'role' => 'region',
-                'aria-label' => $sectionname]);
+                'aria-label' => $sectionname];
+            global $CFG;
+            if ($CFG->version >= 2024120300) {
+                $liattrs['data-for'] = 'section';
+                $liattrs['data-id'] = $thissection->id;
+                $liattrs['data-number'] = $section;
+                $liattrs['data-sectionname'] = $sectionname;
+            }
+            echo html_writer::start_tag('li', $liattrs);
 
             $collapsecontentid = 'trailsectioncollapse-' . $thissection->id;
 
