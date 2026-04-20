@@ -19,6 +19,7 @@
  *
  * @package    format_trail
  * @copyright  &copy; 2019 Jose Wilson  in respect to modifications of grid format.
+ * @copyright  2026 Jean Lúcio (Moodle 4.5/5.x compatibility)
  * @author     &copy; 2012 G J Barnard in respect to modifications of standard topics format.
  * @author     G J Barnard - {@link http://about.me/gjbarnard} and
  *                           {@link http://moodle.org/user/profile.php?id=442195}
@@ -29,10 +30,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 // Plugin version.
-$plugin->version = 2024091721;
+$plugin->version = 2026042001;
 
 // Required Moodle version.
-$plugin->requires  = 2022041900.00; // Moodle 4.0 (Build: 20220419).
+$plugin->requires  = 2024100700.00; // Moodle 4.5 (Build: 20241007).
 
 // Full name of the plugin.
 $plugin->component = 'format_trail';
@@ -41,4 +42,4 @@ $plugin->component = 'format_trail';
 $plugin->maturity = MATURITY_BETA;
 
 // User-friendly version number.
-$plugin->release = '4.4.0.0';
+$plugin->release = '5.0.0.0';
