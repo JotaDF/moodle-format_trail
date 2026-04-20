@@ -137,7 +137,7 @@ module.exports = function(grunt) { // jshint ignore:line
     grunt.registerTask("default", ["watch"]);
     grunt.registerTask("decache", ["exec:decache"]);
 
-    grunt.registerTask("amd", ["jshint", "uglify", "decache"]);
+    grunt.registerTask("amd", ["jshint", "uglify"]);
 
     // Compatibility stubs for moodle-plugin-ci grunt.
     grunt.registerTask("yui", function() {
