@@ -22,7 +22,7 @@
  * @author     &copy; 2012 G J Barnard in respect to modifications of standard topics format.
  * @author     G J Barnard - {@link http://about.me/gjbarnard} and
  *                           {@link http://moodle.org/user/profile.php?id=442195}
- * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  */
 
@@ -30,7 +30,6 @@
  * Provides the information to backup trail course format
  */
 class backup_format_trail_plugin extends backup_format_plugin {
-
     /**
      * Returns the format information to attach to course element
      */
@@ -41,14 +40,13 @@ class backup_format_trail_plugin extends backup_format_plugin {
 
         // Create one standard named plugin element (the visible container).
         // The courseid not required as populated on restore.
-        $pluginwrapper = new backup_nested_element($this->get_recommended_name(), null, array('showsummary'));
+        $pluginwrapper = new backup_nested_element($this->get_recommended_name(), null, ['showsummary']);
 
         // Connect the visible container ASAP.
         $plugin->add_child($pluginwrapper);
 
         // Set source to populate the data.
-        $pluginwrapper->set_source_table('format_trail_summary', array(
-            'courseid' => backup::VAR_PARENTID));
+        $pluginwrapper->set_source_table('format_trail_summary', ['courseid' => backup::VAR_PARENTID]);
 
         // Temporarily remove the generated images so that they are not in the backup.
         $this->delete_displayed_images();
@@ -68,7 +66,7 @@ class backup_format_trail_plugin extends backup_format_plugin {
           course is not in the 'trail' format.
          */
         $courseid = $this->task->get_courseid();
-        $format = $DB->get_field('course', 'format', array('id' => $courseid));
+        $format = $DB->get_field('course', 'format', ['id' => $courseid]);
         if ($format != 'trail') {
             return;
         }
@@ -90,17 +88,15 @@ class backup_format_trail_plugin extends backup_format_plugin {
 
         // Create one standard named plugin element (the visible container).
         // The sectionid and courseid not required as populated on restore.
-        $pluginwrapper = new backup_nested_element($this->get_recommended_name(), null, array('image'));
+        $pluginwrapper = new backup_nested_element($this->get_recommended_name(), null, ['image']);
 
         // Connect the visible container ASAP.
         $plugin->add_child($pluginwrapper);
 
         // Set source to populate the data.
-        $pluginwrapper->set_source_table('format_trail_icon', array(
-            'sectionid' => backup::VAR_SECTIONID));
+        $pluginwrapper->set_source_table('format_trail_icon', ['sectionid' => backup::VAR_SECTIONID]);
 
         // Don't need to annotate ids nor files.
         return $plugin;
     }
-
 }

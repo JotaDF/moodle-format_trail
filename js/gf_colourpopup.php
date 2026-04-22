@@ -35,7 +35,6 @@ require_once("HTML/QuickForm/text.php");
  * @author     &copy; 2012 G J Barnard in respect to modifications of standard topics format.
  */
 class moodlequickform_gfcolourpopup extends HTML_QuickForm_text implements templatable {
-
     use templatable_form_element {
         export_for_template as export_for_template_base;
     }
@@ -46,7 +45,12 @@ class moodlequickform_gfcolourpopup extends HTML_QuickForm_text implements templ
     public $helpbutton = '';
 
     /**
-     * @var boolean $hiddenlabel html for help button.
+     * @var string $_helpbutton html for help button (used by MoodleQuickForm::addHelpButton).
+     */
+    public $_helpbutton = ''; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+
+    /**
+     * @var bool $hiddenlabel html for help button.
      */
     public $hiddenlabel = false;
 
@@ -84,20 +88,20 @@ class moodlequickform_gfcolourpopup extends HTML_QuickForm_text implements templ
         global $CFG, $COURSE, $USER, $PAGE, $OUTPUT;
         $id = $this->getAttribute('id');
         $PAGE->requires->js('/course/format/trail/js/gf_colourpopup.js');
-        $PAGE->requires->js_init_call('M.util.init_gfcolour_popup', array($id));
+        $PAGE->requires->js_init_call('M.util.init_gfcolour_popup', [$id]);
         $colour = $this->getValue();
         if ((!empty($colour)) && ($colour[0] == '#')) {
             $colour = substr($colour, 1);
         }
         $content = "<input size='8' name='" . $this->getName() . "' value='" . $colour . "'id='{$id}' type='text' " .
                 $this->_getAttrString($this->_attributes) . " >";
-        $content .= html_writer::tag('span', '&nbsp;', array('id' => 'colpicked_' . $id, 'tabindex' => '-1',
+        $content .= html_writer::tag('span', '&nbsp;', ['id' => 'colpicked_' . $id, 'tabindex' => '-1',
                     'style' => 'background-color: #' . $colour .
-                    '; cursor: pointer; margin: 0; padding: 0 8px; border: 1px solid black'));
-        $content .= html_writer::start_tag('div', array('id' => 'colpick_' . $id,
+                    '; cursor: pointer; margin: 0; padding: 0 8px; border: 1px solid black']);
+        $content .= html_writer::start_tag('div', ['id' => 'colpick_' . $id,
                     'style' => "display:none; position:absolute; z-index:500;",
-                    'class' => 'form-colourpicker defaultsnext'));
-        $content .= html_writer::tag('div', '', array('class' => 'admin_colourpicker clearfix'));
+                    'class' => 'form-colourpicker defaultsnext']);
+        $content .= html_writer::tag('div', '', ['class' => 'admin_colourpicker clearfix']);
         $content .= html_writer::end_tag('div');
         return $content;
     }
@@ -115,7 +119,7 @@ class moodlequickform_gfcolourpopup extends HTML_QuickForm_text implements templ
         static $idx = 1;
 
         if (!$this->getAttribute('id')) {
-            $this->updateAttributes(array('id' => 'id_' . substr(md5(microtime() . $idx++), 0, 6)));
+            $this->updateAttributes(['id' => 'id_' . substr(md5(microtime() . $idx++), 0, 6)]);
         }
     }
 
@@ -135,7 +139,7 @@ class moodlequickform_gfcolourpopup extends HTML_QuickForm_text implements templ
      * @return  string html for help button
      */
     public function gethelpbutton() {
-        return $this->helpbutton;
+        return $this->_helpbutton ?: $this->helpbutton;
     }
 
     /**
@@ -165,5 +169,4 @@ class moodlequickform_gfcolourpopup extends HTML_QuickForm_text implements templ
         $context['staticlabel'] = false; // Not a static label!
         return $context;
     }
-
 }

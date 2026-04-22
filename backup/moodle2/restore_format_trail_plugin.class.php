@@ -22,7 +22,7 @@
  * @author     &copy; 2012 G J Barnard in respect to modifications of standard topics format.
  * @author     G J Barnard - {@link http://about.me/gjbarnard} and
  *                           {@link http://moodle.org/user/profile.php?id=442195}
- * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  */
 defined('MOODLE_INTERNAL') || die();
@@ -36,7 +36,6 @@ require_once($CFG->dirroot . '/course/format/trail/lib.php');
  * @author     &copy; 2012 G J Barnard in respect to modifications of standard topics format.
  */
 class restore_format_trail_plugin extends restore_format_plugin {
-
     /** @var int */
     protected $originalnumsections = 0;
 
@@ -68,16 +67,19 @@ class restore_format_trail_plugin extends restore_format_plugin {
         /* Since this method is executed before the restore we can do some pre-checks here.
            In case of merging backup into existing course find the current number of sections. */
         $target = $this->step->get_task()->get_target();
-        if (($target == backup::TARGET_CURRENT_ADDING || $target == backup::TARGET_EXISTING_ADDING) &&
-                $this->need_restore_numsections()) {
+        if (
+            ($target == backup::TARGET_CURRENT_ADDING || $target == backup::TARGET_EXISTING_ADDING) &&
+            $this->need_restore_numsections()
+        ) {
             global $DB;
             $maxsection = $DB->get_field_sql(
                 'SELECT max(section) FROM {course_sections} WHERE course = ?',
-                [$this->step->get_task()->get_courseid()]);
+                [$this->step->get_task()->get_courseid()]
+            );
             $this->originalnumsections = (int)$maxsection;
         }
 
-        $paths = array();
+        $paths = [];
 
         // Add own format stuff.
         $elename = 'trail'; // This defines the postfix of 'process_*' below.
@@ -105,7 +107,7 @@ class restore_format_trail_plugin extends restore_format_plugin {
 
         /* We only process this information if the course we are restoring to
            has 'trail' format (target format can change depending of restore options). */
-        $format = $DB->get_field('course', 'format', array('id' => $this->task->get_courseid()));
+        $format = $DB->get_field('course', 'format', ['id' => $this->task->get_courseid()]);
         if ($format != 'trail') {
             return;
         }
@@ -113,11 +115,16 @@ class restore_format_trail_plugin extends restore_format_plugin {
         $data->courseid = $this->task->get_courseid();
 
         if (!$DB->insert_record('format_trail_summary', $data)) {
-            throw new moodle_exception('invalidrecordid', 'format_trail', '',
-            'Could not set summary status. Trail format database is not ready. An admin must visit the notifications section.');
+            throw new moodle_exception(
+                'invalidrecordid',
+                'format_trail',
+                '',
+                'Could not set summary status. Trail format database is not ready.'
+                . ' An admin must visit the notifications section.'
+            );
         }
 
-        if (!($course = $DB->get_record('course', array('id' => $data->courseid)))) {
+        if (!($course = $DB->get_record('course', ['id' => $data->courseid]))) {
             echo 'invalidcourseid', 'error';
         } // From /course/view.php.
         // No need to annotate anything here.
@@ -137,7 +144,7 @@ class restore_format_trail_plugin extends restore_format_plugin {
      */
     protected function define_section_plugin_structure() {
 
-        $paths = array();
+        $paths = [];
 
         // Add own format stuff.
         $elename = 'trailsection'; // This defines the postfix of 'process_*' below.
@@ -170,7 +177,7 @@ class restore_format_trail_plugin extends restore_format_plugin {
 
         /* We only process this information if the course we are restoring to
            has 'trail' format (target format can change depending of restore options). */
-        $format = $DB->get_field('course', 'format', array('id' => $this->task->get_courseid()));
+        $format = $DB->get_field('course', 'format', ['id' => $this->task->get_courseid()]);
         if ($format != 'trail') {
             return;
         }
@@ -185,23 +192,31 @@ class restore_format_trail_plugin extends restore_format_plugin {
             $data->image = null;
         }
 
-        if (!$DB->record_exists('format_trail_icon', array('courseid' => $data->courseid, 'sectionid' => $data->sectionid))) {
+        if (!$DB->record_exists('format_trail_icon', ['courseid' => $data->courseid, 'sectionid' => $data->sectionid])) {
             if (!$DB->insert_record('format_trail_icon', $data, true)) {
-                throw new moodle_exception('invalidrecordid', 'format_trail', '',
-                'Could not insert icon. Trail format table format_trail_icon is not ready.'.
-                '  An administrator must visit the notifications section.');
+                throw new moodle_exception(
+                    'invalidrecordid',
+                    'format_trail',
+                    '',
+                    'Could not insert icon. Trail format table format_trail_icon is not ready.'
+                    . '  An administrator must visit the notifications section.'
+                );
             }
         } else {
-            $old = $DB->get_record('format_trail_icon', array('courseid' => $data->courseid, 'sectionid' => $data->sectionid));
+            $old = $DB->get_record('format_trail_icon', ['courseid' => $data->courseid, 'sectionid' => $data->sectionid]);
             /* Always update missing icons during restore / import, noting merge into existing course currently doesn't restore
                the trail icons. */
             if (is_null($old->image)) {
                 // Update the record to use this icon as we are restoring or importing and no icon exists already.
                 $data->id = $old->id;
                 if (!$DB->update_record('format_trail_icon', $data)) {
-                    throw new moodle_exception('invalidrecordid', 'format_trail', '',
-                    'Could not update icon. Trail format table format_trail_icon is not ready.'.
-                    '  An administrator must visit the notifications section.');
+                    throw new moodle_exception(
+                        'invalidrecordid',
+                        'format_trail',
+                        '',
+                        'Could not update icon. Trail format table format_trail_icon is not ready.'
+                        . '  An administrator must visit the notifications section.'
+                    );
                 }
             }
         }
@@ -239,8 +254,10 @@ class restore_format_trail_plugin extends restore_format_plugin {
             if ($this->step->get_task()->get_setting_value($key . '_included')) {
                 $sectionnum = (int)$section->title;
                 if ($sectionnum > $numsections && $sectionnum > $this->originalnumsections) {
-                    $DB->execute("UPDATE {course_sections} SET visible = 0 WHERE course = ? AND section = ?",
-                        [$this->step->get_task()->get_courseid(), $sectionnum]);
+                    $DB->execute(
+                        "UPDATE {course_sections} SET visible = 0 WHERE course = ? AND section = ?",
+                        [$this->step->get_task()->get_courseid(), $sectionnum]
+                    );
                 }
             }
         }

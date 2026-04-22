@@ -43,16 +43,16 @@ $formdata->offset = optional_param('offset', null, PARAM_INT);
 $formdata->forcerefresh = optional_param('forcerefresh', null, PARAM_INT);
 $formdata->mode = optional_param('mode', null, PARAM_ALPHA);
 
-$url = new moodle_url('/course/format/trail/editimage.php', array(
+$url = new moodle_url('/course/format/trail/editimage.php', [
     'contextid' => $contextid,
     'id' => $id,
     'offset' => $formdata->offset,
     'forcerefresh' => $formdata->forcerefresh,
     'userid' => $formdata->userid,
-    'mode' => $formdata->mode));
+    'mode' => $formdata->mode]);
 
 /* Not exactly sure what this stuff does, but it seems fairly straightforward */
-list($context, $course, $cm) = get_context_info_array($contextid);
+[$context, $course, $cm] = get_context_info_array($contextid);
 
 require_login($course, true, $cm);
 if (isguestuser()) {
@@ -63,17 +63,17 @@ $PAGE->set_url($url);
 $PAGE->set_context($context);
 
 /* Functional part. Create the form and display it, handle results, etc */
-$options = array(
+$options = [
     'subdirs' => 0,
     'maxfiles' => 1,
-    'accepted_types' => array('gif', 'jpe', 'jpeg', 'jpg', 'png'),
-    'return_types' => FILE_INTERNAL);
+    'accepted_types' => ['gif', 'jpe', 'jpeg', 'jpg', 'png'],
+    'return_types' => FILE_INTERNAL];
 
-$mform = new trail_image_form(null, array(
+$mform = new trail_image_form(null, [
     'contextid' => $contextid,
     'userid' => $formdata->userid,
     'sectionid' => $sectionid,
-    'options' => $options));
+    'options' => $options]);
 
 if ($mform->is_cancelled()) {
     // Someone has hit the 'cancel' button.
@@ -99,14 +99,15 @@ if ($mform->is_cancelled()) {
         $storedfilerecord = $courseformat->create_original_image_record($contextid, $sectionid, $newfilename);
 
         $tempfile = $mform->save_stored_file(
-                'imagefile',
-                $storedfilerecord['contextid'],
-                $storedfilerecord['component'],
-                $storedfilerecord['filearea'],
-                $storedfilerecord['itemid'],
-                $storedfilerecord['filepath'],
-                'temp.' . $storedfilerecord['filename'],
-                true);
+            'imagefile',
+            $storedfilerecord['contextid'],
+            $storedfilerecord['component'],
+            $storedfilerecord['filearea'],
+            $storedfilerecord['itemid'],
+            $storedfilerecord['filepath'],
+            'temp.' . $storedfilerecord['filename'],
+            true
+        );
 
         $courseformat->create_section_image($tempfile, $storedfilerecord, $sectionimage);
     }

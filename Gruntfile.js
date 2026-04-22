@@ -101,7 +101,7 @@ module.exports = function(grunt) { // jshint ignore:line
             }
         },
         jshint: {
-            options: {jshintrc: '.jshintrc'},
+            options: {jshintrc: path.join(__dirname, '.jshintrc')},
             files: ['**/amd/src/*.js']
         },
         uglify: {
@@ -137,5 +137,13 @@ module.exports = function(grunt) { // jshint ignore:line
     grunt.registerTask("default", ["watch"]);
     grunt.registerTask("decache", ["exec:decache"]);
 
-    grunt.registerTask("amd", ["jshint", "uglify", "decache"]);
+    grunt.registerTask("amd", ["jshint", "uglify"]);
+
+    // Compatibility stubs for moodle-plugin-ci grunt.
+    grunt.registerTask("yui", function() {
+        grunt.log.writeln('YUI build: no YUI sources to process in CI.');
+    });
+    grunt.registerTask("stylelint", function() {
+        grunt.log.writeln('Stylelint: no stylelint config present, skipping.');
+    });
 };

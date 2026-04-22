@@ -46,7 +46,9 @@ M.format_trail = M.format_trail || {
      helps to work out the next / previous section in 'find_next_shown_section'. */
     shadebox_shown_array: null,
     // DOM reference to the #trailshadebox_content element.
-    shadebox_content: null
+    shadebox_content: null,
+    // Safe mode for modern Moodle versions: disable legacy shadebox interactions.
+    safemode: true
 };
 
 /**
@@ -88,11 +90,13 @@ M.format_trail.init = function(Y, the_editing_on, the_section_redirect, the_num_
         // Show the sections when editing.
         Y.all(".trail_section").removeClass('hide_section');
     } else {
-        var navdrawer = M.format_trail.ourYUI.one('[data-region="drawer"] nav:first-child'); // Flat navigation.
-        if (navdrawer) {
-            Y.delegate('click', this.navdrawerclick, '[data-region="drawer"] nav:first-child', 'a', this);
+        if (!this.safemode) {
+            var navdrawer = M.format_trail.ourYUI.one('[data-region="drawer"] nav:first-child'); // Flat navigation.
+            if (navdrawer) {
+                Y.delegate('click', this.navdrawerclick, '[data-region="drawer"] nav:first-child', 'a', this);
+            }
         }
-        if (this.section_redirect === null) {
+        if ((this.section_redirect === null) && (!this.safemode)) {
             Y.delegate('click', this.icon_click, Y.config.doc, 'ul.trailicons a.trailicon_link', this);
 
             var shadeboxtoggleone = Y.one("#trailshadebox_overlay");
@@ -122,6 +126,8 @@ M.format_trail.init = function(Y, the_editing_on, the_section_redirect, the_num_
                     M.format_trail.shadebox.update_shadebox();
                 };
             }
+        } else {
+            Y.delegate('click', this.icon_click, Y.config.doc, 'ul.trailicons a.trailicon_link', this);
         }
     }
     this.shadebox_content = Y.one("#trailshadebox_content");
@@ -141,7 +147,8 @@ M.format_trail.init = function(Y, the_editing_on, the_section_redirect, the_num_
             M.format_trail.tab(idx);
             M.format_trail.trail_toggle();
         }
-    } else if ((this.num_sections > 0) && (the_initial_section > -1)) { // Section has been specified so show it.
+    } else if ((this.num_sections > 0) && (the_initial_section > -1) && (!the_editing_on)) {
+        // Section has been specified so show it.
         M.format_trail.trail_toggle();
     }
 };
@@ -169,11 +176,20 @@ M.format_trail.icon_click = function(e) {
 M.format_trail.navdrawerclick = function(e) {
     "use strict";
     var href = e.currentTarget.get('href');
+    if (!href) {
+        return true;
+    }
     var sectionref = href.indexOf("#section-");
+    if (sectionref < 0) {
+        return true;
+    }
     if (sectionref === 0) {
         return true;
     }
     var idx = parseInt(href.substring(sectionref + 9));
+    if (isNaN(idx)) {
+        return true;
+    }
     var min = 1;
     if (this.shadebox_shown_array[0] == 2) { // Section 0 can be shown.
         min = 0;
@@ -213,9 +229,20 @@ M.format_trail.icon_toggle = function(e) {
 
 M.format_trail.trail_toggle = function() {
     if (this.selected_section_no != -1) { // Then a valid shown section has been selected.
-        if ((this.editing_on === true) && (this.update_capability === true)) {
-            // Jump to the section on the page.
-            window.scroll(0, document.getElementById("section-" + this.selected_section_no).offsetTop);
+        if (this.safemode) {
+            var targetsection = document.getElementById("section-" + this.selected_section_no);
+            if (targetsection) {
+                window.scroll(0, targetsection.offsetTop);
+            }
+            return;
+        }
+        if (this.editing_on === true) {
+            // In editing mode the shadebox is not used. Only jump to the selected section.
+            var sectionnode = document.getElementById("section-" + this.selected_section_no);
+            if (sectionnode) {
+                window.scroll(0, sectionnode.offsetTop);
+            }
+            return;
         } else if (this.section_redirect !== null) {
             // Keyboard control of 'toggle' in 'One section per page' layout.
             location.assign(this.section_redirect + "&section=" + this.selected_section_no);

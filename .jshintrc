@@ -1,9 +1,28 @@
 {
-   "extends": "../../../.jshintrc",
-   "globals": {
-       "$": false,
-       "console": false,
-       "Modernizr": false,
-       "Headroom": false
-       }
+    "bitwise"  : true,
+    "browser"  : true,
+    "curly"    : true,
+    "eqeqeq"   : false,
+    "esversion": 5,
+    "immed"    : true,
+    "indent"   : 4,
+    "latedef"  : false,
+    "newcap"   : true,
+    "noarg"    : true,
+    "noempty"  : false,
+    "nonew"    : true,
+    "plusplus" : false,
+    "quotmark" : "single",
+    "undef"    : true,
+    "unused"   : true,
+    "strict"   : true,
+    "trailing" : true,
+    "maxlen"   : 132,
+    "white"    : false,
+    "globals": {
+        "$"       : false,
+        "console" : false,
+        "Modernizr": false,
+        "Headroom" : false
+    }
 }

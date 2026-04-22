@@ -32,7 +32,6 @@
  * Event observers supported by this format.
  */
 class format_trail_observer {
-
     /**
      * Observer for the event course_content_deleted.
      *
@@ -52,7 +51,7 @@ class format_trail_observer {
             $courseformat->delete_images();
             unset($courseformat);  // Destruct.
 
-            $DB->delete_records("format_trail_summary", array("courseid" => $event->objectid));
+            $DB->delete_records("format_trail_summary", ["courseid" => $event->objectid]);
         }
     }
 }

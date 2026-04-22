@@ -77,7 +77,7 @@ function trail_get_icons($courseid) {
         return false;
     }
 
-    if (!$sectionicons = $DB->get_records('format_trail_icon', array('courseid' => $courseid), '', 'sectionid, image')) {
+    if (!$sectionicons = $DB->get_records('format_trail_icon', ['courseid' => $courseid], '', 'sectionid, image')) {
         $sectionicons = false;
     }
     return $sectionicons;
@@ -102,7 +102,6 @@ if ($logverbose) {
 }
 
 if ($courseids) {
-
     $fs = get_file_storage();
 
     if ($logverbose) {
@@ -134,16 +133,14 @@ if ($courseids) {
                         echo('<p>Converting legacy images ' . $sectionicons . ".</p>");
                     }
                     foreach ($sectionicons as $sectionicon) {
-
                         if (isset($sectionicon->image)) {
                             echo('<p>Converting legacy image ' . $sectionicon->image . ".</p>");
 
                             if ($tempfile = $fs->get_file($contextid, 'course', 'legacy', 0, '/icons/', $sectionicon->image)) {
-
                                 echo('<p> Stored file:' . $tempfile . '</p>');
                                 // Resize the image and save it...
                                 $created = time();
-                                $storedfilerecord = array(
+                                $storedfilerecord = [
                                     'contextid' => $contextid,
                                     'component' => 'course',
                                     'filearea' => 'section',
@@ -151,7 +148,7 @@ if ($courseids) {
                                     'filepath' => '/',
                                     'filename' => $sectionicon->image,
                                     'timecreated' => $created,
-                                    'timemodified' => $created);
+                                    'timemodified' => $created];
 
                                 try {
                                     $convertsuccess = true;
@@ -179,8 +176,16 @@ if ($courseids) {
                                         // Clean up and remove the old thumbnail too.
                                         $tempfile->delete();
                                         unset($tempfile);
-                                        if ($tempfile = $fs->get_file($contextid, 'course',
-                                                'legacy', 0, '/icons/', 'tn_' . $sectionicon->image)) {
+                                        if (
+                                            $tempfile = $fs->get_file(
+                                                $contextid,
+                                                'course',
+                                                'legacy',
+                                                0,
+                                                '/icons/',
+                                                'tn_' . $sectionicon->image
+                                            )
+                                        ) {
                                             // Remove thumbnail.
                                             $tempfile->delete();
                                             unset($tempfile);
